@@ -31,3 +31,10 @@ func (r *studioResolver) SceneCount(ctx context.Context, obj *models.Studio) (*i
 	res, err := qb.CountByStudioID(obj.ID)
 	return &res, err
 }
+
+func (r *studioResolver) StashID(ctx context.Context, obj *models.Studio) (*string, error) {
+	if obj.StashID.Valid {
+		return &obj.StashID.String, nil
+	}
+	return nil, nil
+}
