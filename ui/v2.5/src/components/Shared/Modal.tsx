@@ -5,7 +5,7 @@ import { IconName } from "@fortawesome/fontawesome-svg-core";
 
 interface IButton {
   text?: string;
-  variant?: "danger" | "primary";
+  variant?: "danger" | "primary" | "secondary";
   onClick?: () => void;
 }
 
