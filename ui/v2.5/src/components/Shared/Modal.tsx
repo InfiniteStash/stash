@@ -39,6 +39,7 @@ const ModalComponent: React.FC<IModal> = ({
           <Button
             variant={cancel.variant ?? "primary"}
             onClick={cancel.onClick}
+            className="mr-2"
           >
             {cancel.text ?? "Cancel"}
           </Button>
