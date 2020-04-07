@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/!(generated-graphql).{js,jsx,ts,tsx,scss}\"",
     "gqlgen": "gql-gen --config codegen.yml",
     "extract": "NODE_ENV=development extract-messages -l=en,de -o src/locale -d en --flat false 'src/**/!(*.test).tsx'",
-    "generate": "apollo client:codegen --target typescript --outputFlat src/definitions-box --no-addTypename --includes src/queries/*"
+    "generate": "apollo client:codegen --target typescript --outputFlat src/definitions-box --no-addTypename --includes='src/queries/*.gql'"
   },
   "browserslist": [
     ">0.2%",
@@ -39,9 +39,9 @@
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "formik": "^2.1.2",
-    "graphql": "^14.6.0",
-    "graphql-tag": "^2.10.1",
-    "graphql.macro": "^1.4.2",
+    "graphql": "14.5.8",
+    "graphql-tag": "2.10.3",
+    "graphql.macro": "1.4.2",
     "localforage": "1.7.3",
     "lodash": "^4.17.15",
     "parse-filepath": "^1.0.2",
@@ -83,7 +83,7 @@
     "@types/video.js": "^7.2.11",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
-    "apollo": "^2.24.0",
+    "apollo": "^2.26.0",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-typescript": "^6.3.1",
     "eslint-config-prettier": "^6.10.1",
