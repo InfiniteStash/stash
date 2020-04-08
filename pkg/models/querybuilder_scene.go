@@ -319,6 +319,8 @@ func (qb *SceneQueryBuilder) Query(sceneFilter *SceneFilterType, findFilter *Fin
 			whereClauses = append(whereClauses, "performers_join.scene_id IS NULL")
 		case "date":
 			whereClauses = append(whereClauses, "scenes.date IS \"\" OR scenes.date IS \"0001-01-01\"")
+        case "stash_id":
+            whereClauses = append(whereClauses, "scenes.stash_id IS NULL")
 		default:
 			whereClauses = append(whereClauses, "scenes."+*isMissingFilter+" IS NULL")
 		}
