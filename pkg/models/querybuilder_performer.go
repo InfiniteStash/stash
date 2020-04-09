@@ -20,10 +20,10 @@ func (qb *PerformerQueryBuilder) Create(newPerformer Performer, tx *sqlx.Tx) (*P
 	result, err := tx.NamedExec(
 		`INSERT INTO performers (image, checksum, name, url, gender, twitter, instagram, birthdate, ethnicity, country,
                         				eye_color, height, measurements, fake_tits, career_length, tattoos, piercings,
-                        				aliases, favorite, created_at, updated_at)
+                        				aliases, favorite, created_at, updated_at, stash_id)
 				VALUES (:image, :checksum, :name, :url, :gender, :twitter, :instagram, :birthdate, :ethnicity, :country,
                         :eye_color, :height, :measurements, :fake_tits, :career_length, :tattoos, :piercings,
-                        :aliases, :favorite, :created_at, :updated_at)
+                        :aliases, :favorite, :created_at, :updated_at, :stash_id)
 		`,
 		newPerformer,
 	)
