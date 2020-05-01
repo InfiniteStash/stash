@@ -11982,7 +11982,7 @@ prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^3.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@~15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@~15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -12253,13 +12253,6 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
-
-react-hotkeys@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-2.0.0.tgz#a7719c7340cbba888b0e9184f806a9ec0ac2c53f"
-  integrity sha512-3n3OU8vLX/pfcJrR3xJ1zlww6KS1kEJt0Whxc4FiGV+MJrQ1mYSYI3qS/11d2MJDFm8IhOXMTFQirfu6AVOF6Q==
-  dependencies:
-    prop-types "^15.6.1"
 
 react-images@0.5.19:
   version "0.5.19"
@@ -14584,10 +14577,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.7.5:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+typescript@^3.8.0:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 ua-parser-js@^0.7.18:
   version "0.7.21"
