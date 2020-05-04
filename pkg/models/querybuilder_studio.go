@@ -16,8 +16,8 @@ func NewStudioQueryBuilder() StudioQueryBuilder {
 func (qb *StudioQueryBuilder) Create(newStudio Studio, tx *sqlx.Tx) (*Studio, error) {
 	ensureTx(tx)
 	result, err := tx.NamedExec(
-		`INSERT INTO studios (image, checksum, name, url, stash_id, created_at, updated_at)
-                VALUES (:image, :checksum, :name, :url, :stash_id, :created_at, :updated_at)
+		`INSERT INTO studios (image, checksum, name, url, created_at, updated_at)
+                VALUES (:image, :checksum, :name, :url, :created_at, :updated_at)
 		`,
 		newStudio,
 	)
@@ -73,8 +73,8 @@ func (qb *StudioQueryBuilder) Find(id int, tx *sqlx.Tx) (*Studio, error) {
 	return qb.queryStudio(query, args, tx)
 }
 
-func (qb *StudioQueryBuilder) FindByStashID(id string, tx *sqlx.Tx) (*Studio, error) {
-	query := "SELECT * FROM studios WHERE stash_id = ? LIMIT 1"
+func (qb *StudioQueryBuilder) FindByURL(id string, tx *sqlx.Tx) (*Studio, error) {
+	query := "SELECT * FROM studios WHERE url = ? LIMIT 1"
 	args := []interface{}{id}
 	return qb.queryStudio(query, args, tx)
 }

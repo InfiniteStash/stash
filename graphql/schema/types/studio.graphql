@@ -3,7 +3,6 @@ type Studio {
   checksum: String!
   name: String!
   url: String
-  stash_id: String
 
   image_path: String # Resolver
   scene_count: Int # Resolver
@@ -14,7 +13,6 @@ input StudioCreateInput {
   url: String
   """This should be base64 encoded"""
   image: String
-  stash_id: String
 }
 
 input StudioUpdateInput {
@@ -23,7 +21,6 @@ input StudioUpdateInput {
   url: String
   """This should be base64 encoded"""
   image: String
-  stash_id: String
 }
 
 input StudioDestroyInput {

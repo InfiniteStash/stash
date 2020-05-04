@@ -5,5 +5,4 @@ fragment StudioData on Studio {
   url
   image_path
   scene_count
-  stash_id
 }
