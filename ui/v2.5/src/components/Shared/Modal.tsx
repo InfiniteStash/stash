@@ -16,6 +16,7 @@ interface IModal {
   icon?: IconName;
   cancel?: IButton;
   accept?: IButton;
+  dialogClassName?: string;
 }
 
 const ModalComponent: React.FC<IModal> = ({
@@ -26,8 +27,9 @@ const ModalComponent: React.FC<IModal> = ({
   cancel,
   accept,
   onHide,
+  dialogClassName
 }) => (
-  <Modal keyboard={false} onHide={onHide} show={show}>
+  <Modal keyboard={false} onHide={onHide} show={show} dialogClassName={dialogClassName}>
     <Modal.Header>
       {icon ? <Icon icon={icon} /> : ""}
       <span>{header ?? ""}</span>
