@@ -589,49 +589,46 @@ export const Tagger: React.FC = () => {
                     </a>
                   </div>
                   <div className="col-6">
-                    {!taggedScenes[scene.id] &&
-                      scene?.stash_id && (
-                        <h5 className="text-right text-bold">
-                          Scene already tagged
-                        </h5>
-                      )}
+                    {!taggedScenes[scene.id] && scene?.stash_id && (
+                      <h5 className="text-right text-bold">
+                        Scene already tagged
+                      </h5>
+                    )}
                     {!taggedScenes[scene.id] && !scene?.stash_id && (
-                        <InputGroup>
-                          <Form.Control
-                            value={modifiedQuery || defaultQueryString}
-                            onChange={(
-                              e: React.ChangeEvent<HTMLInputElement>
-                            ) =>
-                              setQueryString({
-                                ...queryString,
-                                [scene.id]: e.currentTarget.value,
-                              })
-                            }
-                            onKeyPress={(
-                              e: React.KeyboardEvent<HTMLInputElement>
-                            ) =>
-                              e.key === "Enter" &&
+                      <InputGroup>
+                        <Form.Control
+                          value={modifiedQuery || defaultQueryString}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setQueryString({
+                              ...queryString,
+                              [scene.id]: e.currentTarget.value,
+                            })
+                          }
+                          onKeyPress={(
+                            e: React.KeyboardEvent<HTMLInputElement>
+                          ) =>
+                            e.key === "Enter" &&
+                            doBoxSearch(
+                              scene.id,
+                              queryString[scene.id] || defaultQueryString
+                            )
+                          }
+                        />
+                        <InputGroup.Append>
+                          <Button
+                            disabled={loading}
+                            onClick={() =>
                               doBoxSearch(
                                 scene.id,
                                 queryString[scene.id] || defaultQueryString
                               )
                             }
-                          />
-                          <InputGroup.Append>
-                            <Button
-                              disabled={loading}
-                              onClick={() =>
-                                doBoxSearch(
-                                  scene.id,
-                                  queryString[scene.id] || defaultQueryString
-                                )
-                              }
-                            >
-                              Search
-                            </Button>
-                          </InputGroup.Append>
-                        </InputGroup>
-                      )}
+                          >
+                            Search
+                          </Button>
+                        </InputGroup.Append>
+                      </InputGroup>
+                    )}
                     {taggedScenes[scene.id] && (
                       <h5 className="row no-gutters">
                         <b className="col-4">Scene successfully tagged:</b>
@@ -648,7 +645,9 @@ export const Tagger: React.FC = () => {
                 {searchResults[scene.id] === null && (
                   <div>No results found.</div>
                 )}
-                {fingerprintMatch && !scene?.stash_id && !taggedScenes[scene.id] && (
+                {fingerprintMatch &&
+                  !scene?.stash_id &&
+                  !taggedScenes[scene.id] && (
                     <StashSearchResult
                       showMales={config.showMales}
                       stashScene={scene}

@@ -92,9 +92,9 @@ func (r *mutationResolver) PerformerCreate(ctx context.Context, input models.Per
 	} else {
 		newPerformer.Favorite = sql.NullBool{Bool: false, Valid: true}
 	}
-    if input.StashID != nil {
-        newPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
-    }
+	if input.StashID != nil {
+		newPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
+	}
 
 	// Start the transaction and save the performer
 	tx := database.DB.MustBeginTx(ctx, nil)
@@ -193,9 +193,9 @@ func (r *mutationResolver) PerformerUpdate(ctx context.Context, input models.Per
 	} else {
 		updatedPerformer.Favorite = sql.NullBool{Bool: false, Valid: true}
 	}
-    if input.StashID != nil {
-        updatedPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
-    }
+	if input.StashID != nil {
+		updatedPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
+	}
 
 	// Start the transaction and save the performer
 	tx := database.DB.MustBeginTx(ctx, nil)

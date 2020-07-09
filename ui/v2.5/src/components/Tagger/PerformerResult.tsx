@@ -30,13 +30,14 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
     "create" | "existing" | "skip" | undefined
   >();
   const [modalVisible, showModal] = useState(false);
-  const { data: stashData, loading: stashLoading } = GQL.useFindPerformerByStashIdQuery(
-    {
-      variables: {
-          stash_id: performer.id,
-      },
-    }
-  );
+  const {
+    data: stashData,
+    loading: stashLoading,
+  } = GQL.useFindPerformerByStashIdQuery({
+    variables: {
+      stash_id: performer.id,
+    },
+  });
   const { loading } = GQL.useFindPerformersQuery({
     variables: {
       filter: {

@@ -414,7 +414,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
           performer_ids: performerIDs.filter((id) => id !== "Skip") as string[],
           studio_id: studioID,
           cover_image: imgData,
-          url: getUrlByType(scene.urls, 'STUDIO') ?? null,
+          url: getUrlByType(scene.urls, "STUDIO") ?? null,
           ...(tagIDs ? { tag_ids: tagIDs } : {}),
         },
       });
