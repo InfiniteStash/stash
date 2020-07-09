@@ -20,10 +20,10 @@ func (qb *PerformerQueryBuilder) Create(newPerformer Performer, tx *sqlx.Tx) (*P
 	result, err := tx.NamedExec(
 		`INSERT INTO performers (checksum, name, url, gender, twitter, instagram, birthdate, ethnicity, country,
                         				eye_color, height, measurements, fake_tits, career_length, tattoos, piercings,
-                        				aliases, favorite, created_at, updated_at)
+                        				aliases, favorite, stash_id, created_at, updated_at)
 				VALUES (:checksum, :name, :url, :gender, :twitter, :instagram, :birthdate, :ethnicity, :country,
                         :eye_color, :height, :measurements, :fake_tits, :career_length, :tattoos, :piercings,
-                        :aliases, :favorite, :created_at, :updated_at)
+                        :aliases, :favorite, :stash_id, :created_at, :updated_at)
 		`,
 		newPerformer,
 	)
@@ -68,6 +68,16 @@ func (qb *PerformerQueryBuilder) Destroy(id string, tx *sqlx.Tx) error {
 
 func (qb *PerformerQueryBuilder) Find(id int) (*Performer, error) {
 	query := "SELECT * FROM performers WHERE id = ? LIMIT 1"
+	args := []interface{}{id}
+	results, err := qb.queryPerformers(query, args, nil)
+	if err != nil || len(results) < 1 {
+		return nil, err
+	}
+	return results[0], nil
+}
+
+func (qb *PerformerQueryBuilder) FindByStashID(id string, tx *sqlx.Tx) (*Performer, error) {
+	query := "SELECT * FROM performers WHERE stash_id = ? LIMIT 1"
 	args := []interface{}{id}
 	results, err := qb.queryPerformers(query, args, nil)
 	if err != nil || len(results) < 1 {
@@ -192,7 +202,6 @@ func (qb *PerformerQueryBuilder) Query(performerFilter *PerformerFilterType, fin
 	handleStringCriterion(tableName+".career_length", performerFilter.CareerLength, &query)
 	handleStringCriterion(tableName+".tattoos", performerFilter.Tattoos, &query)
 	handleStringCriterion(tableName+".piercings", performerFilter.Piercings, &query)
-	handleStringCriterion(tableName+".instagram", performerFilter.Instagram, &query)
 
 	// TODO - need better handling of aliases
 	handleStringCriterion(tableName+".aliases", performerFilter.Aliases, &query)

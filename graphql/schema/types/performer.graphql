@@ -26,6 +26,7 @@ type Performer {
   piercings: String
   aliases: String
   favorite: Boolean!
+  stash_id: String
 
   image_path: String # Resolver
   scene_count: Int # Resolver
@@ -50,6 +51,7 @@ input PerformerCreateInput {
   twitter: String
   instagram: String
   favorite: Boolean
+  stash_id: String
   """This should be base64 encoded"""
   image: String
 }
@@ -73,6 +75,7 @@ input PerformerUpdateInput {
   twitter: String
   instagram: String
   favorite: Boolean
+  stash_id: String
   """This should be base64 encoded"""
   image: String
 }

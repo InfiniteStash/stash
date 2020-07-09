@@ -33,6 +33,7 @@ type Scene {
   rating: Int
   o_counter: Int
   path: String!
+  stash_id: String
 
   file: SceneFileType! # Resolver
   paths: ScenePathsType! # Resolver
@@ -64,6 +65,7 @@ input SceneUpdateInput {
   performer_ids: [ID!]
   movies: [SceneMovieInput!]
   tag_ids: [ID!]
+  stash_id: String
   """This should be base64 encoded"""
   cover_image: String
 }

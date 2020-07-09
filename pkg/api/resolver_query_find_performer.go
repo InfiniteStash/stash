@@ -12,6 +12,11 @@ func (r *queryResolver) FindPerformer(ctx context.Context, id string) (*models.P
 	return qb.Find(idInt)
 }
 
+func (r *queryResolver) FindPerformerByStashID(ctx context.Context, id string) (*models.Performer, error) {
+	qb := models.NewPerformerQueryBuilder()
+	return qb.FindByStashID(id, nil)
+}
+
 func (r *queryResolver) FindPerformers(ctx context.Context, performerFilter *models.PerformerFilterType, filter *models.FindFilterType) (*models.FindPerformersResultType, error) {
 	qb := models.NewPerformerQueryBuilder()
 	performers, total := qb.Query(performerFilter, filter)
