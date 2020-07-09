@@ -5,6 +5,7 @@ type Studio {
   url: String
   parent_studio: Studio
   child_studios: [Studio!]!
+  stash_id: String
 
   image_path: String # Resolver
   scene_count: Int # Resolver
@@ -14,6 +15,7 @@ input StudioCreateInput {
   name: String!
   url: String
   parent_id: ID
+  stash_id: String
   """This should be base64 encoded"""
   image: String
 }
@@ -23,6 +25,7 @@ input StudioUpdateInput {
   name: String
   url: String
   parent_id: ID,
+  stash_id: String
   """This should be base64 encoded"""
   image: String
 }

@@ -19,14 +19,15 @@ type Query {
 
   """Find a performer by ID"""
   findPerformer(id: ID!): Performer
+  findPerformerByStashID(stash_id: String!): Performer
   """A function which queries Performer objects"""
   findPerformers(performer_filter: PerformerFilterType, filter: FindFilterType): FindPerformersResultType!
 
   """Find a studio by ID"""
   findStudio(id: ID!): Studio
+  findStudioByStashID(stash_id: String!): Studio
   """A function which queries Studio objects"""
   findStudios(studio_filter: StudioFilterType, filter: FindFilterType): FindStudiosResultType!
-  findStudioByURL(id: String!): Studio
 
    """Find a movie by ID"""
   findMovie(id: ID!): Movie

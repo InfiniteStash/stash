@@ -36,8 +36,6 @@ const SearchSceneQuery = loader("src/queries/searchScene.gql");
 const FindSceneByFingerprintQuery = loader("src/queries/searchFingerprint.gql");
 const MeQuery = loader("src/queries/me.gql");
 
-const uuidRegexp = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/i;
-
 const DEFAULT_BLACKLIST = [
   " XXX",
   "1080p",
@@ -592,14 +590,12 @@ export const Tagger: React.FC = () => {
                   </div>
                   <div className="col-6">
                     {!taggedScenes[scene.id] &&
-                      scene?.url &&
-                      scene.url.match(uuidRegexp) && (
+                      scene?.stash_id && (
                         <h5 className="text-right text-bold">
                           Scene already tagged
                         </h5>
                       )}
-                    {!taggedScenes[scene.id] &&
-                      (!scene?.url || !scene.url.match(uuidRegexp)) && (
+                    {!taggedScenes[scene.id] && !scene?.stash_id && (
                         <InputGroup>
                           <Form.Control
                             value={modifiedQuery || defaultQueryString}
@@ -652,9 +648,7 @@ export const Tagger: React.FC = () => {
                 {searchResults[scene.id] === null && (
                   <div>No results found.</div>
                 )}
-                {fingerprintMatch &&
-                  (!scene?.url || !scene.url.match(uuidRegexp)) &&
-                  !taggedScenes[scene.id] && (
+                {fingerprintMatch && !scene?.stash_id && !taggedScenes[scene.id] && (
                     <StashSearchResult
                       showMales={config.showMales}
                       stashScene={scene}

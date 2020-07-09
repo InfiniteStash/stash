@@ -27,9 +27,9 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
   const {
     data: stashData,
     loading: stashLoading,
-  } = GQL.useFindStudioByUrlQuery({
+  } = GQL.useFindStudioByStashIdQuery({
     variables: {
-      id: studio?.id ?? "",
+      stash_id: studio?.id ?? "",
     },
   });
 
@@ -58,11 +58,11 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
   });
 
   useEffect(() => {
-    if (!stashData?.findStudioByURL) return;
+    if (!stashData?.findStudioByStashID) return;
 
     setStudio({
       type: "Existing",
-      data: stashData.findStudioByURL.id,
+      data: stashData.findStudioByStashID.id,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashData]);
@@ -87,7 +87,7 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
 
   if (loading || stashLoading) return <div>Loading studio</div>;
 
-  if (stashData?.findStudioByURL) {
+  if (stashData?.findStudioByStashID) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
@@ -98,7 +98,7 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
           <SuccessIcon className="mr-2" />
           Matched:
         </span>
-        <b className="col-3 text-right">{stashData.findStudioByURL.name}</b>
+        <b className="col-3 text-right">{stashData.findStudioByStashID.name}</b>
       </div>
     );
   }

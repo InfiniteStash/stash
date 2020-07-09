@@ -30,15 +30,10 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
     "create" | "existing" | "skip" | undefined
   >();
   const [modalVisible, showModal] = useState(false);
-  const { data: stashData, loading: stashLoading } = GQL.useFindPerformersQuery(
+  const { data: stashData, loading: stashLoading } = GQL.useFindPerformerByStashIdQuery(
     {
       variables: {
-        performer_filter: {
-          instagram: {
-            value: performer.id,
-            modifier: GQL.CriterionModifier.Equals,
-          },
-        },
+          stash_id: performer.id,
       },
     }
   );
@@ -62,11 +57,11 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
   });
 
   useEffect(() => {
-    if (!stashData?.findPerformers.count) return;
+    if (!stashData?.findPerformerByStashID) return;
 
     setPerformer({
       type: "Existing",
-      data: stashData.findPerformers.performers[0].id,
+      data: stashData.findPerformerByStashID.id,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashData]);
@@ -118,7 +113,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
 
   if (stashLoading || loading) return <div>Loading performer</div>;
 
-  if ((stashData?.findPerformers.count ?? 0) > 0) {
+  if (stashData?.findPerformerByStashID?.id) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
@@ -130,7 +125,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
           Matched:
         </span>
         <b className="col-3 text-right">
-          {stashData!.findPerformers.performers[0].name}
+          {stashData.findPerformerByStashID.name}
         </b>
       </div>
     );
