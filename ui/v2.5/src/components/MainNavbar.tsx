@@ -106,7 +106,7 @@ export const MainNavbar: React.FC = () => {
   const navbarRef = useRef<any>();
   const intl = useIntl();
 
-  let activeMenuItems = [...menuItems];
+  const activeMenuItems = [...menuItems];
   // Show scene tagger option if endpoint/apikey are set
   if (
     config.data?.configuration.general.stashBoxEndpoint &&

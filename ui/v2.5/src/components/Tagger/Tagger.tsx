@@ -159,7 +159,7 @@ export const Tagger: React.FC = () => {
   >({});
   const [loadingFingerprints, setLoadingFingerprints] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
-  const [user, setUser] = useState<Me|null|undefined>();
+  const [user, setUser] = useState<Me | null | undefined>();
   const authFailure = user === null;
 
   const [config, setConfig] = useState<ITaggerConfig>({
@@ -201,8 +201,7 @@ export const Tagger: React.FC = () => {
 
   const client = useStashBoxClient(endpoint, apiKey);
   useEffect(() => {
-    if (!client) return;
-    else
+    if (client)
       client
         .query<Me>({
           query: MeQuery,
