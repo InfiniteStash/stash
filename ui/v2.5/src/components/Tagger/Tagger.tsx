@@ -284,14 +284,25 @@ export const Tagger: React.FC = () => {
     await Promise.all(
       scenes
         .filter((s) => fingerprints[s.id] === undefined)
-        .map((s) =>
-          client
+        .map((s) => {
+          let hash: string;
+          let algorithm: FingerprintAlgorithm;
+          if (s.oshash) {
+            hash = s.oshash;
+            algorithm = FingerprintAlgorithm.OSHASH;
+          } else if (s.checksum) {
+            hash = s.checksum;
+            algorithm = FingerprintAlgorithm.MD5;
+          } else {
+            return null;
+          }
+          return client
             ?.query<FindSceneByFingerprint, FindSceneByFingerprintVariables>({
               query: FindSceneByFingerprintQuery,
               variables: {
                 fingerprint: {
-                  hash: s.checksum,
-                  algorithm: FingerprintAlgorithm.MD5,
+                  hash,
+                  algorithm,
                 },
               },
             })
@@ -301,7 +312,7 @@ export const Tagger: React.FC = () => {
                   ? res.data.findSceneByFingerprint[0]
                   : null;
             })
-        )
+        })
     );
 
     setFingerprints(newFingerprints);
@@ -656,6 +667,7 @@ export const Tagger: React.FC = () => {
                       setScene={handleTaggedScene}
                       scene={fingerprintMatch}
                       setCoverImage={config.setCoverImage}
+                      tagOperation={config.tagOperation}
                       client={client}
                     />
                   )}
@@ -705,6 +717,7 @@ export const Tagger: React.FC = () => {
                                   })
                                 }
                                 setCoverImage={config.setCoverImage}
+                                tagOperation={config.tagOperation}
                                 setScene={handleTaggedScene}
                                 client={client}
                               />

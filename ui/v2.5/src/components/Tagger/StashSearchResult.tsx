@@ -5,7 +5,7 @@ import { blobToBase64 } from "base64-blob";
 import { loader } from "graphql.macro";
 import cx from "classnames";
 import { Button } from "react-bootstrap";
-import { sortBy } from "lodash";
+import { uniq, sortBy } from "lodash";
 
 import {
   SearchScene_searchScene as SearchResult,
@@ -83,6 +83,7 @@ interface IStashSearchResultProps {
   showMales: boolean;
   setScene: (scene: Partial<GQL.Scene>) => void;
   setCoverImage: boolean;
+  tagOperation: string;
   client?: ApolloClient<NormalizedCacheObject>;
 }
 
@@ -114,6 +115,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   showMales,
   setScene,
   setCoverImage,
+  tagOperation,
   client,
 }) => {
   const [studio, setStudio] = useState<IStudioOperation>();
@@ -353,7 +355,9 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         }
       }
 
-      const tagIDs: string[] = [];
+      const tagIDs: string[] = tagOperation === "merge"
+        ? stashScene?.tags?.map(t => t.id) ?? []
+        : [];
       const tags = scene.tags ?? [];
       if (tags.length > 0) {
         const tagDict: Record<string, string> = (allTags?.allTagsSlim ?? [])
@@ -415,7 +419,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
           studio_id: studioID,
           cover_image: imgData,
           url: getUrlByType(scene.urls, "STUDIO") ?? null,
-          ...(tagIDs ? { tag_ids: tagIDs } : {}),
+          ...(tagIDs ? { tag_ids: uniq(tagIDs) } : {}),
         },
       });
       if (sceneUpdateResult.data?.sceneUpdate)
@@ -430,6 +434,20 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               fingerprint: {
                 hash: stashScene.checksum,
                 algorithm: FingerprintAlgorithm.MD5,
+                duration: Math.floor(stashScene.file?.duration),
+              },
+            },
+          },
+        });
+      if (stashScene.oshash && stashScene.file?.duration)
+        client?.mutate<SubmitFingerprint, SubmitFingerprintVariables>({
+          mutation: SubmitFingerprintMutation,
+          variables: {
+            input: {
+              scene_id: scene.id,
+              fingerprint: {
+                hash: stashScene.oshash,
+                algorithm: FingerprintAlgorithm.OSHASH,
                 duration: Math.floor(stashScene.file?.duration),
               },
             },
@@ -489,7 +507,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               {scene?.performers?.map((p) => p.performer.name).join(", ")}
             </div>
             {getDurationStatus(scene, stashScene.file?.duration)}
-            {getFingerprintStatus(scene, stashScene.checksum)}
+            {getFingerprintStatus(scene, stashScene.checksum ?? stashScene.oshash ?? undefined)}
           </div>
         </div>
       </div>
