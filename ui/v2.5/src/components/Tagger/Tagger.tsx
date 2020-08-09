@@ -159,7 +159,9 @@ export const Tagger: React.FC = () => {
   >({});
   const [loadingFingerprints, setLoadingFingerprints] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
-  const [user, setUser] = useState<Me>();
+  const [user, setUser] = useState<Me|null|undefined>();
+  const authFailure = user === null;
+
   const [config, setConfig] = useState<ITaggerConfig>({
     blacklist: DEFAULT_BLACKLIST,
     showMales: false,
@@ -198,9 +200,8 @@ export const Tagger: React.FC = () => {
   }, [page, searchFilter, history]);
 
   const client = useStashBoxClient(endpoint, apiKey);
-  const authSuccess = client && user?.me?.id;
   useEffect(() => {
-    if (!client) setUser(undefined);
+    if (!client) return;
     else
       client
         .query<Me>({
@@ -209,7 +210,7 @@ export const Tagger: React.FC = () => {
           fetchPolicy: "no-cache",
         })
         .then((result) => setUser(result.data))
-        .catch(() => setUser(undefined));
+        .catch(() => setUser(null));
   }, [client]);
 
   const { data: sceneData, loading: sceneLoading } = GQL.useFindScenesQuery({
@@ -406,7 +407,7 @@ export const Tagger: React.FC = () => {
         <Button
           onClick={() => setShowConfig(!showConfig)}
           variant="link"
-          disabled={!authSuccess}
+          disabled={authFailure}
         >
           {showConfig ? "Hide" : "Show"} Configuration
         </Button>
@@ -420,7 +421,7 @@ export const Tagger: React.FC = () => {
         </div>
       </div>
 
-      <Collapse in={showConfig || !authSuccess}>
+      <Collapse in={showConfig || authFailure}>
         <Card>
           <div className="row">
             <Form className="col-6">

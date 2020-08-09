@@ -8,6 +8,8 @@ export const useStashBoxClient = (uri: string, ApiKey: string) => {
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   useEffect(() => {
+    if (!uri || !ApiKey) return;
+
     const httpLink = new HttpLink({
       uri,
       fetch,
