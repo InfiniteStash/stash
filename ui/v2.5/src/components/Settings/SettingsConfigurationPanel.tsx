@@ -54,6 +54,12 @@ export const SettingsConfigurationPanel: React.FC = () => {
   const [scraperCDPPath, setScraperCDPPath] = useState<string | undefined>(
     undefined
   );
+  const [stashBoxEndpoint, setStashBoxEndpoint] = useState<string | undefined>(
+    undefined
+  );
+  const [stashBoxAPIKey, setStashBoxAPIKey] = useState<string | undefined>(
+    undefined
+  );
 
   const { data, error, loading } = useConfiguration();
 
@@ -82,6 +88,8 @@ export const SettingsConfigurationPanel: React.FC = () => {
     excludes,
     scraperUserAgent,
     scraperCDPPath,
+    stashBoxEndpoint,
+    stashBoxAPIKey,
   });
 
   useEffect(() => {
@@ -114,6 +122,8 @@ export const SettingsConfigurationPanel: React.FC = () => {
       setExcludes(conf.general.excludes);
       setScraperUserAgent(conf.general.scraperUserAgent ?? undefined);
       setScraperCDPPath(conf.general.scraperCDPPath ?? undefined);
+      setStashBoxEndpoint(conf.general.stashBoxEndpoint ?? undefined);
+      setStashBoxAPIKey(conf.general.stashBoxAPIKey ?? undefined);
     }
   }, [data, error]);
 
@@ -541,6 +551,39 @@ export const SettingsConfigurationPanel: React.FC = () => {
             File path to the Chrome executable, or a remote address (starting
             with http:// or https://, for example
             http://localhost:9222/json/version) to a Chrome instance.
+          </Form.Text>
+        </Form.Group>
+      </Form.Group>
+
+      <hr />
+
+      <Form.Group>
+        <h4>Stash-box integration</h4>
+        <Form.Group id="stashBoxEndpoint">
+          <h6>Stash-box instance endpoint</h6>
+          <Form.Control
+            className="col col-sm-6 text-input"
+            defaultValue={stashBoxEndpoint}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setStashBoxEndpoint(e.currentTarget.value)
+            }
+          />
+          <Form.Text className="text-muted">
+            Endpoint of the stash-box instance that will be used for tagging.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group id="stashBoxAPIKey">
+          <h6>Stash-box instance API key</h6>
+          <Form.Control
+            className="col col-sm-6 text-input"
+            defaultValue={stashBoxAPIKey}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setStashBoxAPIKey(e.currentTarget.value)
+            }
+          />
+          <Form.Text className="text-muted">
+            API Key to the stash-box instance.
           </Form.Text>
         </Form.Group>
       </Form.Group>

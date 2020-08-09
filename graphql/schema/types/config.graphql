@@ -69,6 +69,10 @@ input ConfigGeneralInput {
   scraperUserAgent: String
   """Scraper CDP path. Path to chrome executable or remote address"""
   scraperCDPPath: String
+  """GraphQL endpoint for stash-box instance"""
+  stashBoxEndpoint: String
+  """API key used to access stash-box instance"""
+  stashBoxAPIKey: String
 }
 
 type ConfigGeneralResult {
@@ -118,6 +122,10 @@ type ConfigGeneralResult {
   scraperUserAgent: String
   """Scraper CDP path. Path to chrome executable or remote address"""
   scraperCDPPath: String
+  """GraphQL endpoint for stash-box instance"""
+  stashBoxEndpoint: String
+  """API key used to access stash-box instance"""
+  stashBoxAPIKey: String
 }
 
 input ConfigInterfaceInput {

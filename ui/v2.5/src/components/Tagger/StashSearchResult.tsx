@@ -355,9 +355,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         }
       }
 
-      const tagIDs: string[] = tagOperation === "merge"
-        ? stashScene?.tags?.map(t => t.id) ?? []
-        : [];
+      const tagIDs: string[] =
+        tagOperation === "merge"
+          ? stashScene?.tags?.map((t) => t.id) ?? []
+          : [];
       const tags = scene.tags ?? [];
       if (tags.length > 0) {
         const tagDict: Record<string, string> = (allTags?.allTagsSlim ?? [])
@@ -507,7 +508,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               {scene?.performers?.map((p) => p.performer.name).join(", ")}
             </div>
             {getDurationStatus(scene, stashScene.file?.duration)}
-            {getFingerprintStatus(scene, stashScene.checksum ?? stashScene.oshash ?? undefined)}
+            {getFingerprintStatus(
+              scene,
+              stashScene.checksum ?? stashScene.oshash ?? undefined
+            )}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Link, NavLink, useLocation, useHistory } from "react-router-dom";
 import { SessionUtils } from "src/utils";
 
+import { useConfiguration } from "src/core/StashService";
 import { Icon } from "src/components/Shared";
 import { Manual } from "./Help/Manual";
 
@@ -91,16 +92,12 @@ const menuItems: IMenuItem[] = [
     icon: "tag",
     message: messages.tags,
   },
-  {
-    href: "/tagger",
-    icon: "archive",
-    message: messages.sceneTagger,
-  },
 ];
 
 export const MainNavbar: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
+  const config = useConfiguration();
   const [expanded, setExpanded] = useState(false);
   const [showManual, setShowManual] = useState(false);
 
@@ -108,6 +105,19 @@ export const MainNavbar: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const navbarRef = useRef<any>();
   const intl = useIntl();
+
+  let activeMenuItems = [...menuItems];
+  // Show scene tagger option if endpoint/apikey are set
+  if (
+    config.data?.configuration.general.stashBoxEndpoint &&
+    config.data?.configuration.general.stashBoxAPIKey
+  ) {
+    activeMenuItems.push({
+      href: "/tagger",
+      icon: "archive",
+      message: messages.sceneTagger,
+    });
+  }
 
   const maybeCollapse = (event: Event) => {
     if (
@@ -232,7 +242,7 @@ export const MainNavbar: React.FC = () => {
         <Navbar.Toggle className="order-0" />
         <Navbar.Collapse className="order-3 order-md-1">
           <Nav className="mr-md-auto">
-            {menuItems.map((i) => (
+            {activeMenuItems.map((i) => (
               <Nav.Link eventKey={i.href} as="div" key={i.href}>
                 <LinkContainer activeClassName="active" exact to={i.href}>
                   <Button className="minimal w-100">

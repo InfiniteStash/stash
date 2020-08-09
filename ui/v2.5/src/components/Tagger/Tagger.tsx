@@ -17,6 +17,7 @@ import { FingerprintAlgorithm } from "src/definitions-box/globalTypes";
 import * as GQL from "src/core/generated-graphql";
 import { Pagination } from "src/components/List/Pagination";
 import { Icon, LoadingIndicator } from "src/components/Shared";
+import { useConfiguration } from "src/core/StashService";
 
 import {
   SearchSceneVariables,
@@ -109,8 +110,6 @@ interface ITaggerConfig {
   setCoverImage: boolean;
   setTags: boolean;
   tagOperation: string;
-  stashBoxEndpoint: string;
-  apiKey: string;
 }
 
 const parsePage = (searchQuery: string) => {
@@ -135,12 +134,9 @@ const parseTerm = (searchQuery: string) => {
   return parsedPage.term ?? "";
 };
 
-const stashBoxEndpoint = "https://stashdb.org/graphql";
-const apiKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhZTA1NmQ0ZC0wYjRmLTQzNmMtYmVhMy0zNjNjMTQ2MmZlNjMiLCJpYXQiOjE1ODYwNDAzOTUsInN1YiI6IkFQSUtleSJ9.5VENvrLtJXTGcdOhA0QC1SyPQ59padh1XiQRDQelzA4";
-
 export const Tagger: React.FC = () => {
   const history = useHistory();
+  const stashConfig = useConfiguration();
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [searchFilter, setSearchFilter] = useState(
@@ -171,9 +167,10 @@ export const Tagger: React.FC = () => {
     setCoverImage: true,
     setTags: false,
     tagOperation: "merge",
-    stashBoxEndpoint,
-    apiKey,
   });
+  const endpoint =
+    stashConfig.data?.configuration.general.stashBoxEndpoint ?? "";
+  const apiKey = stashConfig.data?.configuration.general.stashBoxAPIKey ?? "";
 
   useEffect(() => {
     localForage.getItem<ITaggerConfig>("tagger").then((data) => {
@@ -184,8 +181,6 @@ export const Tagger: React.FC = () => {
         setCoverImage: data?.setCoverImage ?? true,
         setTags: data?.setTags ?? false,
         tagOperation: data?.tagOperation ?? "merge",
-        stashBoxEndpoint: data?.stashBoxEndpoint ?? stashBoxEndpoint,
-        apiKey: data?.apiKey ?? apiKey,
       });
     });
   }, []);
@@ -202,7 +197,8 @@ export const Tagger: React.FC = () => {
     history.push(`?${newQuery}`);
   }, [page, searchFilter, history]);
 
-  const client = useStashBoxClient(config.stashBoxEndpoint, config.apiKey);
+  const client = useStashBoxClient(endpoint, apiKey);
+  const authSuccess = client && user?.me?.id;
   useEffect(() => {
     if (!client) setUser(undefined);
     else
@@ -311,7 +307,7 @@ export const Tagger: React.FC = () => {
                 res.data.findSceneByFingerprint.length > 0
                   ? res.data.findSceneByFingerprint[0]
                   : null;
-            })
+            });
         })
     );
 
@@ -407,7 +403,11 @@ export const Tagger: React.FC = () => {
           placeholder="Search text"
           defaultValue={searchFilter}
         />
-        <Button onClick={() => setShowConfig(!showConfig)} variant="link">
+        <Button
+          onClick={() => setShowConfig(!showConfig)}
+          variant="link"
+          disabled={!authSuccess}
+        >
           {showConfig ? "Hide" : "Show"} Configuration
         </Button>
         <div className="float-right mr-4 ml-auto">
@@ -420,7 +420,7 @@ export const Tagger: React.FC = () => {
         </div>
       </div>
 
-      <Collapse in={showConfig}>
+      <Collapse in={showConfig || !authSuccess}>
         <Card>
           <div className="row">
             <Form className="col-6">
@@ -506,30 +506,15 @@ export const Tagger: React.FC = () => {
               controlId="stash-box-endpoint"
               className="align-items-center col-4"
             >
-              <Form.Label>GraphQL Endpoint:</Form.Label>
-              <Form.Control
-                disabled
-                value={config.stashBoxEndpoint}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setConfig({
-                    ...config,
-                    stashBoxEndpoint: e.currentTarget.value,
-                  })
-                }
-              />
+              <Form.Label>Stash-box Endpoint:</Form.Label>
+              <Form.Control disabled value={endpoint} />
             </Form.Group>
             <Form.Group
               controlId="stash-box-apikey"
               className="align-items-center col-8"
             >
               <Form.Label>API key:</Form.Label>
-              <Form.Control
-                disabled
-                value={config.apiKey}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setConfig({ ...config, apiKey: e.currentTarget.value })
-                }
-              />
+              <Form.Control disabled value={apiKey} />
               <Form.Text>
                 This can be found on your user page of your chosen stash-box
                 instance.
@@ -544,8 +529,10 @@ export const Tagger: React.FC = () => {
               </h5>
             ) : (
               <h5 className="text-danger col">
-                Connection failed. Please check that the endpoint and API key
-                are correct.
+                Connection failed.{" "}
+                <a href="/settings?tab=configuration">
+                  Please check that the endpoint and API key are correct.
+                </a>
               </h5>
             )}
           </div>
