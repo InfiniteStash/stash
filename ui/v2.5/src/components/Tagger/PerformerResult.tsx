@@ -7,13 +7,14 @@ import * as GQL from "src/core/generated-graphql";
 import { ValidTypes } from "src/components/Shared/Select";
 import { SearchScene_searchScene_performers_performer as StashPerformer } from "src/definitions-box/SearchScene";
 import { sortImageURLs } from "./utils";
-import { Operation } from "./StashSearchResult";
 
 import PerformerModal from "./PerformerModal";
 
-interface IPerformerOperation {
-  type: Operation;
-  data: StashPerformer | string;
+export interface IPerformerOperation {
+  create?: StashPerformer;
+  update?: GQL.PerformerDataFragment | GQL.SlimPerformerDataFragment;
+  existing?: GQL.PerformerDataFragment;
+  skip?: boolean;
 }
 
 interface IPerformerResultProps {
@@ -33,9 +34,11 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
   const {
     data: stashData,
     loading: stashLoading,
-  } = GQL.useFindPerformerByStashIdQuery({
+  } = GQL.useFindPerformersQuery({
     variables: {
-      stash_id: performer.id,
+      performer_filter: {
+        stash_id: performer.id,
+      }
     },
   });
   const { loading } = GQL.useFindPerformersQuery({
@@ -45,35 +48,31 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
       },
     },
     onCompleted: (data) => {
-      const performerResult = data.findPerformers?.performers?.[0]?.id;
+      const performerResult = data.findPerformers?.performers?.[0];
       if (performerResult) {
-        setSelectedPerformer(performerResult);
+        setSelectedPerformer(performerResult.id);
         setSelectedSource("existing");
         setPerformer({
-          type: "Update",
-          data: performerResult,
+          update: performerResult
         });
       }
     },
   });
 
   useEffect(() => {
-    if (!stashData?.findPerformerByStashID) return;
+    if (!stashData?.findPerformers.performers.length) return;
 
     setPerformer({
-      type: "Existing",
-      data: stashData.findPerformerByStashID.id,
+      existing: stashData.findPerformers.performers[0]
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashData]);
 
-  const handlePerformerSelect = (items: ValidTypes[]) => {
-    if (items.length) {
+  const handlePerformerSelect = (performers: ValidTypes[]) => {
+    if (performers.length) {
       setSelectedSource("existing");
-      setSelectedPerformer(items[0].id);
+      setSelectedPerformer(performers[0].id);
       setPerformer({
-        type: "Update",
-        data: items[0].id,
+        update: performers[0] as GQL.SlimPerformerDataFragment,
       });
     } else {
       setSelectedSource(undefined);
@@ -95,8 +94,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
       : [];
     setSelectedSource("create");
     setPerformer({
-      type: "Create",
-      data: {
+      create: {
         ...performer,
         images: imageURLs,
       },
@@ -107,14 +105,13 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
   const handlePerformerSkip = () => {
     setSelectedSource("skip");
     setPerformer({
-      type: "Skip",
-      data: "",
+      skip: true
     });
   };
 
   if (stashLoading || loading) return <div>Loading performer</div>;
 
-  if (stashData?.findPerformerByStashID?.id) {
+  if (stashData?.findPerformers.performers?.[0].id) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
@@ -126,7 +123,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
           Matched:
         </span>
         <b className="col-3 text-right">
-          {stashData.findPerformerByStashID.name}
+          {stashData.findPerformers.performers[0].name}
         </b>
       </div>
     );

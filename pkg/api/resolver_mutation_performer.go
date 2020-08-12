@@ -92,13 +92,12 @@ func (r *mutationResolver) PerformerCreate(ctx context.Context, input models.Per
 	} else {
 		newPerformer.Favorite = sql.NullBool{Bool: false, Valid: true}
 	}
-	if input.StashID != nil {
-		newPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
-	}
 
 	// Start the transaction and save the performer
 	tx := database.DB.MustBeginTx(ctx, nil)
 	qb := models.NewPerformerQueryBuilder()
+	jqb := models.NewJoinsQueryBuilder()
+
 	performer, err := qb.Create(newPerformer, tx)
 	if err != nil {
 		_ = tx.Rollback()
@@ -112,6 +111,23 @@ func (r *mutationResolver) PerformerCreate(ctx context.Context, input models.Per
 			return nil, err
 		}
 	}
+
+	// Save the stash_ids
+  if input.StashIds != nil {
+    var stashIDJoins []models.PerformerStashID
+    for _, stashID := range input.StashIds {
+      instanceID , _ := strconv.Atoi(stashID.InstanceID)
+      newJoin := models.PerformerStashID {
+        InstanceID: instanceID,
+        StashID: stashID.StashID,
+        PerformerID:     performer.ID,
+      }
+      stashIDJoins = append(stashIDJoins, newJoin)
+    }
+    if err := jqb.UpdatePerformerStashIDs(performer.ID, stashIDJoins, tx); err != nil {
+      return nil, err
+    }
+  }
 
 	// Commit
 	if err := tx.Commit(); err != nil {
@@ -193,13 +209,12 @@ func (r *mutationResolver) PerformerUpdate(ctx context.Context, input models.Per
 	} else {
 		updatedPerformer.Favorite = sql.NullBool{Bool: false, Valid: true}
 	}
-	if input.StashID != nil {
-		updatedPerformer.StashID = sql.NullString{String: *input.StashID, Valid: true}
-	}
 
 	// Start the transaction and save the performer
 	tx := database.DB.MustBeginTx(ctx, nil)
 	qb := models.NewPerformerQueryBuilder()
+	jqb := models.NewJoinsQueryBuilder()
+
 	performer, err := qb.Update(updatedPerformer, tx)
 	if err != nil {
 		_ = tx.Rollback()
@@ -213,6 +228,23 @@ func (r *mutationResolver) PerformerUpdate(ctx context.Context, input models.Per
 			return nil, err
 		}
 	}
+
+	// Save the stash_ids
+  if input.StashIds != nil {
+    var stashIDJoins []models.PerformerStashID
+    for _, stashID := range input.StashIds {
+      instanceID , _ := strconv.Atoi(stashID.InstanceID)
+      newJoin := models.PerformerStashID {
+        InstanceID: instanceID,
+        StashID: stashID.StashID,
+        PerformerID:     performerID,
+      }
+      stashIDJoins = append(stashIDJoins, newJoin)
+    }
+    if err := jqb.UpdatePerformerStashIDs(performerID, stashIDJoins, tx); err != nil {
+      return nil, err
+    }
+  }
 
 	// Commit
 	if err := tx.Commit(); err != nil {

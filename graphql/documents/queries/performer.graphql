@@ -12,9 +12,3 @@ query FindPerformer($id: ID!) {
     ...PerformerData
   }
 }
-
-query FindPerformerByStashID($stash_id: String!) {
-  findPerformerByStashID(stash_id: $stash_id) {
-    ...PerformerData
-  }
-}

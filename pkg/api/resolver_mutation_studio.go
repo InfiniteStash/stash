@@ -44,13 +44,12 @@ func (r *mutationResolver) StudioCreate(ctx context.Context, input models.Studio
 		parentID, _ := strconv.ParseInt(*input.ParentID, 10, 64)
 		newStudio.ParentID = sql.NullInt64{Int64: parentID, Valid: true}
 	}
-	if input.StashID != nil {
-		newStudio.StashID = sql.NullString{String: *input.StashID, Valid: true}
-	}
 
 	// Start the transaction and save the studio
 	tx := database.DB.MustBeginTx(ctx, nil)
 	qb := models.NewStudioQueryBuilder()
+	jqb := models.NewJoinsQueryBuilder()
+
 	studio, err := qb.Create(newStudio, tx)
 	if err != nil {
 		_ = tx.Rollback()
@@ -64,6 +63,23 @@ func (r *mutationResolver) StudioCreate(ctx context.Context, input models.Studio
 			return nil, err
 		}
 	}
+
+	// Save the stash_ids
+  if input.StashIds != nil {
+    var stashIDJoins []models.StudioStashID
+    for _, stashID := range input.StashIds {
+      instanceID , _ := strconv.Atoi(stashID.InstanceID)
+      newJoin := models.StudioStashID {
+        InstanceID: instanceID,
+        StashID: stashID.StashID,
+        StudioID:     studio.ID,
+      }
+      stashIDJoins = append(stashIDJoins, newJoin)
+    }
+    if err := jqb.UpdateStudioStashIDs(studio.ID, stashIDJoins, tx); err != nil {
+      return nil, err
+    }
+  }
 
 	// Commit
 	if err := tx.Commit(); err != nil {
@@ -107,13 +123,11 @@ func (r *mutationResolver) StudioUpdate(ctx context.Context, input models.Studio
 		// parent studio must be nullable
 		updatedStudio.ParentID = &sql.NullInt64{Valid: false}
 	}
-	if input.StashID != nil {
-		updatedStudio.StashID = &sql.NullString{String: *input.StashID, Valid: true}
-	}
 
 	// Start the transaction and save the studio
 	tx := database.DB.MustBeginTx(ctx, nil)
 	qb := models.NewStudioQueryBuilder()
+	jqb := models.NewJoinsQueryBuilder()
 
 	if err := manager.ValidateModifyStudio(updatedStudio, tx); err != nil {
 		tx.Rollback()
@@ -133,6 +147,23 @@ func (r *mutationResolver) StudioUpdate(ctx context.Context, input models.Studio
 			return nil, err
 		}
 	}
+
+	// Save the stash_ids
+  if input.StashIds != nil {
+    var stashIDJoins []models.StudioStashID
+    for _, stashID := range input.StashIds {
+      instanceID , _ := strconv.Atoi(stashID.InstanceID)
+      newJoin := models.StudioStashID {
+        InstanceID: instanceID,
+        StashID: stashID.StashID,
+        StudioID:     studioID,
+      }
+      stashIDJoins = append(stashIDJoins, newJoin)
+    }
+    if err := jqb.UpdateStudioStashIDs(studioID, stashIDJoins, tx); err != nil {
+      return nil, err
+    }
+  }
 
 	// Commit
 	if err := tx.Commit(); err != nil {

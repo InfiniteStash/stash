@@ -34,7 +34,6 @@ type Scene {
   rating: Int
   o_counter: Int
   path: String!
-  stash_id: String
 
   file: SceneFileType! # Resolver
   paths: ScenePathsType! # Resolver
@@ -45,6 +44,7 @@ type Scene {
   movies: [SceneMovie!]!
   tags: [Tag!]!
   performers: [Performer!]!
+  stash_ids: [SceneStashID!]!
 }
 
 input SceneMovieInput {
@@ -65,9 +65,9 @@ input SceneUpdateInput {
   performer_ids: [ID!]
   movies: [SceneMovieInput!]
   tag_ids: [ID!]
-  stash_id: String
   """This should be base64 encoded"""
   cover_image: String
+  stash_ids: [StashIDInput!]
 }
 
 enum BulkUpdateIdMode {

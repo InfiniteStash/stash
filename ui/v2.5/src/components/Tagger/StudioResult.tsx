@@ -4,13 +4,15 @@ import cx from "classnames";
 
 import { SuccessIcon, Modal, StudioSelect } from "src/components/Shared";
 import * as GQL from "src/core/generated-graphql";
+import { ValidTypes } from "src/components/Shared/Select";
 import { SearchScene_searchScene_studio as StashStudio } from "src/definitions-box/SearchScene";
 import { getImage, getUrlByType } from "./utils";
-import { Operation } from "./StashSearchResult";
 
-interface IStudioOperation {
-  type: Operation;
-  data: StashStudio | string;
+export interface IStudioOperation {
+  create?: StashStudio;
+  update?: GQL.StudioDataFragment | GQL.SlimStudioDataFragment;
+  existing?: GQL.StudioDataFragment;
+  skip?: boolean;
 }
 
 interface IStudioResultProps {
@@ -27,19 +29,20 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
   const {
     data: stashData,
     loading: stashLoading,
-  } = GQL.useFindStudioByStashIdQuery({
+  } = GQL.useFindStudiosQuery({
     variables: {
-      stash_id: studio?.id ?? "",
+      studio_filter: {
+        stash_id: studio?.id ?? "",
+      }
     },
   });
 
-  const handleStudioSelect = (id?: string) => {
-    if (id) {
-      setSelectedStudio(id);
+  const handleStudioSelect = (studio: ValidTypes[]) => {
+    if (studio.length) {
       setSelectedSource("existing");
+      setSelectedStudio(studio[0].id);
       setStudio({
-        type: "Update",
-        data: id,
+        update: studio[0] as GQL.SlimStudioDataFragment,
       });
     } else {
       setSelectedSource(undefined);
@@ -53,26 +56,30 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
         q: `"${studio?.name ?? ""}"`,
       },
     },
-    onCompleted: (data) =>
-      handleStudioSelect(data.findStudios?.studios?.[0]?.id),
+    onCompleted: (data) => {
+      const studioResult = data.findStudios.studios[0];
+      if (studioResult) {
+        setSelectedSource("existing");
+        setSelectedStudio(studioResult.id);
+        setStudio({
+          update: studioResult
+        });
+      }}
   });
 
   useEffect(() => {
-    if (!stashData?.findStudioByStashID) return;
+    if (!stashData?.findStudios.studios.length) return;
 
     setStudio({
-      type: "Existing",
-      data: stashData.findStudioByStashID.id,
+      existing: stashData.findStudios.studios[0]
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashData]);
 
   const handleStudioCreate = () => {
     if (!studio) return;
     setSelectedSource("create");
     setStudio({
-      type: "Create",
-      data: studio,
+      create: studio,
     });
     showModal(false);
   };
@@ -80,14 +87,13 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
   const handleStudioSkip = () => {
     setSelectedSource("skip");
     setStudio({
-      type: "Skip",
-      data: "",
+      skip: true,
     });
   };
 
   if (loading || stashLoading) return <div>Loading studio</div>;
 
-  if (stashData?.findStudioByStashID) {
+  if (stashData?.findStudios.studios.length) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
@@ -98,7 +104,7 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
           <SuccessIcon className="mr-2" />
           Matched:
         </span>
-        <b className="col-3 text-right">{stashData.findStudioByStashID.name}</b>
+        <b className="col-3 text-right">{stashData.findStudios.studios[0].name}</b>
       </div>
     );
   }
@@ -147,9 +153,7 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
         </Button>
         <StudioSelect
           ids={selectedStudio ? [selectedStudio] : []}
-          onSelect={(items) =>
-            handleStudioSelect(items.length ? items[0].id : undefined)
-          }
+          onSelect={handleStudioSelect}
           className={cx("studio-select", {
             "studio-select-active": selectedSource === "existing",
           })}

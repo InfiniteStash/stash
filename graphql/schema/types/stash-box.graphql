@@ -1,0 +1,39 @@
+type StashBoxInstance {
+    id: ID!
+    endpoint: String!
+    api_key: String!
+}
+
+input StashBoxInstanceInput {
+    endpoint: String!
+    api_key: String!
+}
+
+input StashBoxInstanceUpdateInput {
+    id: ID!
+    endpoint: String!
+    api_key: String!
+}
+
+type SceneStashID {
+  scene_id: ID!
+  instance_id: ID!
+  stash_id: String!
+}
+
+type PerformerStashID {
+  performer_id: ID!
+  instance_id: ID!
+  stash_id: String!
+}
+
+type StudioStashID {
+  studio_id: ID!
+  instance_id: ID!
+  stash_id: String!
+}
+
+input StashIDInput {
+  instance_id: ID!
+  stash_id: String!
+}

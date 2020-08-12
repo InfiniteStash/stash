@@ -1,0 +1,15 @@
+mutation StashBoxInstanceCreate($input: StashBoxInstanceInput!) {
+  stashBoxInstanceCreate(input: $input) {
+    ...StashBoxInstanceData
+  }
+}
+
+mutation StashBoxInstanceUpdate($input: StashBoxInstanceUpdateInput!) {
+  stashBoxInstanceUpdate(input: $input) {
+    ...StashBoxInstanceData
+  }
+}
+
+mutation StashBoxInstanceDestroy($id: ID!) {
+  stashBoxInstanceDestroy(id: $id)
+}

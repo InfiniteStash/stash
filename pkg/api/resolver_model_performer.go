@@ -149,9 +149,7 @@ func (r *performerResolver) Scenes(ctx context.Context, obj *models.Performer) (
 	return qb.FindByPerformerID(obj.ID)
 }
 
-func (r *performerResolver) StashID(ctx context.Context, obj *models.Performer) (*string, error) {
-	if obj.StashID.Valid {
-		return &obj.StashID.String, nil
-	}
-	return nil, nil
+func (r *performerResolver) StashIds(ctx context.Context, obj *models.Performer) ([]*models.PerformerStashID, error) {
+	qb := models.NewJoinsQueryBuilder()
+	return qb.GetPerformerStashIDs(obj.ID)
 }

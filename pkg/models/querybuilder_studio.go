@@ -16,8 +16,8 @@ func NewStudioQueryBuilder() StudioQueryBuilder {
 func (qb *StudioQueryBuilder) Create(newStudio Studio, tx *sqlx.Tx) (*Studio, error) {
 	ensureTx(tx)
 	result, err := tx.NamedExec(
-		`INSERT INTO studios (checksum, name, url, parent_id, stash_id, created_at, updated_at)
-            VALUES (:checksum, :name, :url, :parent_id, :stash_id, :created_at, :updated_at)
+		`INSERT INTO studios (checksum, name, url, parent_id, created_at, updated_at)
+            VALUES (:checksum, :name, :url, :parent_id, :created_at, :updated_at)
 		`,
 		newStudio,
 	)
@@ -80,12 +80,6 @@ func (qb *StudioQueryBuilder) FindChildren(id int, tx *sqlx.Tx) ([]*Studio, erro
 	return qb.queryStudios(query, args, tx)
 }
 
-func (qb *StudioQueryBuilder) FindByStashID(id string, tx *sqlx.Tx) (*Studio, error) {
-	query := "SELECT * FROM studios WHERE stash_id = ? LIMIT 1"
-	args := []interface{}{id}
-	return qb.queryStudio(query, args, tx)
-}
-
 func (qb *StudioQueryBuilder) FindBySceneID(sceneID int) (*Studio, error) {
 	query := "SELECT studios.* FROM studios JOIN scenes ON studios.id = scenes.studio_id WHERE scenes.id = ? LIMIT 1"
 	args := []interface{}{sceneID}
@@ -146,10 +140,14 @@ func (qb *StudioQueryBuilder) Query(studioFilter *StudioFilterType, findFilter *
 		for _, studioID := range parentsFilter.Value {
 			args = append(args, studioID)
 		}
+  }
 
-		whereClause, havingClause := getMultiCriterionClause("studios", "parent_studio", "", "", "parent_id", parentsFilter)
-		whereClauses = appendClause(whereClauses, whereClause)
-		havingClauses = appendClause(havingClauses, havingClause)
+	if stashIDFilter := studioFilter.StashID; stashIDFilter != nil {
+		body += `
+			JOIN studio_stash_ids on studio_stash_ids.studio_id = studios.id
+		`
+		whereClauses = append(whereClauses, "studio_stash_ids.stash_id = ?")
+    args = append(args, stashIDFilter)
 	}
 
 	sortAndPagination := qb.getStudioSort(findFilter) + getPagination(findFilter)

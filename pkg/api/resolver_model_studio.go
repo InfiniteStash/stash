@@ -47,9 +47,7 @@ func (r *studioResolver) ChildStudios(ctx context.Context, obj *models.Studio) (
 	return qb.FindChildren(obj.ID, nil)
 }
 
-func (r *studioResolver) StashID(ctx context.Context, obj *models.Studio) (*string, error) {
-	if obj.StashID.Valid {
-		return &obj.StashID.String, nil
-	}
-	return nil, nil
+func (r *studioResolver) StashIds(ctx context.Context, obj *models.Studio) ([]*models.StudioStashID, error) {
+	qb := models.NewJoinsQueryBuilder()
+	return qb.GetStudioStashIDs(obj.ID)
 }

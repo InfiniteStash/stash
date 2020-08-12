@@ -587,12 +587,12 @@ export const Tagger: React.FC = () => {
                     </a>
                   </div>
                   <div className="col-6">
-                    {!taggedScenes[scene.id] && scene?.stash_id && (
+                    {!taggedScenes[scene.id] && scene?.stash_ids.length > 0 && (
                       <h5 className="text-right text-bold">
                         Scene already tagged
                       </h5>
                     )}
-                    {!taggedScenes[scene.id] && !scene?.stash_id && (
+                    {!taggedScenes[scene.id] && !scene?.stash_ids.length && (
                       <InputGroup>
                         <Form.Control
                           value={modifiedQuery || defaultQueryString}
@@ -644,7 +644,7 @@ export const Tagger: React.FC = () => {
                   <div>No results found.</div>
                 )}
                 {fingerprintMatch &&
-                  !scene?.stash_id &&
+                  !scene?.stash_ids.length &&
                   !taggedScenes[scene.id] && (
                     <StashSearchResult
                       showMales={config.showMales}

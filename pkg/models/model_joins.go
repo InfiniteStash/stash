@@ -22,3 +22,21 @@ type SceneMarkersTags struct {
 	SceneMarkerID int `db:"scene_marker_id" json:"scene_marker_id"`
 	TagID         int `db:"tag_id" json:"tag_id"`
 }
+
+type SceneStashID struct {
+	SceneID      int `db:"scene_id" json:"scene_id"`
+	InstanceID   int `db:"instance_id" json:"instance_id"`
+	StashID      string `db:"stash_id" json:"stash_id"`
+}
+
+type PerformerStashID struct {
+	PerformerID      int `db:"performer_id" json:"performer_id"`
+	InstanceID   int `db:"instance_id" json:"instance_id"`
+	StashID      string `db:"stash_id" json:"stash_id"`
+}
+
+type StudioStashID struct {
+	StudioID     int `db:"studio_id" json:"studio_id"`
+	InstanceID   int `db:"instance_id" json:"instance_id"`
+	StashID      string `db:"stash_id" json:"stash_id"`
+}

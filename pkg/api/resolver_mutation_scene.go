@@ -106,9 +106,6 @@ func (r *mutationResolver) sceneUpdate(input models.SceneUpdateInput, tx *sqlx.T
 		// studio must be nullable
 		updatedScene.StudioID = &sql.NullInt64{Valid: false}
 	}
-	if input.StashID != nil {
-		updatedScene.StashID = &sql.NullString{String: *input.StashID, Valid: true}
-	}
 
 	qb := models.NewSceneQueryBuilder()
 	jqb := models.NewJoinsQueryBuilder()
@@ -206,6 +203,23 @@ func (r *mutationResolver) sceneUpdate(input models.SceneUpdateInput, tx *sqlx.T
 			return nil, err
 		}
 	}
+
+	// Save the stash_ids
+  if input.StashIds != nil {
+    var stashIDJoins []models.SceneStashID
+    for _, stashID := range input.StashIds {
+      instanceID , _ := strconv.Atoi(stashID.InstanceID)
+      newJoin := models.SceneStashID {
+        InstanceID: instanceID,
+        StashID: stashID.StashID,
+        SceneID:     sceneID,
+      }
+      stashIDJoins = append(stashIDJoins, newJoin)
+    }
+    if err := jqb.UpdateSceneStashIDs(sceneID, stashIDJoins, tx); err != nil {
+      return nil, err
+    }
+  }
 
 	return scene, nil
 }

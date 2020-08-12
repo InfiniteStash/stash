@@ -9,7 +9,6 @@ fragment SlimSceneData on Scene {
   rating
   o_counter
   path
-  stash_id
 
   file {
     size
@@ -68,5 +67,10 @@ fragment SlimSceneData on Scene {
     name
     favorite
     image_path
+  }
+
+  stash_ids {
+    instance_id
+    stash_id
   }
 }
