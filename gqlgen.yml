@@ -44,8 +44,6 @@ models:
     model: github.com/stashapp/stash/pkg/models.ScrapedSceneTag
   SceneFileType:
     model: github.com/stashapp/stash/pkg/models.SceneFileType
-  StashBoxInstance:
-    model: github.com/stashapp/stash/pkg/models.StashBoxInstance
   SceneStashID:
     model: github.com/stashapp/stash/pkg/models.SceneStashID
   PerformerStashID:
