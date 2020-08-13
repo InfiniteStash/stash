@@ -1,6 +1,6 @@
 /* eslint-disable react/no-this-in-sfc */
 
-import { Table, Tabs, Tab } from "react-bootstrap";
+import { Button, Table, Tabs, Tab } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import cx from "classnames";
@@ -17,6 +17,7 @@ import { ImageUtils, TableUtils } from "src/utils";
 import {
   DetailsEditNavbar,
   Modal,
+  Icon,
   LoadingIndicator,
   StudioSelect,
 } from "src/components/Shared";
@@ -39,6 +40,7 @@ export const Studio: React.FC = () => {
   const [name, setName] = useState<string>();
   const [url, setUrl] = useState<string>();
   const [parentStudioId, setParentStudioId] = useState<string>();
+  const [stashIDs, setStashIDs] = useState<GQL.StashIdInput[]>([]);
 
   // Studio state
   const [studio, setStudio] = useState<Partial<GQL.StudioDataFragment>>({});
@@ -59,6 +61,7 @@ export const Studio: React.FC = () => {
     setName(state.name);
     setUrl(state.url ?? undefined);
     setParentStudioId(state?.parent_studio?.id ?? undefined);
+    setStashIDs(state.stash_ids ?? []);
   }
 
   function updateStudioData(studioData: Partial<GQL.StudioDataFragment>) {
@@ -66,6 +69,7 @@ export const Studio: React.FC = () => {
     updateStudioEditState(studioData);
     setImagePreview(studioData.image_path ?? undefined);
     setStudio(studioData);
+    setStashIDs(studioData.stash_ids ?? []);
   }
 
   // set up hotkeys
@@ -114,6 +118,10 @@ export const Studio: React.FC = () => {
       url,
       parent_id: parentStudioId,
       image,
+      stash_ids: stashIDs.map((s) => ({
+        stash_id: s.stash_id,
+        endpoint: s.endpoint,
+      })),
     };
 
     if (!isNew) {
@@ -152,6 +160,15 @@ export const Studio: React.FC = () => {
     }
   }
 
+  const removeStashID = (stashID: GQL.StashIdInput) => {
+    setStashIDs(
+      stashIDs.filter(
+        (s) =>
+          !(s.endpoint === stashID.endpoint && s.stash_id === stashID.stash_id)
+      )
+    );
+  };
+
   async function onDelete() {
     try {
       await deleteStudio();
@@ -181,7 +198,7 @@ export const Studio: React.FC = () => {
   }
 
   function renderStashIDs() {
-    if (!studio.stash_ids?.length) {
+    if (!stashIDs) {
       return;
     }
 
@@ -190,7 +207,7 @@ export const Studio: React.FC = () => {
         <td>StashIDs</td>
         <td>
           <ul className="pl-0">
-            {studio.stash_ids.map((stashID) => {
+            {stashIDs.map((stashID) => {
               const base = stashID.endpoint.match(/https?:\/\/.*?\//)?.[0];
               const link = base ? (
                 <a
@@ -205,6 +222,16 @@ export const Studio: React.FC = () => {
               );
               return (
                 <li key={stashID.stash_id} className="row no-gutters">
+                  {isEditing && (
+                    <Button
+                      variant="danger"
+                      className="mr-2 py-0"
+                      title="Delete StashID"
+                      onClick={() => removeStashID(stashID)}
+                    >
+                      <Icon icon="trash-alt" />
+                    </Button>
+                  )}
                   {link}
                 </li>
               );
@@ -273,7 +300,7 @@ export const Studio: React.FC = () => {
                 />
               </td>
             </tr>
-            {!isEditing && renderStashIDs()}
+            {renderStashIDs()}
           </tbody>
         </Table>
         <DetailsEditNavbar

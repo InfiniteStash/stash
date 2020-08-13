@@ -84,6 +84,7 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
   const [twitter, setTwitter] = useState<string>();
   const [instagram, setInstagram] = useState<string>();
   const [gender, setGender] = useState<string | undefined>(undefined);
+  const [stashIDs, setStashIDs] = useState<GQL.StashIdInput[]>([]);
 
   // Network state
   const [isLoading, setIsLoading] = useState(false);
@@ -123,6 +124,9 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
     setGender(
       genderToString((state as GQL.PerformerDataFragment).gender ?? undefined)
     );
+    if ((state as GQL.PerformerDataFragment).stash_ids !== undefined) {
+      setStashIDs((state as GQL.PerformerDataFragment).stash_ids);
+    }
   }
 
   function translateScrapedGender(scrapedGender?: string) {
@@ -290,6 +294,10 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
       instagram,
       image,
       gender: stringToGender(gender),
+      stash_ids: stashIDs.map((s) => ({
+        stash_id: s.stash_id,
+        endpoint: s.endpoint,
+      })),
     };
 
     if (!isNew) {
@@ -625,6 +633,15 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
     });
   }
 
+  const removeStashID = (stashID: GQL.StashIdInput) => {
+    setStashIDs(
+      stashIDs.filter(
+        (s) =>
+          !(s.endpoint === stashID.endpoint && s.stash_id === stashID.stash_id)
+      )
+    );
+  };
+
   function renderStashIDs() {
     if (!performer.stash_ids?.length) {
       return;
@@ -635,7 +652,7 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
         <td>StashIDs</td>
         <td>
           <ul className="pl-0">
-            {performer.stash_ids.map((stashID) => {
+            {stashIDs.map((stashID) => {
               const base = stashID.endpoint.match(/https?:\/\/.*?\//)?.[0];
               const link = base ? (
                 <a
@@ -650,6 +667,16 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
               );
               return (
                 <li key={stashID.stash_id} className="row no-gutters">
+                  {isEditing && (
+                    <Button
+                      variant="danger"
+                      className="mr-2 py-0"
+                      title="Delete StashID"
+                      onClick={() => removeStashID(stashID)}
+                    >
+                      <Icon icon="trash-alt" />
+                    </Button>
+                  )}
                   {link}
                 </li>
               );
@@ -757,7 +784,7 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
             isEditing: !!isEditing,
             onChange: setInstagram,
           })}
-          {!isEditing && renderStashIDs()}
+          {renderStashIDs()}
         </tbody>
       </Table>
 
