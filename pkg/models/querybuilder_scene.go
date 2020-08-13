@@ -413,7 +413,7 @@ func (qb *SceneQueryBuilder) Query(sceneFilter *SceneFilterType, findFilter *Fin
 			JOIN scene_stash_ids on scene_stash_ids.scene_id = scenes.id
 		`
 		query.addWhere("scene_stash_ids.stash_id = ?")
-    query.addArg(stashIDFilter)
+		query.addArg(stashIDFilter)
 	}
 
 	query.sortAndPagination = qb.getSceneSort(findFilter) + getPagination(findFilter)

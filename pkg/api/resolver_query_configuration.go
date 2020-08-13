@@ -66,7 +66,7 @@ func makeConfigGeneralResult() *models.ConfigGeneralResult {
 		Excludes:                  config.GetExcludes(),
 		ScraperUserAgent:          &scraperUserAgent,
 		ScraperCDPPath:            &scraperCDPPath,
-    StashBoxes:                config.GetStashBoxes(),
+		StashBoxes:                config.GetStashBoxes(),
 	}
 }
 

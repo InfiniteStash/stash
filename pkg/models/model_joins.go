@@ -24,19 +24,19 @@ type SceneMarkersTags struct {
 }
 
 type SceneStashID struct {
-	SceneID      int `db:"scene_id" json:"scene_id"`
-	Endpoint     string `db:"endpoint" json:"endpoint"`
-	StashID      string `db:"stash_id" json:"stash_id"`
+	SceneID  int    `db:"scene_id" json:"scene_id"`
+	Endpoint string `db:"endpoint" json:"endpoint"`
+	StashID  string `db:"stash_id" json:"stash_id"`
 }
 
 type PerformerStashID struct {
-	PerformerID      int `db:"performer_id" json:"performer_id"`
-	Endpoint     string `db:"endpoint" json:"endpoint"`
-	StashID      string `db:"stash_id" json:"stash_id"`
+	PerformerID int    `db:"performer_id" json:"performer_id"`
+	Endpoint    string `db:"endpoint" json:"endpoint"`
+	StashID     string `db:"stash_id" json:"stash_id"`
 }
 
 type StudioStashID struct {
-	StudioID     int `db:"studio_id" json:"studio_id"`
-	Endpoint     string `db:"endpoint" json:"endpoint"`
-	StashID      string `db:"stash_id" json:"stash_id"`
+	StudioID int    `db:"studio_id" json:"studio_id"`
+	Endpoint string `db:"endpoint" json:"endpoint"`
+	StashID  string `db:"stash_id" json:"stash_id"`
 }

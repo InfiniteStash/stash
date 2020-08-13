@@ -140,14 +140,14 @@ func (qb *StudioQueryBuilder) Query(studioFilter *StudioFilterType, findFilter *
 		for _, studioID := range parentsFilter.Value {
 			args = append(args, studioID)
 		}
-  }
+	}
 
 	if stashIDFilter := studioFilter.StashID; stashIDFilter != nil {
 		body += `
 			JOIN studio_stash_ids on studio_stash_ids.studio_id = studios.id
 		`
 		whereClauses = append(whereClauses, "studio_stash_ids.stash_id = ?")
-    args = append(args, stashIDFilter)
+		args = append(args, stashIDFilter)
 	}
 
 	sortAndPagination := qb.getStudioSort(findFilter) + getPagination(findFilter)

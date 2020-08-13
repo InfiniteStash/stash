@@ -369,47 +369,47 @@ func (qb *JoinsQueryBuilder) DestroyScenesMarkers(sceneID int, tx *sqlx.Tx) erro
 func (qb *JoinsQueryBuilder) CreateSceneStashIDs(newJoins []SceneStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 	for _, join := range newJoins {
-    _, err := tx.NamedExec(
-      `INSERT INTO scene_stash_ids (scene_id, endpoint, stash_id) VALUES (:scene_id, :endpoint, :stash_id)`,
-      join,
-    )
+		_, err := tx.NamedExec(
+			`INSERT INTO scene_stash_ids (scene_id, endpoint, stash_id) VALUES (:scene_id, :endpoint, :stash_id)`,
+			join,
+		)
 		if err != nil {
 			return err
 		}
 	}
-  return nil
+	return nil
 }
 
 func (qb *JoinsQueryBuilder) CreatePerformerStashIDs(newJoins []PerformerStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 	for _, join := range newJoins {
-    _, err := tx.NamedExec(
-      `INSERT INTO performer_stash_ids (performer_id, endpoint, stash_id) VALUES (:performer_id, :endpoint, :stash_id)`,
-      join,
-    )
+		_, err := tx.NamedExec(
+			`INSERT INTO performer_stash_ids (performer_id, endpoint, stash_id) VALUES (:performer_id, :endpoint, :stash_id)`,
+			join,
+		)
 		if err != nil {
 			return err
 		}
 	}
-  return nil
+	return nil
 }
 
 func (qb *JoinsQueryBuilder) CreateStudioStashIDs(newJoins []StudioStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 	for _, join := range newJoins {
-    _, err := tx.NamedExec(
-      `INSERT INTO studio_stash_ids (studio_id, endpoint, stash_id) VALUES (:studio_id, :endpoint, :stash_id)`,
-      join,
-    )
+		_, err := tx.NamedExec(
+			`INSERT INTO studio_stash_ids (studio_id, endpoint, stash_id) VALUES (:studio_id, :endpoint, :stash_id)`,
+			join,
+		)
 		if err != nil {
 			return err
 		}
 	}
-  return nil
+	return nil
 }
 
 func (qb *JoinsQueryBuilder) GetSceneStashIDs(sceneID int) ([]*SceneStashID, error) {
-  rows, err := database.DB.Queryx(`SELECT * from scene_stash_ids WHERE scene_id = ?`, sceneID)
+	rows, err := database.DB.Queryx(`SELECT * from scene_stash_ids WHERE scene_id = ?`, sceneID)
 
 	if err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -433,7 +433,7 @@ func (qb *JoinsQueryBuilder) GetSceneStashIDs(sceneID int) ([]*SceneStashID, err
 }
 
 func (qb *JoinsQueryBuilder) GetPerformerStashIDs(performerID int) ([]*PerformerStashID, error) {
-  rows, err := database.DB.Queryx(`SELECT * from performer_stash_ids WHERE performer_id = ?`, performerID)
+	rows, err := database.DB.Queryx(`SELECT * from performer_stash_ids WHERE performer_id = ?`, performerID)
 
 	if err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -457,7 +457,7 @@ func (qb *JoinsQueryBuilder) GetPerformerStashIDs(performerID int) ([]*Performer
 }
 
 func (qb *JoinsQueryBuilder) GetStudioStashIDs(studioID int) ([]*StudioStashID, error) {
-  rows, err := database.DB.Queryx(`SELECT * from studio_stash_ids WHERE studio_id = ?`, studioID)
+	rows, err := database.DB.Queryx(`SELECT * from studio_stash_ids WHERE studio_id = ?`, studioID)
 
 	if err != nil && err != sql.ErrNoRows {
 		return nil, err
@@ -483,7 +483,7 @@ func (qb *JoinsQueryBuilder) GetStudioStashIDs(studioID int) ([]*StudioStashID, 
 func (qb *JoinsQueryBuilder) UpdateSceneStashIDs(sceneID int, updatedJoins []SceneStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 
-  _, err := tx.Exec("DELETE FROM scene_stash_ids WHERE scene_id = ?", sceneID)
+	_, err := tx.Exec("DELETE FROM scene_stash_ids WHERE scene_id = ?", sceneID)
 	if err != nil {
 		return err
 	}
@@ -493,7 +493,7 @@ func (qb *JoinsQueryBuilder) UpdateSceneStashIDs(sceneID int, updatedJoins []Sce
 func (qb *JoinsQueryBuilder) UpdatePerformerStashIDs(performerID int, updatedJoins []PerformerStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 
-  _, err := tx.Exec("DELETE FROM performer_stash_ids WHERE performer_id = ?", performerID)
+	_, err := tx.Exec("DELETE FROM performer_stash_ids WHERE performer_id = ?", performerID)
 	if err != nil {
 		return err
 	}
@@ -503,7 +503,7 @@ func (qb *JoinsQueryBuilder) UpdatePerformerStashIDs(performerID int, updatedJoi
 func (qb *JoinsQueryBuilder) UpdateStudioStashIDs(studioID int, updatedJoins []StudioStashID, tx *sqlx.Tx) error {
 	ensureTx(tx)
 
-  _, err := tx.Exec("DELETE FROM studio_stash_ids WHERE studio_id = ?", studioID)
+	_, err := tx.Exec("DELETE FROM studio_stash_ids WHERE studio_id = ?", studioID)
 	if err != nil {
 		return err
 	}

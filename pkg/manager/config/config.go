@@ -202,9 +202,9 @@ func GetScraperCDPPath() string {
 }
 
 func GetStashBoxes() []*models.StashBox {
-  var boxes []*models.StashBox
-  _ = viper.UnmarshalKey(StashBoxes, &boxes)
-  return boxes
+	var boxes []*models.StashBox
+	_ = viper.UnmarshalKey(StashBoxes, &boxes)
+	return boxes
 }
 
 func GetDefaultPluginsPath() string {

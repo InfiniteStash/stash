@@ -205,20 +205,20 @@ func (r *mutationResolver) sceneUpdate(input models.SceneUpdateInput, tx *sqlx.T
 	}
 
 	// Save the stash_ids
-  if input.StashIds != nil {
-    var stashIDJoins []models.SceneStashID
-    for _, stashID := range input.StashIds {
-      newJoin := models.SceneStashID {
-        Endpoint: stashID.Endpoint,
-        StashID: stashID.StashID,
-        SceneID:     sceneID,
-      }
-      stashIDJoins = append(stashIDJoins, newJoin)
-    }
-    if err := jqb.UpdateSceneStashIDs(sceneID, stashIDJoins, tx); err != nil {
-      return nil, err
-    }
-  }
+	if input.StashIds != nil {
+		var stashIDJoins []models.SceneStashID
+		for _, stashID := range input.StashIds {
+			newJoin := models.SceneStashID{
+				Endpoint: stashID.Endpoint,
+				StashID:  stashID.StashID,
+				SceneID:  sceneID,
+			}
+			stashIDJoins = append(stashIDJoins, newJoin)
+		}
+		if err := jqb.UpdateSceneStashIDs(sceneID, stashIDJoins, tx); err != nil {
+			return nil, err
+		}
+	}
 
 	return scene, nil
 }

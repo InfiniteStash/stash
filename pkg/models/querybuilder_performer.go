@@ -188,7 +188,7 @@ func (qb *PerformerQueryBuilder) Query(performerFilter *PerformerFilterType, fin
 			JOIN performer_stash_ids on performer_stash_ids.performer_id = performers.id
 		`
 		query.addWhere("performer_stash_ids.stash_id = ?")
-    query.addArg(stashIDFilter)
+		query.addArg(stashIDFilter)
 	}
 
 	handleStringCriterion(tableName+".ethnicity", performerFilter.Ethnicity, &query)

@@ -65,20 +65,20 @@ func (r *mutationResolver) StudioCreate(ctx context.Context, input models.Studio
 	}
 
 	// Save the stash_ids
-  if input.StashIds != nil {
-    var stashIDJoins []models.StudioStashID
-    for _, stashID := range input.StashIds {
-      newJoin := models.StudioStashID {
-        Endpoint: stashID.Endpoint,
-        StashID: stashID.StashID,
-        StudioID:     studio.ID,
-      }
-      stashIDJoins = append(stashIDJoins, newJoin)
-    }
-    if err := jqb.UpdateStudioStashIDs(studio.ID, stashIDJoins, tx); err != nil {
-      return nil, err
-    }
-  }
+	if input.StashIds != nil {
+		var stashIDJoins []models.StudioStashID
+		for _, stashID := range input.StashIds {
+			newJoin := models.StudioStashID{
+				Endpoint: stashID.Endpoint,
+				StashID:  stashID.StashID,
+				StudioID: studio.ID,
+			}
+			stashIDJoins = append(stashIDJoins, newJoin)
+		}
+		if err := jqb.UpdateStudioStashIDs(studio.ID, stashIDJoins, tx); err != nil {
+			return nil, err
+		}
+	}
 
 	// Commit
 	if err := tx.Commit(); err != nil {
@@ -148,20 +148,20 @@ func (r *mutationResolver) StudioUpdate(ctx context.Context, input models.Studio
 	}
 
 	// Save the stash_ids
-  if input.StashIds != nil {
-    var stashIDJoins []models.StudioStashID
-    for _, stashID := range input.StashIds {
-      newJoin := models.StudioStashID {
-        Endpoint: stashID.Endpoint,
-        StashID: stashID.StashID,
-        StudioID:     studioID,
-      }
-      stashIDJoins = append(stashIDJoins, newJoin)
-    }
-    if err := jqb.UpdateStudioStashIDs(studioID, stashIDJoins, tx); err != nil {
-      return nil, err
-    }
-  }
+	if input.StashIds != nil {
+		var stashIDJoins []models.StudioStashID
+		for _, stashID := range input.StashIds {
+			newJoin := models.StudioStashID{
+				Endpoint: stashID.Endpoint,
+				StashID:  stashID.StashID,
+				StudioID: studioID,
+			}
+			stashIDJoins = append(stashIDJoins, newJoin)
+		}
+		if err := jqb.UpdateStudioStashIDs(studioID, stashIDJoins, tx); err != nil {
+			return nil, err
+		}
+	}
 
 	// Commit
 	if err := tx.Commit(); err != nil {

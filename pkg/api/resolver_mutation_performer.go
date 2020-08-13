@@ -113,20 +113,20 @@ func (r *mutationResolver) PerformerCreate(ctx context.Context, input models.Per
 	}
 
 	// Save the stash_ids
-  if input.StashIds != nil {
-    var stashIDJoins []models.PerformerStashID
-    for _, stashID := range input.StashIds {
-      newJoin := models.PerformerStashID {
-        Endpoint: stashID.Endpoint,
-        StashID: stashID.StashID,
-        PerformerID:     performer.ID,
-      }
-      stashIDJoins = append(stashIDJoins, newJoin)
-    }
-    if err := jqb.UpdatePerformerStashIDs(performer.ID, stashIDJoins, tx); err != nil {
-      return nil, err
-    }
-  }
+	if input.StashIds != nil {
+		var stashIDJoins []models.PerformerStashID
+		for _, stashID := range input.StashIds {
+			newJoin := models.PerformerStashID{
+				Endpoint:    stashID.Endpoint,
+				StashID:     stashID.StashID,
+				PerformerID: performer.ID,
+			}
+			stashIDJoins = append(stashIDJoins, newJoin)
+		}
+		if err := jqb.UpdatePerformerStashIDs(performer.ID, stashIDJoins, tx); err != nil {
+			return nil, err
+		}
+	}
 
 	// Commit
 	if err := tx.Commit(); err != nil {
@@ -229,20 +229,20 @@ func (r *mutationResolver) PerformerUpdate(ctx context.Context, input models.Per
 	}
 
 	// Save the stash_ids
-  if input.StashIds != nil {
-    var stashIDJoins []models.PerformerStashID
-    for _, stashID := range input.StashIds {
-      newJoin := models.PerformerStashID {
-        Endpoint: stashID.Endpoint,
-        StashID: stashID.StashID,
-        PerformerID:     performerID,
-      }
-      stashIDJoins = append(stashIDJoins, newJoin)
-    }
-    if err := jqb.UpdatePerformerStashIDs(performerID, stashIDJoins, tx); err != nil {
-      return nil, err
-    }
-  }
+	if input.StashIds != nil {
+		var stashIDJoins []models.PerformerStashID
+		for _, stashID := range input.StashIds {
+			newJoin := models.PerformerStashID{
+				Endpoint:    stashID.Endpoint,
+				StashID:     stashID.StashID,
+				PerformerID: performerID,
+			}
+			stashIDJoins = append(stashIDJoins, newJoin)
+		}
+		if err := jqb.UpdatePerformerStashIDs(performerID, stashIDJoins, tx); err != nil {
+			return nil, err
+		}
+	}
 
 	// Commit
 	if err := tx.Commit(); err != nil {
