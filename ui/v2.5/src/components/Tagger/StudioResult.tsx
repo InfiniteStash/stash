@@ -57,14 +57,15 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
         update: result,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashIDData, searchData]);
 
-  const handleStudioSelect = (studio: ValidTypes[]) => {
-    if (studio.length) {
+  const handleStudioSelect = (newStudio: ValidTypes[]) => {
+    if (newStudio.length) {
       setSelectedSource("existing");
-      setSelectedStudio(studio[0].id);
+      setSelectedStudio(newStudio[0].id);
       setStudio({
-        update: studio[0] as GQL.SlimStudioDataFragment,
+        update: newStudio[0] as GQL.SlimStudioDataFragment,
       });
     } else {
       setSelectedSource(undefined);

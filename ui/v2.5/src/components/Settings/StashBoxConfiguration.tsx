@@ -158,16 +158,12 @@ export const StashBoxConfiguration: React.FC<IStashBoxConfigurationProps> = ({
             onSave={handleSave}
             onCancel={handleCancel}
             onDelete={handleDelete}
-            key={`instance-${index}`}
+            key={instance.endpoint}
             id={index}
           />
         ))}
         {showCreate && (
-          <Instance
-            onSave={handleSave}
-            onCancel={handleCancel}
-            isCreate={true}
-          />
+          <Instance onSave={handleSave} onCancel={handleCancel} isCreate />
         )}
       </div>
       <Button

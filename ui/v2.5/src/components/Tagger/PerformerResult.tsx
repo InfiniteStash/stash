@@ -64,6 +64,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
     setPerformer({
       existing: stashData.findPerformers.performers[0],
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stashData]);
 
   const handlePerformerSelect = (performers: ValidTypes[]) => {
