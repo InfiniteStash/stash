@@ -8,22 +8,19 @@ export const useUpdatePerformerStashID = () => {
 
   const updatePerformerHandler = (
     performerID: string,
-    stashID: string,
-    endpoint: string
+    stash_ids: GQL.StashIdInput[]
   ) =>
     updatePerformer({
       variables: {
         id: performerID,
-        stash_ids: [
-          {
-            // TODO: WIll wipe existing stash_ids
-            endpoint,
-            stash_id: stashID,
-          },
-        ],
+        stash_ids: stash_ids.map((s) => ({
+          stash_id: s.stash_id,
+          endpoint: s.endpoint,
+        })),
       },
       update: (store, updatedPerformer) => {
         if (!updatedPerformer.data?.performerUpdate) return;
+        const newStashID = stash_ids[stash_ids.length - 1].stash_id;
 
         store.writeQuery<
           GQL.FindPerformersQuery,
@@ -32,7 +29,7 @@ export const useUpdatePerformerStashID = () => {
           query: GQL.FindPerformersDocument,
           variables: {
             performer_filter: {
-              stash_id: stashID,
+              stash_id: newStashID,
             },
           },
           data: {
@@ -114,26 +111,24 @@ export const useUpdateStudioStashID = () => {
     onError: (errors) => errors,
   });
 
-  const handleUpdate = (stashID: string, endpoint: string, studioID: string) =>
+  const handleUpdate = (studioID: string, stash_ids: GQL.StashIdInput[]) =>
     updateStudio({
       variables: {
         id: studioID,
-        stash_ids: [
-          {
-            // TODO: Will wipe existing stashids
-            endpoint,
-            stash_id: stashID,
-          },
-        ],
+        stash_ids: stash_ids.map((s) => ({
+          stash_id: s.stash_id,
+          endpoint: s.endpoint,
+        })),
       },
       update: (store, result) => {
         if (!result.data?.studioUpdate) return;
+        const newStashID = stash_ids[stash_ids.length - 1].stash_id;
 
         store.writeQuery<GQL.FindStudiosQuery, GQL.FindStudiosQueryVariables>({
           query: GQL.FindStudiosDocument,
           variables: {
             studio_filter: {
-              stash_id: stashID,
+              stash_id: newStashID,
             },
           },
           data: {

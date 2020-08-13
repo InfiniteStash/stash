@@ -169,11 +169,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
     if (studio.update) {
       setSaveState("Saving studio stashID");
-      const res = await updateStudioStashID(
-        scene.studio!.id,
-        endpoint,
-        studio.update.id
-      );
+      const res = await updateStudioStashID(studio.update.id, [
+        ...studio.update.stash_ids,
+        { stash_id: scene.studio!.id, endpoint },
+      ]);
       if (!res?.data?.studioUpdate) {
         setError(`Failed to save stashID to studio "${studio.update.name}"`);
         return setSaveState("");
@@ -244,7 +243,13 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         }
 
         if (performer.update) {
-          await updatePerformerStashID(performerData.id, stashID, endpoint);
+          const stashIDs = (performerData as
+            | GQL.SlimPerformerDataFragment
+            | GQL.PerformerDataFragment).stash_ids;
+          await updatePerformerStashID(performerData.id, [
+            ...stashIDs,
+            { stash_id: stashID, endpoint },
+          ]);
         }
 
         return performerData.id;
