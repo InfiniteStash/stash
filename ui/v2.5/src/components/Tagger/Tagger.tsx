@@ -59,7 +59,7 @@ function prepareQueryString(
   scene: Partial<GQL.Scene>,
   paths: string[],
   mode: ParseMode,
-  blacklist: string[]
+  blacklist: string[],
 ) {
   if ((mode === "auto" && scene.date && scene.studio) || mode === "metadata") {
     let str = [
@@ -110,6 +110,7 @@ interface ITaggerConfig {
   setCoverImage: boolean;
   setTags: boolean;
   tagOperation: string;
+  selectedEndpoint?: string;
 }
 
 const parsePage = (searchQuery: string) => {
@@ -160,6 +161,8 @@ export const Tagger: React.FC = () => {
   const [loadingFingerprints, setLoadingFingerprints] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
   const [user, setUser] = useState<Me | null | undefined>();
+  const { data: instanceData } = GQL.useListStashBoxInstancesQuery();
+  const [credentials, setCredentials] = useState({ endpoint: "", api_key: "" });
   const authFailure = user === null;
 
   const [config, setConfig] = useState<ITaggerConfig>({
@@ -170,9 +173,6 @@ export const Tagger: React.FC = () => {
     setTags: false,
     tagOperation: "merge",
   });
-  const endpoint =
-    stashConfig.data?.configuration.general.stashBoxEndpoint ?? "";
-  const apiKey = stashConfig.data?.configuration.general.stashBoxAPIKey ?? "";
 
   useEffect(() => {
     localForage.getItem<ITaggerConfig>("tagger").then((data) => {
@@ -183,6 +183,7 @@ export const Tagger: React.FC = () => {
         setCoverImage: data?.setCoverImage ?? true,
         setTags: data?.setTags ?? false,
         tagOperation: data?.tagOperation ?? "merge",
+        selectedEndpoint: data?.selectedEndpoint,
       });
     });
   }, []);
@@ -199,7 +200,29 @@ export const Tagger: React.FC = () => {
     history.push(`?${newQuery}`);
   }, [page, searchFilter, history]);
 
-  const client = useStashBoxClient(endpoint, apiKey);
+  useEffect(() => {
+    if (!instanceData?.listStashBoxInstances) return;
+    const selectedEndpoint = instanceData?.listStashBoxInstances.find(i => i.endpoint === config.selectedEndpoint);
+    if (selectedEndpoint) {
+      setCredentials(selectedEndpoint);
+    } else {
+      setCredentials(instanceData.listStashBoxInstances[0]);
+    }
+  }, [instanceData, config]);
+
+  const handleInstanceSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedEndpoint = e.currentTarget.value;
+    const creds = instanceData?.listStashBoxInstances.find((i) => i.endpoint === selectedEndpoint);
+    if (creds) {
+      setCredentials(creds);
+      setConfig({
+        ...config,
+        selectedEndpoint
+      });
+    }
+  }
+
+  const client = useStashBoxClient(credentials?.endpoint, credentials?.api_key);
   useEffect(() => {
     if (client)
       client
@@ -453,6 +476,7 @@ export const Tagger: React.FC = () => {
               <Form.Group className="align-items-center">
                 <div className="d-flex align-items-center">
                   <Form.Check
+                    id="tag-mode"
                     label="Set tags"
                     className="mr-4"
                     checked={config.setTags}
@@ -461,6 +485,7 @@ export const Tagger: React.FC = () => {
                     }
                   />
                   <Form.Control
+                    id="tag-operation"
                     className="col-2"
                     as="select"
                     value={config.tagOperation}
@@ -506,19 +531,12 @@ export const Tagger: React.FC = () => {
               controlId="stash-box-endpoint"
               className="align-items-center col-4"
             >
-              <Form.Label>Stash-box Endpoint:</Form.Label>
-              <Form.Control disabled value={endpoint} />
-            </Form.Group>
-            <Form.Group
-              controlId="stash-box-apikey"
-              className="align-items-center col-8"
-            >
-              <Form.Label>API key:</Form.Label>
-              <Form.Control disabled value={apiKey} />
-              <Form.Text>
-                This can be found on your user page of your chosen stash-box
-                instance.
-              </Form.Text>
+              <Form.Label>Active stash-box instance:</Form.Label>
+              <Form.Control as="select" value={credentials?.endpoint} onChange={handleInstanceSelect}>
+                { instanceData?.listStashBoxInstances.map(i => (
+                  <option value={i.endpoint} key={i.endpoint}>{i.endpoint}</option>
+                ))}
+              </Form.Control>
             </Form.Group>
           </div>
           <div className="row">
@@ -550,7 +568,7 @@ export const Tagger: React.FC = () => {
           <div className="col-4 text-right">
             <Button
               onClick={handleFingerprintSearch}
-              disabled={canFingerprintSearch() && !loadingFingerprints}
+              disabled={authFailure || (canFingerprintSearch() && !loadingFingerprints)}
             >
               Search Fingerprints
               {loadingFingerprints && (
@@ -614,7 +632,7 @@ export const Tagger: React.FC = () => {
                         />
                         <InputGroup.Append>
                           <Button
-                            disabled={loading}
+                            disabled={authFailure || loading}
                             onClick={() =>
                               doBoxSearch(
                                 scene.id,
@@ -644,6 +662,7 @@ export const Tagger: React.FC = () => {
                   <div>No results found.</div>
                 )}
                 {fingerprintMatch &&
+                  credentials.endpoint &&
                   !scene?.stash_ids.length &&
                   !taggedScenes[scene.id] && (
                     <StashSearchResult
@@ -656,6 +675,7 @@ export const Tagger: React.FC = () => {
                       setCoverImage={config.setCoverImage}
                       tagOperation={config.tagOperation}
                       client={client}
+                      endpoint={credentials.endpoint}
                     />
                   )}
                 {searchResults[scene.id] &&
@@ -688,6 +708,7 @@ export const Tagger: React.FC = () => {
                         })
                         .map(
                           (sceneResult, i) =>
+                            credentials.endpoint &&
                             sceneResult && (
                               <StashSearchResult
                                 key={sceneResult.id}
@@ -707,6 +728,7 @@ export const Tagger: React.FC = () => {
                                 tagOperation={config.tagOperation}
                                 setScene={handleTaggedScene}
                                 client={client}
+                                endpoint={credentials.endpoint}
                               />
                             )
                         )}

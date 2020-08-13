@@ -27,8 +27,8 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
     "create" | "existing" | "skip" | undefined
   >();
   const {
-    data: stashData,
-    loading: stashLoading,
+    data: stashIDData,
+    loading: loadingStashID,
   } = GQL.useFindStudiosQuery({
     variables: {
       studio_filter: {
@@ -36,6 +36,31 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
       }
     },
   });
+  const {
+    data: searchData,
+    loading: loadingSearch
+  } = GQL.useFindStudiosQuery({
+    variables: {
+      filter: {
+        q: `"${studio?.name ?? ""}"`,
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (stashIDData?.findStudios.studios?.[0]) {
+      setStudio({
+        existing: stashIDData.findStudios.studios[0]
+      });
+    } else if (searchData?.findStudios.studios?.[0]) {
+      const result = searchData.findStudios.studios[0];
+      setSelectedSource("existing");
+      setSelectedStudio(result.id);
+      setStudio({
+        update: result
+      });
+    }
+  }, [stashIDData, searchData]);
 
   const handleStudioSelect = (studio: ValidTypes[]) => {
     if (studio.length) {
@@ -49,31 +74,6 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
       setSelectedStudio(null);
     }
   };
-
-  const { loading } = GQL.useFindStudiosQuery({
-    variables: {
-      filter: {
-        q: `"${studio?.name ?? ""}"`,
-      },
-    },
-    onCompleted: (data) => {
-      const studioResult = data.findStudios.studios[0];
-      if (studioResult) {
-        setSelectedSource("existing");
-        setSelectedStudio(studioResult.id);
-        setStudio({
-          update: studioResult
-        });
-      }}
-  });
-
-  useEffect(() => {
-    if (!stashData?.findStudios.studios.length) return;
-
-    setStudio({
-      existing: stashData.findStudios.studios[0]
-    });
-  }, [stashData]);
 
   const handleStudioCreate = () => {
     if (!studio) return;
@@ -91,9 +91,9 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
     });
   };
 
-  if (loading || stashLoading) return <div>Loading studio</div>;
+  if (loadingSearch || loadingStashID) return <div>Loading studio</div>;
 
-  if (stashData?.findStudios.studios.length) {
+  if (stashIDData?.findStudios.studios.length) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
@@ -104,7 +104,7 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
           <SuccessIcon className="mr-2" />
           Matched:
         </span>
-        <b className="col-3 text-right">{stashData.findStudios.studios[0].name}</b>
+        <b className="col-3 text-right">{stashIDData.findStudios.studios[0].name}</b>
       </div>
     );
   }

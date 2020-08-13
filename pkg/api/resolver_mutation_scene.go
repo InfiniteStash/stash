@@ -208,9 +208,8 @@ func (r *mutationResolver) sceneUpdate(input models.SceneUpdateInput, tx *sqlx.T
   if input.StashIds != nil {
     var stashIDJoins []models.SceneStashID
     for _, stashID := range input.StashIds {
-      instanceID , _ := strconv.Atoi(stashID.InstanceID)
       newJoin := models.SceneStashID {
-        InstanceID: instanceID,
+        Endpoint: stashID.Endpoint,
         StashID: stashID.StashID,
         SceneID:     sceneID,
       }

@@ -58,7 +58,7 @@ fragment SceneData on Scene {
   }
 
   stash_ids {
-    instance_id
+    endpoint
     stash_id
   }
 }

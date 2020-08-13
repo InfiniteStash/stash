@@ -25,18 +25,18 @@ type SceneMarkersTags struct {
 
 type SceneStashID struct {
 	SceneID      int `db:"scene_id" json:"scene_id"`
-	InstanceID   int `db:"instance_id" json:"instance_id"`
+	Endpoint     string `db:"endpoint" json:"endpoint"`
 	StashID      string `db:"stash_id" json:"stash_id"`
 }
 
 type PerformerStashID struct {
 	PerformerID      int `db:"performer_id" json:"performer_id"`
-	InstanceID   int `db:"instance_id" json:"instance_id"`
+	Endpoint     string `db:"endpoint" json:"endpoint"`
 	StashID      string `db:"stash_id" json:"stash_id"`
 }
 
 type StudioStashID struct {
 	StudioID     int `db:"studio_id" json:"studio_id"`
-	InstanceID   int `db:"instance_id" json:"instance_id"`
+	Endpoint     string `db:"endpoint" json:"endpoint"`
 	StashID      string `db:"stash_id" json:"stash_id"`
 }

@@ -5,6 +5,7 @@ import { useConfiguration, useConfigureGeneral } from "src/core/StashService";
 import { useToast } from "src/hooks";
 import { Icon, LoadingIndicator } from "src/components/Shared";
 import { FolderSelect } from "src/components/Shared/FolderSelect/FolderSelect";
+import StashBoxConfiguration from "./StashBoxConfiguration";
 
 export const SettingsConfigurationPanel: React.FC = () => {
   const Toast = useToast();
@@ -556,38 +557,7 @@ export const SettingsConfigurationPanel: React.FC = () => {
       </Form.Group>
 
       <hr />
-
-      <Form.Group>
-        <h4>Stash-box integration</h4>
-        <Form.Group id="stashBoxEndpoint">
-          <h6>Stash-box instance endpoint</h6>
-          <Form.Control
-            className="col col-sm-6 text-input"
-            defaultValue={stashBoxEndpoint}
-            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setStashBoxEndpoint(e.currentTarget.value)
-            }
-          />
-          <Form.Text className="text-muted">
-            Endpoint of the stash-box instance that will be used for tagging.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group id="stashBoxAPIKey">
-          <h6>Stash-box instance API key</h6>
-          <Form.Control
-            className="col col-sm-6 text-input"
-            defaultValue={stashBoxAPIKey}
-            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setStashBoxAPIKey(e.currentTarget.value)
-            }
-          />
-          <Form.Text className="text-muted">
-            API Key to the stash-box instance.
-          </Form.Text>
-        </Form.Group>
-      </Form.Group>
-
+      <StashBoxConfiguration />
       <hr />
 
       <Form.Group>

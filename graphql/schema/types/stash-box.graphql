@@ -17,23 +17,23 @@ input StashBoxInstanceUpdateInput {
 
 type SceneStashID {
   scene_id: ID!
-  instance_id: ID!
+  endpoint: String!
   stash_id: String!
 }
 
 type PerformerStashID {
   performer_id: ID!
-  instance_id: ID!
+  endpoint: String!
   stash_id: String!
 }
 
 type StudioStashID {
   studio_id: ID!
-  instance_id: ID!
+  endpoint: String!
   stash_id: String!
 }
 
 input StashIDInput {
-  instance_id: ID!
+  endpoint: String!
   stash_id: String!
 }

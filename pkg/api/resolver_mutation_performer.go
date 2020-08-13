@@ -116,9 +116,8 @@ func (r *mutationResolver) PerformerCreate(ctx context.Context, input models.Per
   if input.StashIds != nil {
     var stashIDJoins []models.PerformerStashID
     for _, stashID := range input.StashIds {
-      instanceID , _ := strconv.Atoi(stashID.InstanceID)
       newJoin := models.PerformerStashID {
-        InstanceID: instanceID,
+        Endpoint: stashID.Endpoint,
         StashID: stashID.StashID,
         PerformerID:     performer.ID,
       }
@@ -233,9 +232,8 @@ func (r *mutationResolver) PerformerUpdate(ctx context.Context, input models.Per
   if input.StashIds != nil {
     var stashIDJoins []models.PerformerStashID
     for _, stashID := range input.StashIds {
-      instanceID , _ := strconv.Atoi(stashID.InstanceID)
       newJoin := models.PerformerStashID {
-        InstanceID: instanceID,
+        Endpoint: stashID.Endpoint,
         StashID: stashID.StashID,
         PerformerID:     performerID,
       }

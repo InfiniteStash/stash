@@ -370,7 +370,7 @@ func (qb *JoinsQueryBuilder) CreateSceneStashIDs(newJoins []SceneStashID, tx *sq
 	ensureTx(tx)
 	for _, join := range newJoins {
     _, err := tx.NamedExec(
-      `INSERT INTO scene_stash_ids (scene_id, instance_id, stash_id) VALUES (:scene_id, :instance_id, :stash_id)`,
+      `INSERT INTO scene_stash_ids (scene_id, endpoint, stash_id) VALUES (:scene_id, :endpoint, :stash_id)`,
       join,
     )
 		if err != nil {
@@ -384,7 +384,7 @@ func (qb *JoinsQueryBuilder) CreatePerformerStashIDs(newJoins []PerformerStashID
 	ensureTx(tx)
 	for _, join := range newJoins {
     _, err := tx.NamedExec(
-      `INSERT INTO performer_stash_ids (performer_id, instance_id, stash_id) VALUES (:performer_id, :instance_id, :stash_id)`,
+      `INSERT INTO performer_stash_ids (performer_id, endpoint, stash_id) VALUES (:performer_id, :endpoint, :stash_id)`,
       join,
     )
 		if err != nil {
@@ -398,7 +398,7 @@ func (qb *JoinsQueryBuilder) CreateStudioStashIDs(newJoins []StudioStashID, tx *
 	ensureTx(tx)
 	for _, join := range newJoins {
     _, err := tx.NamedExec(
-      `INSERT INTO studio_stash_ids (studio_id, instance_id, stash_id) VALUES (:studio_id, :instance_id, :stash_id)`,
+      `INSERT INTO studio_stash_ids (studio_id, endpoint, stash_id) VALUES (:studio_id, :endpoint, :stash_id)`,
       join,
     )
 		if err != nil {

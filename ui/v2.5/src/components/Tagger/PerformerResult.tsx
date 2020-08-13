@@ -111,7 +111,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
 
   if (stashLoading || loading) return <div>Loading performer</div>;
 
-  if (stashData?.findPerformers.performers?.[0].id) {
+  if (stashData?.findPerformers.performers?.[0]?.id) {
     return (
       <div className="row no-gutters my-2">
         <div className="entity-name">
