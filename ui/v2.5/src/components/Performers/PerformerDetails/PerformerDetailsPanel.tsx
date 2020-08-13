@@ -615,6 +615,33 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
     });
   }
 
+  function renderStashIDs() {
+    if (!performer.stash_ids?.length) {
+      return;
+    }
+
+    return (
+      <tr>
+        <td>StashIDs</td>
+        <td>
+          <ul className="pl-0">
+            { performer.stash_ids.map(stashID => {
+              const base = stashID.endpoint.match(/https?:\/\/.*?\//)?.[0];
+              const link = base
+                ? <a href={`${base}performers/${stashID.stash_id}`} target="_blank" rel="noopener noreferrer">{stashID.stash_id}</a>
+                : stashID.stash_id;
+              return (
+                <li key={stashID.stash_id} className="row no-gutters">
+                  {link}
+                </li>
+              );
+            })}
+          </ul>
+        </td>
+      </tr>
+    );
+  }
+
   const formatHeight = () => {
     if (isEditing) {
       return height;
@@ -712,6 +739,7 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
             isEditing: !!isEditing,
             onChange: setInstagram,
           })}
+          { !isEditing && renderStashIDs() }
         </tbody>
       </Table>
 
