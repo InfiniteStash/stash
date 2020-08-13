@@ -33,13 +33,10 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
     variables: {
       studio_filter: {
         stash_id: studio?.id ?? "",
-      }
+      },
     },
   });
-  const {
-    data: searchData,
-    loading: loadingSearch
-  } = GQL.useFindStudiosQuery({
+  const { data: searchData, loading: loadingSearch } = GQL.useFindStudiosQuery({
     variables: {
       filter: {
         q: `"${studio?.name ?? ""}"`,
@@ -50,14 +47,14 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
   useEffect(() => {
     if (stashIDData?.findStudios.studios?.[0]) {
       setStudio({
-        existing: stashIDData.findStudios.studios[0]
+        existing: stashIDData.findStudios.studios[0],
       });
     } else if (searchData?.findStudios.studios?.[0]) {
       const result = searchData.findStudios.studios[0];
       setSelectedSource("existing");
       setSelectedStudio(result.id);
       setStudio({
-        update: result
+        update: result,
       });
     }
   }, [stashIDData, searchData]);
@@ -104,7 +101,9 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
           <SuccessIcon className="mr-2" />
           Matched:
         </span>
-        <b className="col-3 text-right">{stashIDData.findStudios.studios[0].name}</b>
+        <b className="col-3 text-right">
+          {stashIDData.findStudios.studios[0].name}
+        </b>
       </div>
     );
   }

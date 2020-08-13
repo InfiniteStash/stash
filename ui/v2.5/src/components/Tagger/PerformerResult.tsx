@@ -31,16 +31,15 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
     "create" | "existing" | "skip" | undefined
   >();
   const [modalVisible, showModal] = useState(false);
-  const {
-    data: stashData,
-    loading: stashLoading,
-  } = GQL.useFindPerformersQuery({
-    variables: {
-      performer_filter: {
-        stash_id: performer.id,
-      }
-    },
-  });
+  const { data: stashData, loading: stashLoading } = GQL.useFindPerformersQuery(
+    {
+      variables: {
+        performer_filter: {
+          stash_id: performer.id,
+        },
+      },
+    }
+  );
   const { loading } = GQL.useFindPerformersQuery({
     variables: {
       filter: {
@@ -53,7 +52,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
         setSelectedPerformer(performerResult.id);
         setSelectedSource("existing");
         setPerformer({
-          update: performerResult
+          update: performerResult,
         });
       }
     },
@@ -63,7 +62,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
     if (!stashData?.findPerformers.performers.length) return;
 
     setPerformer({
-      existing: stashData.findPerformers.performers[0]
+      existing: stashData.findPerformers.performers[0],
     });
   }, [stashData]);
 
@@ -105,7 +104,7 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
   const handlePerformerSkip = () => {
     setSelectedSource("skip");
     setPerformer({
-      skip: true
+      skip: true,
     });
   };
 

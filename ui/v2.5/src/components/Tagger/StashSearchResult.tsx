@@ -129,24 +129,25 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   const handleSave = async () => {
     setError("");
     let performerIDs = [];
-    let studioData: StashStudio|GQL.StudioDataFragment|GQL.SlimStudioDataFragment;
-    if (studio?.create)
-      studioData = studio.create;
-    else if (studio?.existing)
-      studioData = studio.existing;
-    else if (studio?.update)
-      studioData = studio.update;
-    else
-      return;
+    let studioData:
+      | StashStudio
+      | GQL.StudioDataFragment
+      | GQL.SlimStudioDataFragment;
+    if (studio?.create) studioData = studio.create;
+    else if (studio?.existing) studioData = studio.existing;
+    else if (studio?.update) studioData = studio.update;
+    else return;
 
     if (studio?.create) {
       setSaveState("Creating studio");
       const newStudio = {
         name: studioData.name,
-        stash_ids: [{
-          endpoint,
-          stash_id: scene.studio!.id,
-        }],
+        stash_ids: [
+          {
+            endpoint,
+            stash_id: scene.studio!.id,
+          },
+        ],
         ...(!!getUrlByType(studio.create.urls, "HOME") && {
           url: getUrlByType(studio.create.urls, "HOME"),
         }),
@@ -154,7 +155,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
           image: getImage(studio.create.images, "landscape"),
         }),
       };
-      const studioCreateResult = await createStudio(newStudio, scene.studio!.id);
+      const studioCreateResult = await createStudio(
+        newStudio,
+        scene.studio!.id
+      );
 
       if (!studioCreateResult?.data?.studioCreate) {
         setError(`Failed to save studio "${newStudio.name}"`);
@@ -165,7 +169,11 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
     if (studio.update) {
       setSaveState("Saving studio stashID");
-      const res = await updateStudioStashID(scene.studio!.id, endpoint, studio.update.id);
+      const res = await updateStudioStashID(
+        scene.studio!.id,
+        endpoint,
+        studio.update.id
+      );
       if (!res?.data?.studioUpdate) {
         setError(`Failed to save stashID to studio "${studio.update.name}"`);
         return setSaveState("");
@@ -178,15 +186,14 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         const performer = performers[stashID];
         if (performer.skip) return "Skip";
 
-        let performerData: StashPerformer|GQL.PerformerDataFragment|GQL.SlimPerformerDataFragment;
-        if (performer?.create)
-          performerData = performer.create;
-        else if (performer?.existing)
-          performerData = performer.existing;
-        else if (performer?.update)
-          performerData = performer.update;
-        else
-          return;
+        let performerData:
+          | StashPerformer
+          | GQL.PerformerDataFragment
+          | GQL.SlimPerformerDataFragment;
+        if (performer?.create) performerData = performer.create;
+        else if (performer?.existing) performerData = performer.existing;
+        else if (performer?.update) performerData = performer.update;
+        else return;
 
         if (performer.create) {
           const imgurl = performer.create.images[0]?.url;
@@ -220,10 +227,12 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
             piercings: formatBodyModification(performer.create.piercings),
             twitter: formatURL(performer.create.urls, "TWITTER"),
             image: imgData,
-            stash_ids: [{
-              endpoint,
-              stash_id: stashID,
-            }]
+            stash_ids: [
+              {
+                endpoint,
+                stash_id: stashID,
+              },
+            ],
           };
 
           const res = await createPerformer(performerInput, stashID);
@@ -274,9 +283,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         });
 
         const createdTags = await Promise.all(
-          newTags.map((tag) =>
-            createTag(tag)
-          )
+          newTags.map((tag) => createTag(tag))
         );
         createdTags.forEach((createdTag) => {
           if (createdTag?.data?.tagCreate?.id)
@@ -300,7 +307,8 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
             {
               endpoint,
               stash_id: scene.id,
-          }]
+            },
+          ],
         },
       });
 
@@ -360,12 +368,14 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
     Object.keys(performers ?? []).length ===
       scene.performers.filter((p) => p.performer.gender !== "MALE" || showMales)
         .length &&
-    Object.keys(performers ?? []).every((id) => (
-      performers?.[id].create ||
-      performers?.[id].update ||
-      performers?.[id].existing ||
-      performers?.[id].skip
-    )) && saveState === "";
+    Object.keys(performers ?? []).every(
+      (id) =>
+        performers?.[id].create ||
+        performers?.[id].update ||
+        performers?.[id].existing ||
+        performers?.[id].skip
+    ) &&
+    saveState === "";
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
@@ -415,11 +425,15 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               />
             ))}
           <div className="row no-gutters mt-2 align-items-center justify-content-end">
-            { error && (
-              <strong className="col-6 mt-1 mr-2 text-danger text-right">{error}</strong>
+            {error && (
+              <strong className="col-6 mt-1 mr-2 text-danger text-right">
+                {error}
+              </strong>
             )}
-            { saveState && (
-              <strong className="col-4 mt-1 mr-2 text-right">{saveState}</strong>
+            {saveState && (
+              <strong className="col-4 mt-1 mr-2 text-right">
+                {saveState}
+              </strong>
             )}
             <Button onClick={handleSave} disabled={!saveEnabled}>
               {saveState ? (

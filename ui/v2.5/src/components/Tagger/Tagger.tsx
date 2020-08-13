@@ -59,7 +59,7 @@ function prepareQueryString(
   scene: Partial<GQL.Scene>,
   paths: string[],
   mode: ParseMode,
-  blacklist: string[],
+  blacklist: string[]
 ) {
   if ((mode === "auto" && scene.date && scene.studio) || mode === "metadata") {
     let str = [
@@ -201,7 +201,9 @@ export const Tagger: React.FC = () => {
 
   useEffect(() => {
     if (!stashConfig.data?.configuration.general) return;
-    const selectedEndpoint = stashConfig.data.configuration.general.stashBoxes.find(i => i.endpoint === config.selectedEndpoint);
+    const selectedEndpoint = stashConfig.data.configuration.general.stashBoxes.find(
+      (i) => i.endpoint === config.selectedEndpoint
+    );
     if (selectedEndpoint) {
       setCredentials(selectedEndpoint);
     } else {
@@ -211,15 +213,17 @@ export const Tagger: React.FC = () => {
 
   const handleInstanceSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedEndpoint = e.currentTarget.value;
-    const creds = stashConfig.data?.configuration.general.stashBoxes.find((i) => i.endpoint === selectedEndpoint);
+    const creds = stashConfig.data?.configuration.general.stashBoxes.find(
+      (i) => i.endpoint === selectedEndpoint
+    );
     if (creds) {
       setCredentials(creds);
       setConfig({
         ...config,
-        selectedEndpoint
+        selectedEndpoint,
       });
     }
-  }
+  };
 
   const client = useStashBoxClient(credentials?.endpoint, credentials?.api_key);
   useEffect(() => {
@@ -531,9 +535,15 @@ export const Tagger: React.FC = () => {
               className="align-items-center col-4"
             >
               <Form.Label>Active stash-box instance:</Form.Label>
-              <Form.Control as="select" value={credentials?.endpoint} onChange={handleInstanceSelect}>
-                { stashConfig.data?.configuration.general.stashBoxes.map(i => (
-                  <option value={i.endpoint} key={i.endpoint}>{i.endpoint}</option>
+              <Form.Control
+                as="select"
+                value={credentials?.endpoint}
+                onChange={handleInstanceSelect}
+              >
+                {stashConfig.data?.configuration.general.stashBoxes.map((i) => (
+                  <option value={i.endpoint} key={i.endpoint}>
+                    {i.endpoint}
+                  </option>
                 ))}
               </Form.Control>
             </Form.Group>
@@ -567,7 +577,9 @@ export const Tagger: React.FC = () => {
           <div className="col-4 text-right">
             <Button
               onClick={handleFingerprintSearch}
-              disabled={authFailure || (canFingerprintSearch() && !loadingFingerprints)}
+              disabled={
+                authFailure || (canFingerprintSearch() && !loadingFingerprints)
+              }
             >
               Search Fingerprints
               {loadingFingerprints && (

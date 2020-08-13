@@ -198,11 +198,19 @@ export const SceneFileInfoPanel: React.FC<ISceneFileInfoPanelProps> = (
       <div className="row">
         <span className="col-4">StashIDs</span>
         <ul className="col-8">
-          { props.scene.stash_ids.map(stashID => {
+          {props.scene.stash_ids.map((stashID) => {
             const base = stashID.endpoint.match(/https?:\/\/.*?\//)?.[0];
-            const link = base
-              ? <a href={`${base}scenes/${stashID.stash_id}`} target="_blank" rel="noopener noreferrer">{stashID.stash_id}</a>
-              : stashID.stash_id;
+            const link = base ? (
+              <a
+                href={`${base}scenes/${stashID.stash_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {stashID.stash_id}
+              </a>
+            ) : (
+              stashID.stash_id
+            );
             return (
               <li key={stashID.stash_id} className="row no-gutters">
                 {link}

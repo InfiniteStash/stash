@@ -625,11 +625,19 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
         <td>StashIDs</td>
         <td>
           <ul className="pl-0">
-            { performer.stash_ids.map(stashID => {
+            {performer.stash_ids.map((stashID) => {
               const base = stashID.endpoint.match(/https?:\/\/.*?\//)?.[0];
-              const link = base
-                ? <a href={`${base}performers/${stashID.stash_id}`} target="_blank" rel="noopener noreferrer">{stashID.stash_id}</a>
-                : stashID.stash_id;
+              const link = base ? (
+                <a
+                  href={`${base}performers/${stashID.stash_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {stashID.stash_id}
+                </a>
+              ) : (
+                stashID.stash_id
+              );
               return (
                 <li key={stashID.stash_id} className="row no-gutters">
                   {link}
@@ -739,7 +747,7 @@ export const PerformerDetailsPanel: React.FC<IPerformerDetails> = ({
             isEditing: !!isEditing,
             onChange: setInstagram,
           })}
-          { !isEditing && renderStashIDs() }
+          {!isEditing && renderStashIDs()}
         </tbody>
       </Table>
 

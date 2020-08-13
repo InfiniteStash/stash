@@ -239,7 +239,7 @@ export const MainNavbar: React.FC = () => {
         <Navbar.Toggle className="order-0" />
         <Navbar.Collapse className="order-3 order-md-1">
           <Nav className="mr-md-auto">
-						{activeMenuItems.map((i) => (
+            {activeMenuItems.map((i) => (
               <Nav.Link eventKey={i.href} as="div" key={i.href}>
                 <LinkContainer activeClassName="active" exact to={i.href}>
                   <Button className="minimal w-100">

@@ -117,10 +117,12 @@ export const SettingsConfigurationPanel: React.FC = () => {
       setExcludes(conf.general.excludes);
       setScraperUserAgent(conf.general.scraperUserAgent ?? undefined);
       setScraperCDPPath(conf.general.scraperCDPPath ?? undefined);
-      setStashBoxes(conf.general.stashBoxes.map(box => ({
-        endpoint: box.endpoint,
-        api_key: box.api_key,
-      })) ?? []);
+      setStashBoxes(
+        conf.general.stashBoxes.map((box) => ({
+          endpoint: box.endpoint,
+          api_key: box.api_key,
+        })) ?? []
+      );
     }
   }, [data, error]);
 
