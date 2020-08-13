@@ -130,13 +130,9 @@ func (r *mutationResolver) ConfigureGeneral(ctx context.Context, input models.Co
 		refreshScraperCache = true
 	}
 
-	if input.StashBoxEndpoint != nil {
-		config.Set(config.StashBoxEndpoint, input.StashBoxEndpoint)
-	}
-
-	if input.StashBoxAPIKey != nil {
-		config.Set(config.StashBoxAPIKey, input.StashBoxAPIKey)
-	}
+  if input.StashBoxes != nil {
+    config.Set(config.StashBoxes, input.StashBoxes)
+  }
 
 	if err := config.Write(); err != nil {
 		return makeConfigGeneralResult(), err

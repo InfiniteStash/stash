@@ -42,9 +42,6 @@ func makeConfigGeneralResult() *models.ConfigGeneralResult {
 	scraperUserAgent := config.GetScraperUserAgent()
 	scraperCDPPath := config.GetScraperCDPPath()
 
-	stashBoxEndpoint := config.GetStashBoxEndpoint()
-	stashBoxAPIKey := config.GetStashBoxAPIKey()
-
 	return &models.ConfigGeneralResult{
 		Stashes:                   config.GetStashPaths(),
 		DatabasePath:              config.GetDatabasePath(),
@@ -69,8 +66,7 @@ func makeConfigGeneralResult() *models.ConfigGeneralResult {
 		Excludes:                  config.GetExcludes(),
 		ScraperUserAgent:          &scraperUserAgent,
 		ScraperCDPPath:            &scraperCDPPath,
-		StashBoxEndpoint:          &stashBoxEndpoint,
-		StashBoxAPIKey:            &stashBoxAPIKey,
+    StashBoxes:                config.GetStashBoxes(),
 	}
 }
 

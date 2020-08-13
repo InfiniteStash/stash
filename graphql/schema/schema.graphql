@@ -82,9 +82,6 @@ type Query {
   """List available plugin operations"""
   pluginTasks: [PluginTask!]
 
-  """Get list of all registered stash-box instances"""
-  listStashBoxInstances: [StashBoxInstance!]!
-
   # Config
   """Returns the current, complete configuration"""
   configuration: ConfigResult!
@@ -178,10 +175,6 @@ type Mutation {
   """Run plugin task. Returns the job ID"""
   runPluginTask(plugin_id: ID!, task_name: String!, args: [PluginArgInput!]): String!
   reloadPlugins: Boolean!
-
-  stashBoxInstanceDestroy(id: ID!): Boolean!
-  stashBoxInstanceCreate(input: StashBoxInstanceInput!): StashBoxInstance
-  stashBoxInstanceUpdate(input: StashBoxInstanceUpdateInput!): StashBoxInstance
 
   stopJob: Boolean!
 }

@@ -1,10 +1,3 @@
-CREATE TABLE `stash_box_instances` (
-  `id` integer not null primary key autoincrement,
-  `endpoint` varchar(255) not null,
-  `api_key` varchar(255) not null
-);
-CREATE UNIQUE INDEX `stash_box_instances_endpoint_unique` on `stash_box_instances` (`endpoint`);
-
 CREATE TABLE `scene_stash_ids` (
   `scene_id` integer,
   `endpoint` varchar(255),

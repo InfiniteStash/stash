@@ -1,5 +1,0 @@
-fragment StashBoxInstanceData on StashBoxInstance {
-  id
-  endpoint
-  api_key
-}

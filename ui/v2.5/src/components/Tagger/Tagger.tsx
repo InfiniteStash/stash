@@ -161,7 +161,6 @@ export const Tagger: React.FC = () => {
   const [loadingFingerprints, setLoadingFingerprints] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
   const [user, setUser] = useState<Me | null | undefined>();
-  const { data: instanceData } = GQL.useListStashBoxInstancesQuery();
   const [credentials, setCredentials] = useState({ endpoint: "", api_key: "" });
   const authFailure = user === null;
 
@@ -201,18 +200,18 @@ export const Tagger: React.FC = () => {
   }, [page, searchFilter, history]);
 
   useEffect(() => {
-    if (!instanceData?.listStashBoxInstances) return;
-    const selectedEndpoint = instanceData?.listStashBoxInstances.find(i => i.endpoint === config.selectedEndpoint);
+    if (!stashConfig.data?.configuration.general) return;
+    const selectedEndpoint = stashConfig.data.configuration.general.stashBoxes.find(i => i.endpoint === config.selectedEndpoint);
     if (selectedEndpoint) {
       setCredentials(selectedEndpoint);
     } else {
-      setCredentials(instanceData.listStashBoxInstances[0]);
+      setCredentials(stashConfig.data.configuration.general.stashBoxes[0]);
     }
-  }, [instanceData, config]);
+  }, [stashConfig, config]);
 
   const handleInstanceSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedEndpoint = e.currentTarget.value;
-    const creds = instanceData?.listStashBoxInstances.find((i) => i.endpoint === selectedEndpoint);
+    const creds = stashConfig.data?.configuration.general.stashBoxes.find((i) => i.endpoint === selectedEndpoint);
     if (creds) {
       setCredentials(creds);
       setConfig({
@@ -533,7 +532,7 @@ export const Tagger: React.FC = () => {
             >
               <Form.Label>Active stash-box instance:</Form.Label>
               <Form.Control as="select" value={credentials?.endpoint} onChange={handleInstanceSelect}>
-                { instanceData?.listStashBoxInstances.map(i => (
+                { stashConfig.data?.configuration.general.stashBoxes.map(i => (
                   <option value={i.endpoint} key={i.endpoint}>{i.endpoint}</option>
                 ))}
               </Form.Control>

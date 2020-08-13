@@ -1,16 +1,9 @@
-type StashBoxInstance {
-    id: ID!
+type StashBox {
     endpoint: String!
     api_key: String!
 }
 
-input StashBoxInstanceInput {
-    endpoint: String!
-    api_key: String!
-}
-
-input StashBoxInstanceUpdateInput {
-    id: ID!
+input StashBoxInput {
     endpoint: String!
     api_key: String!
 }
