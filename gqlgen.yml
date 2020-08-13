@@ -52,3 +52,7 @@ models:
     model: github.com/stashapp/stash/pkg/models.PerformerStashID
   StudioStashID:
     model: github.com/stashapp/stash/pkg/models.StudioStashID
+  ScrapedMovie:
+    model: github.com/stashapp/stash/pkg/models.ScrapedMovie
+  ScrapedMovieStudio:
+    model: github.com/stashapp/stash/pkg/models.ScrapedMovieStudio

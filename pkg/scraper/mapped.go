@@ -3,8 +3,10 @@ package scraper
 import (
 	"errors"
 	"fmt"
+	"math"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -161,6 +163,58 @@ func (s *mappedPerformerScraperConfig) UnmarshalYAML(unmarshal func(interface{})
 	return unmarshal(&s.mappedConfig)
 }
 
+type mappedMovieScraperConfig struct {
+	mappedConfig
+
+	Studio mappedConfig `yaml:"Studio"`
+}
+type _mappedMovieScraperConfig mappedMovieScraperConfig
+
+const (
+	mappedScraperConfigMovieStudio = "Studio"
+)
+
+func (s *mappedMovieScraperConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	// HACK - unmarshal to map first, then remove known movie sub-fields, then
+	// remarshal to yaml and pass that down to the base map
+	parentMap := make(map[string]interface{})
+	if err := unmarshal(parentMap); err != nil {
+		return err
+	}
+
+	// move the known sub-fields to a separate map
+	thisMap := make(map[string]interface{})
+
+	thisMap[mappedScraperConfigMovieStudio] = parentMap[mappedScraperConfigMovieStudio]
+
+	delete(parentMap, mappedScraperConfigMovieStudio)
+
+	// re-unmarshal the sub-fields
+	yml, err := yaml.Marshal(thisMap)
+	if err != nil {
+		return err
+	}
+
+	// needs to be a different type to prevent infinite recursion
+	c := _mappedMovieScraperConfig{}
+	if err := yaml.Unmarshal(yml, &c); err != nil {
+		return err
+	}
+
+	*s = mappedMovieScraperConfig(c)
+
+	yml, err = yaml.Marshal(parentMap)
+	if err != nil {
+		return err
+	}
+
+	if err := yaml.Unmarshal(yml, &s.mappedConfig); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 type mappedRegexConfig struct {
 	Regex string `yaml:"regex"`
 	With  string `yaml:"with"`
@@ -276,11 +330,36 @@ func (p *postProcessMap) Apply(value string, q mappedQuery) string {
 	return value
 }
 
+type postProcessFeetToCm bool
+
+func (p *postProcessFeetToCm) Apply(value string, q mappedQuery) string {
+	const foot_in_cm = 30.48
+	const inch_in_cm = 2.54
+
+	reg := regexp.MustCompile("[0-9]+")
+	filtered := reg.FindAllString(value, -1)
+
+	var feet float64
+	var inches float64
+	if len(filtered) > 0 {
+		feet, _ = strconv.ParseFloat(filtered[0], 64)
+	}
+	if len(filtered) > 1 {
+		inches, _ = strconv.ParseFloat(filtered[1], 64)
+	}
+
+	var centimeters = feet*foot_in_cm + inches*inch_in_cm
+
+	// Return rounded integer string
+	return strconv.Itoa(int(math.Round(centimeters)))
+}
+
 type mappedPostProcessAction struct {
 	ParseDate  string                   `yaml:"parseDate"`
 	Replace    mappedRegexConfigs       `yaml:"replace"`
 	SubScraper *mappedScraperAttrConfig `yaml:"subScraper"`
 	Map        map[string]string        `yaml:"map"`
+	FeetToCm   bool                     `yaml:"feetToCm"`
 }
 
 func (a mappedPostProcessAction) ToPostProcessAction() (postProcessAction, error) {
@@ -314,6 +393,14 @@ func (a mappedPostProcessAction) ToPostProcessAction() (postProcessAction, error
 		}
 		found = "map"
 		action := postProcessMap(a.Map)
+		ret = &action
+	}
+	if a.FeetToCm {
+		if found != "" {
+			return nil, fmt.Errorf("post-process actions must have a single field, found %s and %s", found, "feetToCm")
+		}
+		found = "feetToCm"
+		action := postProcessFeetToCm(a.FeetToCm)
 		ret = &action
 	}
 
@@ -454,6 +541,7 @@ type mappedScraper struct {
 	Common    commonMappedConfig            `yaml:"common"`
 	Scene     *mappedSceneScraperConfig     `yaml:"scene"`
 	Performer *mappedPerformerScraperConfig `yaml:"performer"`
+	Movie     *mappedMovieScraperConfig     `yaml:"movie"`
 }
 
 type mappedResult map[string]string
@@ -593,6 +681,36 @@ func (s mappedScraper) scrapeScene(q mappedQuery) (*models.ScrapedScene, error) 
 				ret.Movies = append(ret.Movies, movie)
 			}
 
+		}
+	}
+
+	return &ret, nil
+}
+
+func (s mappedScraper) scrapeMovie(q mappedQuery) (*models.ScrapedMovie, error) {
+	var ret models.ScrapedMovie
+
+	movieScraperConfig := s.Movie
+	movieMap := movieScraperConfig.mappedConfig
+	if movieMap == nil {
+		return nil, nil
+	}
+
+	movieStudioMap := movieScraperConfig.Studio
+
+	results := movieMap.process(q, s.Common)
+	if len(results) > 0 {
+		results[0].apply(&ret)
+
+		if movieStudioMap != nil {
+			logger.Debug(`Processing movie studio:`)
+			studioResults := movieStudioMap.process(q, s.Common)
+
+			if len(studioResults) > 0 {
+				studio := &models.ScrapedMovieStudio{}
+				studioResults[0].apply(studio)
+				ret.Studio = studio
+			}
 		}
 	}
 

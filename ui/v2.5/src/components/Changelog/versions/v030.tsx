@@ -5,6 +5,8 @@ const markup = `
 #### 💥 **Note: After upgrading, the next scan will populate all scenes with oshash hashes. MD5 calculation can be disabled after populating the oshash for all scenes. See \`Hashing Algorithms\` in the \`Configuration\` section of the manual for details. **
 
 ### ✨ New Features
+*  Add support for scraping movie details.
+*  Add support for JSON scrapers.
 *  Add support for plugin tasks.
 *  Add oshash algorithm for hashing scene video files. Enabled by default on new systems.
 *  Support (re-)generation of generated content for specific scenes.
@@ -17,6 +19,8 @@ const markup = `
 *  Add support for parent/child studios.
 
 ### 🎨 Improvements
+*  Allow clearing of images and querying on missing images.
+*  Allow free-editing of scene movie number.
 *  Allow adding performers and studios from selectors.
 *  Add support for chrome dp in xpath scrapers.
 *  Allow customisation of preview video generation.

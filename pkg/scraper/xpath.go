@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
-	"time"
 
 	"github.com/antchfx/htmlquery"
 
@@ -15,10 +14,6 @@ import (
 	"github.com/stashapp/stash/pkg/logger"
 	"github.com/stashapp/stash/pkg/models"
 )
-
-// Timeout for the scrape http request. Includes transfer time. May want to make this
-// configurable at some point.
-const scrapeGetTimeout = time.Second * 30
 
 type xpathScraper struct {
 	scraper      scraperTypeConfig
@@ -74,6 +69,16 @@ func (s *xpathScraper) scrapeSceneByURL(url string) (*models.ScrapedScene, error
 	return scraper.scrapeScene(q)
 }
 
+func (s *xpathScraper) scrapeMovieByURL(url string) (*models.ScrapedMovie, error) {
+	doc, scraper, err := s.scrapeURL(url)
+	if err != nil {
+		return nil, err
+	}
+
+	q := s.getXPathQuery(doc)
+	return scraper.scrapeMovie(q)
+}
+
 func (s *xpathScraper) scrapePerformersByName(name string) ([]*models.ScrapedPerformer, error) {
 	scraper := s.getXpathScraper()
 
@@ -104,7 +109,32 @@ func (s *xpathScraper) scrapePerformerByFragment(scrapedPerformer models.Scraped
 }
 
 func (s *xpathScraper) scrapeSceneByFragment(scene models.SceneUpdateInput) (*models.ScrapedScene, error) {
-	return nil, errors.New("scrapeSceneByFragment not supported for xpath scraper")
+	storedScene, err := sceneFromUpdateFragment(scene)
+	if err != nil {
+		return nil, err
+	}
+
+	if storedScene == nil {
+		return nil, errors.New("no scene found")
+	}
+
+	// construct the URL
+	url := constructSceneURL(s.scraper.QueryURL, storedScene)
+
+	scraper := s.getXpathScraper()
+
+	if scraper == nil {
+		return nil, errors.New("xpath scraper with name " + s.scraper.Scraper + " not found in config")
+	}
+
+	doc, err := s.loadURL(url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	q := s.getXPathQuery(doc)
+	return scraper.scrapeScene(q)
 }
 
 func (s *xpathScraper) loadURL(url string) (*html.Node, error) {
