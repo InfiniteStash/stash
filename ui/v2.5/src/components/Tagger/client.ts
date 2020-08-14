@@ -26,8 +26,7 @@ export const useStashBoxClient = (uri: string, ApiKey: string) => {
 
     setClient(
       new ApolloClient({
-        name: "stashdb",
-        connectToDevTools: true,
+        name: "stash-box",
         link,
         cache,
       })
