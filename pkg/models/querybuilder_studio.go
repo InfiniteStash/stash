@@ -140,6 +140,10 @@ func (qb *StudioQueryBuilder) Query(studioFilter *StudioFilterType, findFilter *
 		for _, studioID := range parentsFilter.Value {
 			args = append(args, studioID)
 		}
+
+		whereClause, havingClause := getMultiCriterionClause("studios", "parent_studio", "", "", "parent_id", parentsFilter)
+		whereClauses = appendClause(whereClauses, whereClause)
+		havingClauses = appendClause(havingClauses, havingClause)
 	}
 
 	if stashIDFilter := studioFilter.StashID; stashIDFilter != nil {
