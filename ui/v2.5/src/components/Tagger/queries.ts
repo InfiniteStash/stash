@@ -8,19 +8,19 @@ export const useUpdatePerformerStashID = () => {
 
   const updatePerformerHandler = (
     performerID: string,
-    stash_ids: GQL.StashIdInput[]
+    stashIDs: GQL.StashIdInput[]
   ) =>
     updatePerformer({
       variables: {
         id: performerID,
-        stash_ids: stash_ids.map((s) => ({
+        stash_ids: stashIDs.map((s) => ({
           stash_id: s.stash_id,
           endpoint: s.endpoint,
         })),
       },
       update: (store, updatedPerformer) => {
         if (!updatedPerformer.data?.performerUpdate) return;
-        const newStashID = stash_ids[stash_ids.length - 1].stash_id;
+        const newStashID = stashIDs[stashIDs.length - 1].stash_id;
 
         store.writeQuery<
           GQL.FindPerformersQuery,
@@ -111,18 +111,18 @@ export const useUpdateStudioStashID = () => {
     onError: (errors) => errors,
   });
 
-  const handleUpdate = (studioID: string, stash_ids: GQL.StashIdInput[]) =>
+  const handleUpdate = (studioID: string, stashIDs: GQL.StashIdInput[]) =>
     updateStudio({
       variables: {
         id: studioID,
-        stash_ids: stash_ids.map((s) => ({
+        stash_ids: stashIDs.map((s) => ({
           stash_id: s.stash_id,
           endpoint: s.endpoint,
         })),
       },
       update: (store, result) => {
         if (!result.data?.studioUpdate) return;
-        const newStashID = stash_ids[stash_ids.length - 1].stash_id;
+        const newStashID = stashIDs[stashIDs.length - 1].stash_id;
 
         store.writeQuery<GQL.FindStudiosQuery, GQL.FindStudiosQueryVariables>({
           query: GQL.FindStudiosDocument,
