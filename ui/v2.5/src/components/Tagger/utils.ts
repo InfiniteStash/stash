@@ -84,3 +84,17 @@ export const formatBodyModification = (mods: BodyModification[] | null) =>
 
 export const formatURL = (urls: URL[], type: string) =>
   urls.find((u) => u.type === type)?.url ?? null;
+
+export const parsePath = (filePath: string) => {
+  const path = filePath.toLowerCase();
+  const isWin = /^([a-z]:|\\\\)/.test(path);
+  const normalizedPath = isWin ? path.replace(/^[a-z]:/, '').replace(/\\/g, '/') : path;
+  const pathComponents = normalizedPath.split('/').filter(component => component.trim().length > 0);
+  const fileName = pathComponents[pathComponents.length - 1]
+
+  const ext = fileName.match(/\.[a-z0-9]*$/)?.[0] ?? '';
+  const file = fileName.slice(0, ext.length * -1);
+  const paths = pathComponents.length > 2 ? pathComponents.slice(0, pathComponents.length - 2) : [];
+
+  return { paths, file, ext };
+}

@@ -7,7 +7,6 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
-import path from "parse-filepath";
 import { debounce } from "lodash";
 import localForage from "localforage";
 import queryStringParser from "query-string";
@@ -32,25 +31,20 @@ import { Me } from "src/definitions-box/Me";
 import { loader } from "graphql.macro";
 import StashSearchResult from "./StashSearchResult";
 import { useStashBoxClient } from "./client";
+import { parsePath } from "./utils";
 
 const SearchSceneQuery = loader("src/queries/searchScene.gql");
 const FindSceneByFingerprintQuery = loader("src/queries/searchFingerprint.gql");
 const MeQuery = loader("src/queries/me.gql");
 
 const DEFAULT_BLACKLIST = [
-  " XXX",
+  "XXX",
   "1080p",
   "720p",
   "2160p",
   "KTR",
   "RARBG",
-  "MP4",
-  "x264",
-  "wmv",
-  "avi",
   "com",
-  "mpe?g",
-  "m4v",
   "\\[",
   "\\]",
 ];
@@ -58,6 +52,7 @@ const dateRegex = /\.(\d\d)\.(\d\d)\.(\d\d)\./;
 function prepareQueryString(
   scene: Partial<GQL.Scene>,
   paths: string[],
+  filename: string,
   mode: ParseMode,
   blacklist: string[]
 ) {
@@ -77,11 +72,11 @@ function prepareQueryString(
   }
   let s = "";
   if (mode === "auto" || mode === "filename") {
-    s = paths[paths.length - 1];
+    s = filename;
   } else if (mode === "path") {
-    s = paths.join(" ");
+    s = [...paths, filename].join(" ");
   } else {
-    s = paths[paths.length - 2];
+    s = paths[paths.length - 1];
   }
   blacklist.forEach((b) => {
     s = s.replace(new RegExp(b, "i"), "");
@@ -591,12 +586,12 @@ export const Tagger: React.FC = () => {
         {sceneLoading && <LoadingIndicator />}
         {!sceneLoading &&
           scenes.map((scene) => {
-            const paths = scene.path.split("/");
-            const parsedPath = path(scene.path);
-            const { dir } = parsedPath;
+            const { paths, file, ext } = parsePath(scene.path);
+            const originalDir = scene.path.slice(0, scene.path.length - file.length - ext.length);
             const defaultQueryString = prepareQueryString(
               scene,
               paths,
+              file,
               config.mode,
               config.blacklist
             );
@@ -609,10 +604,10 @@ export const Tagger: React.FC = () => {
                     <a
                       href={`/scenes/${scene.id}`}
                       className="scene-link"
-                      title={`${dir}/${parsedPath.base}`}
+                      title={scene.path}
                     >
-                      {dir}/<wbr />
-                      {parsedPath.base}
+                      {originalDir}<wbr />
+                      {`${file}.${ext}`}
                     </a>
                   </div>
                   <div className="col-6">
