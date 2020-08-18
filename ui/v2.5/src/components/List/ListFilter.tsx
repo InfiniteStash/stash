@@ -258,6 +258,8 @@ export const ListFilter: React.FC<IListFilterProps> = (
           return "list";
         case DisplayMode.Wall:
           return "square";
+        case DisplayMode.Tagger:
+          return "tags";
       }
     }
     function getLabel(option: DisplayMode) {
@@ -268,6 +270,8 @@ export const ListFilter: React.FC<IListFilterProps> = (
           return "List";
         case DisplayMode.Wall:
           return "Wall";
+        case DisplayMode.Tagger:
+          return "Tagger";
       }
     }
 

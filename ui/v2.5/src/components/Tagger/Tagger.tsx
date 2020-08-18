@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -7,14 +7,10 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
-import { debounce } from "lodash";
 import localForage from "localforage";
-import queryStringParser from "query-string";
-import { useHistory } from "react-router-dom";
 
 import { FingerprintAlgorithm } from "src/definitions-box/globalTypes";
 import * as GQL from "src/core/generated-graphql";
-import { Pagination } from "src/components/List/Pagination";
 import { Icon, LoadingIndicator } from "src/components/Shared";
 import { useConfiguration } from "src/core/StashService";
 
@@ -50,7 +46,7 @@ const DEFAULT_BLACKLIST = [
 ];
 const dateRegex = /\.(\d\d)\.(\d\d)\.(\d\d)\./;
 function prepareQueryString(
-  scene: Partial<GQL.Scene>,
+  scene: Partial<GQL.SlimSceneDataFragment>,
   paths: string[],
   filename: string,
   mode: ParseMode,
@@ -108,37 +104,13 @@ interface ITaggerConfig {
   selectedEndpoint?: string;
 }
 
-const parsePage = (searchQuery: string) => {
-  const parsedPage = queryStringParser.parse(searchQuery);
-  if (!parsedPage?.page) {
-    return 1;
-  }
-  if (Array.isArray(parsedPage.page)) {
-    return Number.parseInt(parsedPage.page[0], 10) ?? 1;
-  }
-  return Number.parseInt(parsedPage.page, 10) ?? 1;
-};
+interface ITaggerProps {
+  scenes: GQL.SlimSceneDataFragment[];
+}
 
-const parseTerm = (searchQuery: string) => {
-  const parsedPage = queryStringParser.parse(searchQuery);
-  if (!parsedPage?.term) {
-    return "";
-  }
-  if (Array.isArray(parsedPage.term)) {
-    return parsedPage.term[0] ?? "";
-  }
-  return parsedPage.term ?? "";
-};
-
-export const Tagger: React.FC = () => {
-  const history = useHistory();
+export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
   const stashConfig = useConfiguration();
-  const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [searchFilter, setSearchFilter] = useState(
-    parseTerm(history.location.search)
-  );
-  const [page, setPage] = useState(parsePage(history.location.search));
   const [searchResults, setSearchResults] = useState<
     Record<string, SearchScene | null>
   >({});
@@ -148,7 +120,7 @@ export const Tagger: React.FC = () => {
   >();
   const [blacklistInput, setBlacklistInput] = useState<string>("");
   const [taggedScenes, setTaggedScenes] = useState<
-    Record<string, Partial<GQL.Scene>>
+    Record<string, Partial<GQL.SlimSceneDataFragment>>
   >({});
   const [fingerprints, setFingerprints] = useState<
     Record<string, FingerprintResult | null>
@@ -185,14 +157,6 @@ export const Tagger: React.FC = () => {
   useEffect(() => {
     localForage.setItem("tagger", config);
   }, [config]);
-
-  useEffect(() => {
-    const newQuery = queryStringParser.stringify({
-      page: page !== 1 ? page : undefined,
-      term: searchFilter !== "" ? searchFilter : undefined,
-    });
-    history.push(`?${newQuery}`);
-  }, [page, searchFilter, history]);
 
   useEffect(() => {
     if (!stashConfig.data?.configuration.general) return;
@@ -233,22 +197,6 @@ export const Tagger: React.FC = () => {
         .catch(() => setUser(null));
   }, [client]);
 
-  const { data: sceneData, loading: sceneLoading } = GQL.useFindScenesQuery({
-    variables: {
-      filter: {
-        q: searchFilter,
-        page,
-        per_page: 20,
-        sort: "path",
-      },
-    },
-  });
-
-  const searchCallback = debounce((value: string) => {
-    setSearchFilter(value);
-    setPage(1);
-  }, 500);
-
   const doBoxSearch = (sceneID: string, searchVal: string) => {
     client
       ?.query<SearchScene, SearchSceneVariables>({
@@ -267,7 +215,7 @@ export const Tagger: React.FC = () => {
     setLoading(true);
   };
 
-  const handleTaggedScene = (scene: Partial<GQL.Scene>) => {
+  const handleTaggedScene = (scene: Partial<GQL.SlimSceneDataFragment>) => {
     setTaggedScenes({
       ...taggedScenes,
       [scene.id as string]: scene,
@@ -292,15 +240,15 @@ export const Tagger: React.FC = () => {
     setBlacklistInput("");
   };
 
-  const scenes = sceneData?.findScenes?.scenes ?? [];
-
   const handleFingerprintSearch = async () => {
     setLoadingFingerprints(true);
     const newFingerprints = { ...fingerprints };
 
     await Promise.all(
       scenes
-        .filter((s) => fingerprints[s.id] === undefined)
+        .filter(
+          (s) => fingerprints[s.id] === undefined && s.stash_ids.length === 0
+        )
         .map((s) => {
           let hash: string;
           let algorithm: FingerprintAlgorithm;
@@ -336,15 +284,19 @@ export const Tagger: React.FC = () => {
     setLoadingFingerprints(false);
   };
 
-  const canFingerprintSearch = () => {
-    return !scenes.some((s) => fingerprints[s.id] === undefined);
+  const canFingerprintSearch = () =>
+    scenes.some(
+      (s) => s.stash_ids.length === 0 && fingerprints[s.id] === undefined
+    );
+  const getFingerprintCount = () => {
+    const count = scenes.filter(
+      (s) => s.stash_ids.length === 0 && fingerprints[s.id]
+    ).length;
+    return `${count > 0 ? count : "No"} new fingerprints found`;
   };
 
   return (
     <div className="tagger-container mx-auto">
-      <h2>Scene Tagger</h2>
-      <hr />
-
       <div className="row mb-4 mt-2">
         <div className="col-4">
           <Form.Group controlId="mode-select">
@@ -409,21 +361,7 @@ export const Tagger: React.FC = () => {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col text-right mr-2">
-          {sceneData?.findScenes?.count} results
-        </div>
-      </div>
-      <div className="row mb-2">
-        <input
-          className="form-control col-2 ml-4"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            searchCallback(event.currentTarget.value)
-          }
-          ref={inputRef}
-          placeholder="Search text"
-          defaultValue={searchFilter}
-        />
+      <div className="row mb-2 no-gutters">
         <Button
           onClick={() => setShowConfig(!showConfig)}
           variant="link"
@@ -431,14 +369,6 @@ export const Tagger: React.FC = () => {
         >
           {showConfig ? "Hide" : "Show"} Configuration
         </Button>
-        <div className="float-right mr-4 ml-auto">
-          <Pagination
-            currentPage={page}
-            itemsPerPage={20}
-            totalItems={sceneData?.findScenes?.count ?? 0}
-            onChangePage={(newPage) => setPage(newPage)}
-          />
-        </div>
       </div>
 
       <Collapse in={showConfig || authFailure}>
@@ -573,176 +503,175 @@ export const Tagger: React.FC = () => {
             <Button
               onClick={handleFingerprintSearch}
               disabled={
-                authFailure || (canFingerprintSearch() && !loadingFingerprints)
+                authFailure || (!canFingerprintSearch() && !loadingFingerprints)
               }
             >
-              Search Fingerprints
+              {canFingerprintSearch() && <span>Search Fingerprints</span>}
+              {!canFingerprintSearch() && getFingerprintCount()}
               {loadingFingerprints && (
                 <LoadingIndicator message="" inline small />
               )}
             </Button>
           </div>
         </div>
-        {sceneLoading && <LoadingIndicator />}
-        {!sceneLoading &&
-          scenes.map((scene) => {
-            const { paths, file, ext } = parsePath(scene.path);
-            const originalDir = scene.path.slice(0, scene.path.length - file.length - ext.length);
-            const defaultQueryString = prepareQueryString(
-              scene,
-              paths,
-              file,
-              config.mode,
-              config.blacklist
-            );
-            const modifiedQuery = queryString[scene.id];
-            const fingerprintMatch = fingerprints[scene.id];
-            return (
-              <div key={scene.id} className="my-2 search-item">
-                <div className="row">
-                  <div className="col-6 text-truncate align-self-center">
-                    <a
-                      href={`/scenes/${scene.id}`}
-                      className="scene-link"
-                      title={scene.path}
-                    >
-                      {originalDir}<wbr />
-                      {`${file}.${ext}`}
-                    </a>
-                  </div>
-                  <div className="col-6">
-                    {!taggedScenes[scene.id] && scene?.stash_ids.length > 0 && (
-                      <h5 className="text-right text-bold">
-                        Scene already tagged
-                      </h5>
-                    )}
-                    {!taggedScenes[scene.id] && !scene?.stash_ids.length && (
-                      <InputGroup>
-                        <Form.Control
-                          value={modifiedQuery || defaultQueryString}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            setQueryString({
-                              ...queryString,
-                              [scene.id]: e.currentTarget.value,
-                            })
-                          }
-                          onKeyPress={(
-                            e: React.KeyboardEvent<HTMLInputElement>
-                          ) =>
-                            e.key === "Enter" &&
+        {scenes.map((scene) => {
+          const { paths, file, ext } = parsePath(scene.path);
+          const originalDir = scene.path.slice(
+            0,
+            scene.path.length - file.length - ext.length
+          );
+          const defaultQueryString = prepareQueryString(
+            scene,
+            paths,
+            file,
+            config.mode,
+            config.blacklist
+          );
+          const modifiedQuery = queryString[scene.id];
+          const fingerprintMatch = fingerprints[scene.id];
+          return (
+            <div key={scene.id} className="my-2 search-item">
+              <div className="row">
+                <div className="col-6 text-truncate align-self-center">
+                  <a
+                    href={`/scenes/${scene.id}`}
+                    className="scene-link"
+                    title={scene.path}
+                  >
+                    {originalDir}
+                    <wbr />
+                    {`${file}.${ext}`}
+                  </a>
+                </div>
+                <div className="col-6">
+                  {!taggedScenes[scene.id] && scene?.stash_ids.length > 0 && (
+                    <h5 className="text-right text-bold">
+                      Scene already tagged
+                    </h5>
+                  )}
+                  {!taggedScenes[scene.id] && !scene?.stash_ids.length && (
+                    <InputGroup>
+                      <Form.Control
+                        value={modifiedQuery || defaultQueryString}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setQueryString({
+                            ...queryString,
+                            [scene.id]: e.currentTarget.value,
+                          })
+                        }
+                        onKeyPress={(
+                          e: React.KeyboardEvent<HTMLInputElement>
+                        ) =>
+                          e.key === "Enter" &&
+                          doBoxSearch(
+                            scene.id,
+                            queryString[scene.id] || defaultQueryString
+                          )
+                        }
+                      />
+                      <InputGroup.Append>
+                        <Button
+                          disabled={authFailure || loading}
+                          onClick={() =>
                             doBoxSearch(
                               scene.id,
                               queryString[scene.id] || defaultQueryString
                             )
                           }
-                        />
-                        <InputGroup.Append>
-                          <Button
-                            disabled={authFailure || loading}
-                            onClick={() =>
-                              doBoxSearch(
-                                scene.id,
-                                queryString[scene.id] || defaultQueryString
-                              )
-                            }
-                          >
-                            Search
-                          </Button>
-                        </InputGroup.Append>
-                      </InputGroup>
-                    )}
-                    {taggedScenes[scene.id] && (
-                      <h5 className="row no-gutters">
-                        <b className="col-4">Scene successfully tagged:</b>
-                        <a
-                          className="offset-1 col-7 text-right"
-                          href={`/scenes/${scene.id}`}
                         >
-                          {taggedScenes[scene.id].title}
-                        </a>
-                      </h5>
-                    )}
-                  </div>
+                          Search
+                        </Button>
+                      </InputGroup.Append>
+                    </InputGroup>
+                  )}
+                  {taggedScenes[scene.id] && (
+                    <h5 className="row no-gutters">
+                      <b className="col-4">Scene successfully tagged:</b>
+                      <a
+                        className="offset-1 col-7 text-right"
+                        href={`/scenes/${scene.id}`}
+                      >
+                        {taggedScenes[scene.id].title}
+                      </a>
+                    </h5>
+                  )}
                 </div>
-                {searchResults[scene.id] === null && (
-                  <div>No results found.</div>
-                )}
-                {fingerprintMatch &&
-                  credentials.endpoint &&
-                  !scene?.stash_ids.length &&
-                  !taggedScenes[scene.id] && (
-                    <StashSearchResult
-                      showMales={config.showMales}
-                      stashScene={scene}
-                      isActive
-                      setActive={() => {}}
-                      setScene={handleTaggedScene}
-                      scene={fingerprintMatch}
-                      setCoverImage={config.setCoverImage}
-                      tagOperation={config.tagOperation}
-                      client={client}
-                      endpoint={credentials.endpoint}
-                    />
-                  )}
-                {searchResults[scene.id] &&
-                  !taggedScenes[scene.id] &&
-                  !fingerprintMatch && (
-                    <ul className="pl-0 mt-4">
-                      {searchResults[scene.id]?.searchScene
-                        .sort((a, b) => {
-                          const adur =
-                            a?.duration ??
-                            a?.fingerprints.map((f) => f.duration)?.[0] ??
-                            null;
-                          const bdur =
-                            b?.duration ??
-                            b?.fingerprints.map((f) => f.duration)?.[0] ??
-                            null;
-                          if (!adur && !bdur) return 0;
-                          if (adur && !bdur) return -1;
-                          if (!adur && bdur) return 1;
-
-                          const sceneDur = scene.file.duration;
-                          if (!sceneDur) return 0;
-
-                          const aDiff = Math.abs((adur ?? 0) - sceneDur);
-                          const bDiff = Math.abs((bdur ?? 0) - sceneDur);
-
-                          if (aDiff < bDiff) return -1;
-                          if (aDiff > bDiff) return 1;
-                          return 0;
-                        })
-                        .map(
-                          (sceneResult, i) =>
-                            credentials.endpoint &&
-                            sceneResult && (
-                              <StashSearchResult
-                                key={sceneResult.id}
-                                showMales={config.showMales}
-                                stashScene={scene}
-                                scene={sceneResult}
-                                isActive={
-                                  (selectedResult?.[scene.id] ?? 0) === i
-                                }
-                                setActive={() =>
-                                  setSelectedResult({
-                                    ...selectedResult,
-                                    [scene.id]: i,
-                                  })
-                                }
-                                setCoverImage={config.setCoverImage}
-                                tagOperation={config.tagOperation}
-                                setScene={handleTaggedScene}
-                                client={client}
-                                endpoint={credentials.endpoint}
-                              />
-                            )
-                        )}
-                    </ul>
-                  )}
               </div>
-            );
-          })}
+              {searchResults[scene.id] === null && <div>No results found.</div>}
+              {fingerprintMatch &&
+                credentials.endpoint &&
+                !scene?.stash_ids.length &&
+                !taggedScenes[scene.id] && (
+                  <StashSearchResult
+                    showMales={config.showMales}
+                    stashScene={scene}
+                    isActive
+                    setActive={() => {}}
+                    setScene={handleTaggedScene}
+                    scene={fingerprintMatch}
+                    setCoverImage={config.setCoverImage}
+                    tagOperation={config.tagOperation}
+                    client={client}
+                    endpoint={credentials.endpoint}
+                  />
+                )}
+              {searchResults[scene.id] &&
+                !taggedScenes[scene.id] &&
+                !fingerprintMatch && (
+                  <ul className="pl-0 mt-4">
+                    {searchResults[scene.id]?.searchScene
+                      .sort((a, b) => {
+                        const adur =
+                          a?.duration ??
+                          a?.fingerprints.map((f) => f.duration)?.[0] ??
+                          null;
+                        const bdur =
+                          b?.duration ??
+                          b?.fingerprints.map((f) => f.duration)?.[0] ??
+                          null;
+                        if (!adur && !bdur) return 0;
+                        if (adur && !bdur) return -1;
+                        if (!adur && bdur) return 1;
+
+                        const sceneDur = scene.file.duration;
+                        if (!sceneDur) return 0;
+
+                        const aDiff = Math.abs((adur ?? 0) - sceneDur);
+                        const bDiff = Math.abs((bdur ?? 0) - sceneDur);
+
+                        if (aDiff < bDiff) return -1;
+                        if (aDiff > bDiff) return 1;
+                        return 0;
+                      })
+                      .map(
+                        (sceneResult, i) =>
+                          credentials.endpoint &&
+                          sceneResult && (
+                            <StashSearchResult
+                              key={sceneResult.id}
+                              showMales={config.showMales}
+                              stashScene={scene}
+                              scene={sceneResult}
+                              isActive={(selectedResult?.[scene.id] ?? 0) === i}
+                              setActive={() =>
+                                setSelectedResult({
+                                  ...selectedResult,
+                                  [scene.id]: i,
+                                })
+                              }
+                              setCoverImage={config.setCoverImage}
+                              tagOperation={config.tagOperation}
+                              setScene={handleTaggedScene}
+                              client={client}
+                              endpoint={credentials.endpoint}
+                            />
+                          )
+                      )}
+                  </ul>
+                )}
+            </div>
+          );
+        })}
       </Card>
     </div>
   );
