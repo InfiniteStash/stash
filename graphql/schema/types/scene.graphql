@@ -44,7 +44,7 @@ type Scene {
   movies: [SceneMovie!]!
   tags: [Tag!]!
   performers: [Performer!]!
-  stash_ids: [SceneStashID!]!
+  stash_ids: [StashID!]!
 }
 
 input SceneMovieInput {

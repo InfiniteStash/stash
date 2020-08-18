@@ -8,7 +8,7 @@ type Studio {
 
   image_path: String # Resolver
   scene_count: Int # Resolver
-  stash_ids: [StudioStashID!]!
+  stash_ids: [StashID!]!
 }
 
 input StudioCreateInput {

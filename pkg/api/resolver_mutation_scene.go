@@ -206,12 +206,11 @@ func (r *mutationResolver) sceneUpdate(input models.SceneUpdateInput, tx *sqlx.T
 
 	// Save the stash_ids
 	if input.StashIds != nil {
-		var stashIDJoins []models.SceneStashID
+		var stashIDJoins []models.StashID
 		for _, stashID := range input.StashIds {
-			newJoin := models.SceneStashID{
-				Endpoint: stashID.Endpoint,
+			newJoin := models.StashID{
 				StashID:  stashID.StashID,
-				SceneID:  sceneID,
+				Endpoint: stashID.Endpoint,
 			}
 			stashIDJoins = append(stashIDJoins, newJoin)
 		}

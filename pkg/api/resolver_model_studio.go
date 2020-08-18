@@ -47,7 +47,7 @@ func (r *studioResolver) ChildStudios(ctx context.Context, obj *models.Studio) (
 	return qb.FindChildren(obj.ID, nil)
 }
 
-func (r *studioResolver) StashIds(ctx context.Context, obj *models.Studio) ([]*models.StudioStashID, error) {
+func (r *studioResolver) StashIds(ctx context.Context, obj *models.Studio) ([]*models.StashID, error) {
 	qb := models.NewJoinsQueryBuilder()
 	return qb.GetStudioStashIDs(obj.ID)
 }

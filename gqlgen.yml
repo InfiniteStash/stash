@@ -44,12 +44,8 @@ models:
     model: github.com/stashapp/stash/pkg/models.ScrapedSceneTag
   SceneFileType:
     model: github.com/stashapp/stash/pkg/models.SceneFileType
-  SceneStashID:
-    model: github.com/stashapp/stash/pkg/models.SceneStashID
-  PerformerStashID:
-    model: github.com/stashapp/stash/pkg/models.PerformerStashID
-  StudioStashID:
-    model: github.com/stashapp/stash/pkg/models.StudioStashID
+  StashID:
+    model: github.com/stashapp/stash/pkg/models.StashID
   ScrapedMovie:
     model: github.com/stashapp/stash/pkg/models.ScrapedMovie
   ScrapedMovieStudio:

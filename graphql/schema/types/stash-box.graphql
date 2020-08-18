@@ -8,20 +8,7 @@ input StashBoxInput {
     api_key: String!
 }
 
-type SceneStashID {
-  scene_id: ID!
-  endpoint: String!
-  stash_id: String!
-}
-
-type PerformerStashID {
-  performer_id: ID!
-  endpoint: String!
-  stash_id: String!
-}
-
-type StudioStashID {
-  studio_id: ID!
+type StashID {
   endpoint: String!
   stash_id: String!
 }

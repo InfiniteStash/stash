@@ -66,12 +66,11 @@ func (r *mutationResolver) StudioCreate(ctx context.Context, input models.Studio
 
 	// Save the stash_ids
 	if input.StashIds != nil {
-		var stashIDJoins []models.StudioStashID
+		var stashIDJoins []models.StashID
 		for _, stashID := range input.StashIds {
-			newJoin := models.StudioStashID{
-				Endpoint: stashID.Endpoint,
+			newJoin := models.StashID{
 				StashID:  stashID.StashID,
-				StudioID: studio.ID,
+				Endpoint: stashID.Endpoint,
 			}
 			stashIDJoins = append(stashIDJoins, newJoin)
 		}
@@ -156,12 +155,11 @@ func (r *mutationResolver) StudioUpdate(ctx context.Context, input models.Studio
 
 	// Save the stash_ids
 	if input.StashIds != nil {
-		var stashIDJoins []models.StudioStashID
+		var stashIDJoins []models.StashID
 		for _, stashID := range input.StashIds {
-			newJoin := models.StudioStashID{
-				Endpoint: stashID.Endpoint,
+			newJoin := models.StashID{
 				StashID:  stashID.StashID,
-				StudioID: studioID,
+				Endpoint: stashID.Endpoint,
 			}
 			stashIDJoins = append(stashIDJoins, newJoin)
 		}
