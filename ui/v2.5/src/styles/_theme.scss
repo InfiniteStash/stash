@@ -176,9 +176,10 @@ hr {
     color: $text-color;
   }
 
-  .modal-header,
-  .modal-body,
-  .modal-footer {
+  &-header,
+  &-content,
+  &-body,
+  &-footer {
     background-color: #30404d;
     color: $text-color;
   }
