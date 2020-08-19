@@ -9,6 +9,7 @@ import Interface from "src/docs/en/Interface.md";
 import Galleries from "src/docs/en/Galleries.md";
 import Scraping from "src/docs/en/Scraping.md";
 import Plugins from "src/docs/en/Plugins.md";
+import Tagger from "src/docs/en/Tagger.md";
 import Contributing from "src/docs/en/Contributing.md";
 import SceneFilenameParser from "src/docs/en/SceneFilenameParser.md";
 import KeyboardShortcuts from "src/docs/en/KeyboardShortcuts.md";
@@ -76,6 +77,11 @@ export const Manual: React.FC<IManualProps> = ({ show, onClose }) => {
       content: Plugins,
     },
     {
+      key: "Tagger.md",
+      title: "Scene Tagger",
+      content: Tagger,
+    },
+    {
       key: "KeyboardShortcuts.md",
       title: "Keyboard Shortcuts",
       content: KeyboardShortcuts,
@@ -132,7 +138,7 @@ export const Manual: React.FC<IManualProps> = ({ show, onClose }) => {
                 <Nav variant="pills" className="flex-column">
                   {content.map((c) => {
                     return (
-                      <Nav.Item>
+                      <Nav.Item key={c.key}>
                         <Nav.Link className={c.className} eventKey={c.key}>
                           {c.title}
                         </Nav.Link>
@@ -146,7 +152,11 @@ export const Manual: React.FC<IManualProps> = ({ show, onClose }) => {
                 <Tab.Content>
                   {content.map((c) => {
                     return (
-                      <Tab.Pane eventKey={c.key} onClick={interceptLinkClick}>
+                      <Tab.Pane
+                        eventKey={c.key}
+                        key={c.key}
+                        onClick={interceptLinkClick}
+                      >
                         <Page page={c.content} />
                       </Tab.Pane>
                     );

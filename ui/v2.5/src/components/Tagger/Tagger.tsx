@@ -34,7 +34,7 @@ const FindSceneByFingerprintQuery = loader("src/queries/searchFingerprint.gql");
 const MeQuery = loader("src/queries/me.gql");
 
 const DEFAULT_BLACKLIST = [
-  "XXX",
+  "\\sXXX\\s",
   "1080p",
   "720p",
   "2160p",
@@ -62,7 +62,7 @@ function prepareQueryString(
       .filter((s) => s !== "")
       .join(" ");
     blacklist.forEach((b) => {
-      str = str.replace(new RegExp(b, "gi"), "");
+      str = str.replace(new RegExp(b, "gi"), " ");
     });
     return str;
   }
@@ -129,7 +129,7 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
   const [showConfig, setShowConfig] = useState(false);
   const [user, setUser] = useState<Me | null | undefined>();
   const [credentials, setCredentials] = useState({ endpoint: "", api_key: "" });
-  const authFailure = user === null;
+  const authFailure = user === undefined;
 
   const [config, setConfig] = useState<ITaggerConfig>({
     blacklist: DEFAULT_BLACKLIST,
@@ -292,75 +292,13 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
     const count = scenes.filter(
       (s) => s.stash_ids.length === 0 && fingerprints[s.id]
     ).length;
-    return `${count > 0 ? count : "No"} new fingerprints found`;
+    return `${count > 0 ? count : "No"} new fingerprint matches found`;
   };
+
+  const stashBoxes = stashConfig.data?.configuration.general.stashBoxes ?? [];
 
   return (
     <div className="tagger-container mx-auto">
-      <div className="row mb-4 mt-2">
-        <div className="col-4">
-          <Form.Group controlId="mode-select">
-            <Form.Label>
-              <h5>Mode:</h5>
-            </Form.Label>
-            <Form.Control
-              as="select"
-              value={config.mode}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setConfig({
-                  ...config,
-                  mode: e.currentTarget.value as ParseMode,
-                })
-              }
-            >
-              <option value="auto">Auto</option>
-              <option value="filename">Filename</option>
-              <option value="dir">Dir</option>
-              <option value="path">Path</option>
-              <option value="metadata">Metadata</option>
-            </Form.Control>
-            <span>{ModeDesc[config.mode]}</span>
-          </Form.Group>
-        </div>
-        <div className="col-4">
-          <h5>Blacklist</h5>
-          {config.blacklist.map((item, index) => (
-            <Badge
-              className="tag-item d-inline-block"
-              variant="secondary"
-              key={item}
-            >
-              {item.toString()}
-              <Button
-                className="minimal ml-2"
-                onClick={() => removeBlacklist(index)}
-              >
-                <Icon icon="times" />
-              </Button>
-            </Badge>
-          ))}
-        </div>
-        <div className="col-4">
-          <h5>Add Blacklist Item</h5>
-          <InputGroup>
-            <Form.Control
-              value={blacklistInput}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setBlacklistInput(e.currentTarget.value)
-              }
-            />
-            <InputGroup.Append>
-              <Button onClick={handleBlacklistAddition}>Add</Button>
-            </InputGroup.Append>
-          </InputGroup>
-          <div>
-            Note that all blacklist items are regular expressions and also
-            case-insensitive. Certain characters must be escaped with a
-            backslash: <code>[\^$.|?*+()</code>
-          </div>
-        </div>
-      </div>
-
       <div className="row mb-2 no-gutters">
         <Button
           onClick={() => setShowConfig(!showConfig)}
@@ -374,8 +312,9 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
       <Collapse in={showConfig || authFailure}>
         <Card>
           <div className="row">
+            <h4 className="col-12">Configuration</h4>
+            <hr className="w-100" />
             <Form className="col-6">
-              <h4>Configuration</h4>
               <Form.Group controlId="tag-males" className="align-items-center">
                 <Form.Check
                   label="Show male performers"
@@ -434,59 +373,107 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
                   existing tags on scene.
                 </Form.Text>
               </Form.Group>
+
+              <Form.Group controlId="mode-select">
+                <div className="row no-gutters">
+                  <Form.Label className="mr-4 mt-1">Query Mode:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    className="col-2"
+                    value={config.mode}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                      setConfig({
+                        ...config,
+                        mode: e.currentTarget.value as ParseMode,
+                      })
+                    }
+                  >
+                    <option value="auto">Auto</option>
+                    <option value="filename">Filename</option>
+                    <option value="dir">Dir</option>
+                    <option value="path">Path</option>
+                    <option value="metadata">Metadata</option>
+                  </Form.Control>
+                </div>
+                <Form.Text>{ModeDesc[config.mode]}</Form.Text>
+              </Form.Group>
             </Form>
             <div className="col-6">
-              <h4>Help</h4>
-              <p>
-                The search works by matching the query against a scene&rsquo;s{" "}
-                <i>title</i>, <i>release date</i>, <i>studio name</i>, and{" "}
-                <i>performer names</i>. An important thing to note is that it
-                only returns a match <b>if all query terms are a match</b>.
-              </p>
-              <p>
-                As an example, if a scene is titled{" "}
-                <code>&ldquo;A Trip to the Mall&rdquo;</code>, a search for{" "}
-                <code>&ldquo;Trip to the Mall 1080p&rdquo;</code> will{" "}
-                <b>not</b> match, however <code>&ldquo;trip mall&rdquo;</code>{" "}
-                would. Usually a few pieces of info is enough, for instance
-                performer name + release date or studio name.
-              </p>
-            </div>
-          </div>
-          <hr />
-          <div className="row">
-            <Form.Group
-              controlId="stash-box-endpoint"
-              className="align-items-center col-4"
-            >
-              <Form.Label>Active stash-box instance:</Form.Label>
-              <Form.Control
-                as="select"
-                value={credentials?.endpoint}
-                onChange={handleInstanceSelect}
+              <h5>Blacklist</h5>
+              <InputGroup>
+                <Form.Control
+                  value={blacklistInput}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setBlacklistInput(e.currentTarget.value)
+                  }
+                />
+                <InputGroup.Append>
+                  <Button onClick={handleBlacklistAddition}>Add</Button>
+                </InputGroup.Append>
+              </InputGroup>
+              <div>
+                Blacklist items are excluded from queries. Note that they are
+                regular expressions and also case-insensitive. Certain
+                characters must be escaped with a backslash:{" "}
+                <code>[\^$.|?*+()</code>
+              </div>
+              {config.blacklist.map((item, index) => (
+                <Badge
+                  className="tag-item d-inline-block"
+                  variant="secondary"
+                  key={item}
+                >
+                  {item.toString()}
+                  <Button
+                    className="minimal ml-2"
+                    onClick={() => removeBlacklist(index)}
+                  >
+                    <Icon icon="times" />
+                  </Button>
+                </Badge>
+              ))}
+
+              <Form.Group
+                controlId="stash-box-endpoint"
+                className="align-items-center row no-gutters mt-4"
               >
-                {stashConfig.data?.configuration.general.stashBoxes.map((i) => (
-                  <option value={i.endpoint} key={i.endpoint}>
-                    {i.endpoint}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-          </div>
-          <div className="row">
-            {user?.me?.id ? (
-              <h5 className="text-success col">
-                Connection successful. You are logged in as{" "}
-                <b>{user.me.name}</b>.
-              </h5>
-            ) : (
-              <h5 className="text-danger col">
-                Connection failed.{" "}
-                <a href="/settings?tab=configuration">
-                  Please check that the endpoint and API key are correct.
-                </a>
-              </h5>
-            )}
+                <Form.Label className="mr-4">
+                  Active stash-box instance:
+                </Form.Label>
+                <Form.Control
+                  as="select"
+                  value={credentials?.endpoint}
+                  className="col-4"
+                  disabled={!stashBoxes.length}
+                  onChange={handleInstanceSelect}
+                >
+                  {!stashBoxes.length && <option>No instances found</option>}
+                  {stashConfig.data?.configuration.general.stashBoxes.map(
+                    (i) => (
+                      <option value={i.endpoint} key={i.endpoint}>
+                        {i.endpoint}
+                      </option>
+                    )
+                  )}
+                </Form.Control>
+              </Form.Group>
+
+              <div className="row">
+                {user?.me?.id ? (
+                  <h5 className="text-success col">
+                    Connection successful. You are logged in as{" "}
+                    <b>{user.me.name}</b>.
+                  </h5>
+                ) : (
+                  <h5 className="text-danger col">
+                    Connection failed.{" "}
+                    <a href="/settings?tab=configuration">
+                      Please check that the endpoint and API key are correct.
+                    </a>
+                  </h5>
+                )}
+              </div>
+            </div>
           </div>
         </Card>
       </Collapse>
@@ -506,7 +493,7 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
                 authFailure || (!canFingerprintSearch() && !loadingFingerprints)
               }
             >
-              {canFingerprintSearch() && <span>Search Fingerprints</span>}
+              {canFingerprintSearch() && <span>Match Fingerprints</span>}
               {!canFingerprintSearch() && getFingerprintCount()}
               {loadingFingerprints && (
                 <LoadingIndicator message="" inline small />
