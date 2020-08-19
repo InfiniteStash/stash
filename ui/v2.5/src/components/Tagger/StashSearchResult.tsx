@@ -110,14 +110,18 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
     Record<string, IPerformerOperation>
   >({});
   const [saveState, setSaveState] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<{ message?: string; details?: string }>(
+    {}
+  );
 
   const createStudio = useCreateStudio();
   const createPerformer = useCreatePerformer();
   const createTag = useCreateTag();
   const updatePerformerStashID = useUpdatePerformerStashID();
   const updateStudioStashID = useUpdateStudioStashID();
-  const [updateScene] = GQL.useSceneUpdateMutation();
+  const [updateScene] = GQL.useSceneUpdateMutation({
+    onError: (errors) => errors,
+  });
   const { data: allTags } = GQL.useAllTagsForFilterQuery();
 
   const setPerformer = useCallback(
@@ -127,7 +131,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   );
 
   const handleSave = async () => {
-    setError("");
+    setError({});
     let performerIDs = [];
     let studioData:
       | StashStudio
@@ -161,7 +165,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
       );
 
       if (!studioCreateResult?.data?.studioCreate) {
-        setError(`Failed to save studio "${newStudio.name}"`);
+        setError({
+          message: `Failed to save studio "${newStudio.name}"`,
+          details: studioCreateResult?.errors?.[0].message,
+        });
         return setSaveState("");
       }
       studioData = studioCreateResult.data?.studioCreate;
@@ -174,7 +181,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         { stash_id: scene.studio!.id, endpoint },
       ]);
       if (!res?.data?.studioUpdate) {
-        setError(`Failed to save stashID to studio "${studio.update.name}"`);
+        setError({
+          message: `Failed to save stashID to studio "${studio.update.name}"`,
+          details: res?.errors?.[0].message,
+        });
         return setSaveState("");
       }
     }
@@ -236,7 +246,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
           const res = await createPerformer(performerInput, stashID);
           if (!res?.data?.performerCreate) {
-            setError(`Failed to save performer "${performerInput.name}"`);
+            setError({
+              message: `Failed to save performer "${performerInput.name}"`,
+              details: res?.errors?.[0].message,
+            });
             return null;
           }
           performerData = res.data?.performerCreate;
@@ -317,7 +330,12 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         },
       });
 
-      if (sceneUpdateResult.data?.sceneUpdate)
+      if (!sceneUpdateResult?.data?.sceneUpdate) {
+        setError({
+          message: "Failed to save scene",
+          details: sceneUpdateResult?.errors?.[0].message,
+        });
+      } else if (sceneUpdateResult.data?.sceneUpdate)
         setScene(sceneUpdateResult.data.sceneUpdate);
 
       if (stashScene.checksum && stashScene.file?.duration)
@@ -430,9 +448,12 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               />
             ))}
           <div className="row no-gutters mt-2 align-items-center justify-content-end">
-            {error && (
-              <strong className="col-6 mt-1 mr-2 text-danger text-right">
-                {error}
+            {error.message && (
+              <strong className="mt-1 mr-2 text-danger text-right">
+                <abbr title={error.details} className="mr-2">
+                  Error:
+                </abbr>
+                {error.message}
               </strong>
             )}
             {saveState && (
