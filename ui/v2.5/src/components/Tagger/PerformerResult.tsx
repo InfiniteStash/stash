@@ -5,20 +5,19 @@ import cx from "classnames";
 import { SuccessIcon, PerformerSelect } from "src/components/Shared";
 import * as GQL from "src/core/generated-graphql";
 import { ValidTypes } from "src/components/Shared/Select";
-import { SearchScene_searchScene_performers_performer as StashPerformer } from "src/definitions-box/SearchScene";
-import { sortImageURLs } from "./utils";
+import { sortImageURLs, IStashBoxPerformer } from "./utils";
 
 import PerformerModal from "./PerformerModal";
 
 export interface IPerformerOperation {
-  create?: StashPerformer;
+  create?: IStashBoxPerformer;
   update?: GQL.PerformerDataFragment | GQL.SlimPerformerDataFragment;
   existing?: GQL.PerformerDataFragment;
   skip?: boolean;
 }
 
 interface IPerformerResultProps {
-  performer: StashPerformer;
+  performer: IStashBoxPerformer;
   setPerformer: (data: IPerformerOperation) => void;
 }
 
@@ -81,6 +80,8 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
   };
 
   const handlePerformerCreate = (imageIndex: number) => {
+    // TODO
+    /*
     const images = sortImageURLs(performer.images, "portrait");
     const imageURLs = images.length
       ? [
@@ -92,11 +93,12 @@ const PerformerResult: React.FC<IPerformerResultProps> = ({
           },
         ]
       : [];
+     */
     setSelectedSource("create");
     setPerformer({
       create: {
         ...performer,
-        images: imageURLs,
+        images: [],
       },
     });
     showModal(false);

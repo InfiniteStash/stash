@@ -7,11 +7,6 @@ import cx from "classnames";
 import { Button } from "react-bootstrap";
 import { uniq } from "lodash";
 
-import {
-  SearchScene_searchScene as SearchResult,
-  SearchScene_searchScene_performers_performer as StashPerformer,
-  SearchScene_searchScene_studio as StashStudio,
-} from "src/definitions-box/SearchScene";
 import { FingerprintAlgorithm } from "src/definitions-box/globalTypes";
 import { getCountryByISO } from "src/utils/country";
 import * as GQL from "src/core/generated-graphql";
@@ -23,14 +18,9 @@ import { LoadingIndicator, SuccessIcon } from "src/components/Shared";
 import PerformerResult, { IPerformerOperation } from "./PerformerResult";
 import StudioResult, { IStudioOperation } from "./StudioResult";
 import {
-  formatBodyModification,
-  formatCareerLength,
-  formatGender,
-  formatMeasurements,
-  formatBreastType,
-  formatURL,
-  getUrlByType,
-  getImage,
+  IStashBoxScene,
+  IStashBoxPerformer,
+  IStashBoxStudio,
 } from "./utils";
 import {
   useCreateTag,
@@ -43,7 +33,7 @@ import {
 const SubmitFingerprintMutation = loader("src/queries/submitFingerprint.gql");
 
 const getDurationStatus = (
-  scene: SearchResult,
+  scene: IStashBoxScene,
   stashDuration: number | undefined | null
 ) => {
   const fingerprintDuration =
@@ -62,7 +52,7 @@ const getDurationStatus = (
   return <div>Duration off by {Math.floor(diff)}s</div>;
 };
 
-const getFingerprintStatus = (scene: SearchResult, stashChecksum?: string) => {
+const getFingerprintStatus = (scene: IStashBoxScene, stashChecksum?: string) => {
   if (scene.fingerprints.some((f) => f.hash === stashChecksum))
     return (
       <div className="font-weight-bold">
@@ -73,7 +63,7 @@ const getFingerprintStatus = (scene: SearchResult, stashChecksum?: string) => {
 };
 
 interface IStashSearchResultProps {
-  scene: SearchResult;
+  scene: IStashBoxScene;
   stashScene: Partial<GQL.Scene>;
   isActive: boolean;
   setActive: () => void;
@@ -134,7 +124,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
     setError({});
     let performerIDs = [];
     let studioData:
-      | StashStudio
+      | IStashBoxStudio
       | GQL.StudioDataFragment
       | GQL.SlimStudioDataFragment;
     if (studio?.create) studioData = studio.create;
@@ -149,15 +139,10 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         stash_ids: [
           {
             endpoint,
-            stash_id: scene.studio!.id,
+            stash_id: scene.studio.id,
           },
         ],
-        ...(!!getUrlByType(studio.create.urls, "HOME") && {
-          url: getUrlByType(studio.create.urls, "HOME"),
-        }),
-        ...(!!getImage(studio.create.images, "landscape") && {
-          image: getImage(studio.create.images, "landscape"),
-        }),
+        url: studio.create.url,
       };
       const studioCreateResult = await createStudio(
         newStudio,
@@ -196,7 +181,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         if (performer.skip) return "Skip";
 
         let performerData:
-          | StashPerformer
+          | IStashBoxPerformer
           | GQL.PerformerDataFragment
           | GQL.SlimPerformerDataFragment;
         if (performer?.create) performerData = performer.create;
@@ -205,7 +190,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         else return;
 
         if (performer.create) {
-          const imgurl = performer.create.images[0]?.url;
+          const imgurl = performer.create.images[0];
           let imgData = null;
           if (imgurl) {
             const img = await fetch(imgurl, {
@@ -220,21 +205,19 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
           const performerInput = {
             name: performerData.name,
-            gender: formatGender(performer.create.gender),
-            country: getCountryByISO(performer.create.country) ?? "",
-            height: performer.create.height?.toString(),
-            ethnicity: titleCase(performer.create.ethnicity ?? ""),
-            birthdate: performer.create.birthdate?.date ?? null,
-            eye_color: titleCase(performer.create.eye_color ?? ""),
-            fake_tits: formatBreastType(performer.create.breast_type),
-            measurements: formatMeasurements(performer.create.measurements),
-            career_length: formatCareerLength(
-              performer.create.career_start_year,
-              performer.create.career_end_year
-            ),
-            tattoos: formatBodyModification(performer.create.tattoos),
-            piercings: formatBodyModification(performer.create.piercings),
-            twitter: formatURL(performer.create.urls, "TWITTER"),
+            gender: performer.create.gender,
+            country: performer.create.country,
+            height: performer.create.height,
+            ethnicity: performer.create.ethnicity,
+            birthdate: performer.create.birthdate,
+            eye_color: performer.create.eye_color,
+            fake_tits: performer.create.fake_tits,
+            measurements: performer.create.measurements,
+            career_length: performer.create.career_length,
+            tattoos: performer.create.tattoos,
+            piercings: performer.create.piercings,
+            twitter: performer.create.twitter,
+            instagram: performer.create.instagram,
             image: imgData,
             stash_ids: [
               {
@@ -271,7 +254,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
     setSaveState("Updating scene");
     if (studioData && !performerIDs.some((id) => !id)) {
-      const imgurl = getImage(scene.images, "landscape");
+      const imgurl = scene.images[0];
       let imgData = null;
       if (imgurl && setCoverImage) {
         const img = await fetch(imgurl, {
@@ -318,7 +301,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
           performer_ids: performerIDs.filter((id) => id !== "Skip") as string[],
           studio_id: studioData.id,
           cover_image: imgData,
-          url: getUrlByType(scene.urls, "STUDIO") ?? null,
+          url: scene.url,
           ...(tagIDs ? { tag_ids: uniq(tagIDs) } : {}),
           stash_ids: [
             ...(stashScene?.stash_ids ?? []),
@@ -338,6 +321,8 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
       } else if (sceneUpdateResult.data?.sceneUpdate)
         setScene(sceneUpdateResult.data.sceneUpdate);
 
+      // TODO: Fingerprint submission
+      /*
       if (stashScene.checksum && stashScene.file?.duration)
         client?.mutate<SubmitFingerprint, SubmitFingerprintVariables>({
           mutation: SubmitFingerprintMutation,
@@ -366,6 +351,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
             },
           },
         });
+         */
     }
     setSaveState("");
   };
@@ -374,9 +360,9 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
     "selected-result": isActive,
   });
 
-  const sceneTitle = getUrlByType(scene.urls, "STUDIO") ? (
+  const sceneTitle = scene.url ? (
     <a
-      href={getUrlByType(scene.urls, "STUDIO")}
+      href={scene.url}
       target="_blank"
       rel="noopener noreferrer"
       className="scene-link"
@@ -389,7 +375,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
   const saveEnabled =
     Object.keys(performers ?? []).length ===
-      scene.performers.filter((p) => p.performer.gender !== "MALE" || showMales)
+      scene.performers.filter((p) => p.gender !== "MALE" || showMales)
         .length &&
     Object.keys(performers ?? []).every(
       (id) =>
@@ -410,7 +396,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
       <div className="col-6">
         <div className="row">
           <img
-            src={getImage(scene?.images, "landscape")}
+            src={scene.images[0]}
             alt=""
             className="align-self-center scene-image"
           />
@@ -423,7 +409,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
             </h5>
             <div>
               Performers:{" "}
-              {scene?.performers?.map((p) => p.performer.name).join(", ")}
+              {scene?.performers?.map((p) => p.name).join(", ")}
             </div>
             {getDurationStatus(scene, stashScene.file?.duration)}
             {getFingerprintStatus(
@@ -437,14 +423,14 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         <div className="col-6">
           <StudioResult studio={scene.studio} setStudio={setStudio} />
           {scene.performers
-            .filter((p) => p.performer.gender !== "MALE" || showMales)
+            .filter((p) => p.gender !== "MALE" || showMales)
             .map((performer) => (
               <PerformerResult
-                performer={performer.performer}
+                performer={performer}
                 setPerformer={(data: IPerformerOperation) =>
-                  setPerformer(data, performer.performer.id)
+                  setPerformer(data, performer.id)
                 }
-                key={`${scene.id}${performer.performer.id}`}
+                key={`${scene.id}${performer.id}`}
               />
             ))}
           <div className="row no-gutters mt-2 align-items-center justify-content-end">

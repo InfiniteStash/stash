@@ -12,12 +12,8 @@ import localForage from "localforage";
 import { FingerprintAlgorithm } from "src/definitions-box/globalTypes";
 import * as GQL from "src/core/generated-graphql";
 import { Icon, LoadingIndicator } from "src/components/Shared";
-import { useConfiguration } from "src/core/StashService";
+import { stashBoxQuery, useConfiguration } from "src/core/StashService";
 
-import {
-  SearchSceneVariables,
-  SearchScene,
-} from "src/definitions-box/SearchScene";
 import {
   FindSceneByFingerprintVariables,
   FindSceneByFingerprint,
@@ -27,9 +23,8 @@ import { Me } from "src/definitions-box/Me";
 import { loader } from "graphql.macro";
 import StashSearchResult from "./StashSearchResult";
 import { useStashBoxClient } from "./client";
-import { parsePath } from "./utils";
+import { parsePath, selectScenes, IStashBoxScene } from "./utils";
 
-const SearchSceneQuery = loader("src/queries/searchScene.gql");
 const FindSceneByFingerprintQuery = loader("src/queries/searchFingerprint.gql");
 const MeQuery = loader("src/queries/me.gql");
 
@@ -112,7 +107,7 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
   const stashConfig = useConfiguration();
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<
-    Record<string, SearchScene | null>
+    Record<string, IStashBoxScene[]>
   >({});
   const [queryString, setQueryString] = useState<Record<string, string>>({});
   const [selectedResult, setSelectedResult] = useState<
@@ -197,17 +192,18 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
         .catch(() => setUser(null));
   }, [client]);
 
+
+  const selectedEndpointIndex = stashConfig.data?.configuration.general.stashBoxes.findIndex(s => s.endpoint === credentials.endpoint);
+
   const doBoxSearch = (sceneID: string, searchVal: string) => {
-    client
-      ?.query<SearchScene, SearchSceneVariables>({
-        query: SearchSceneQuery,
-        variables: { term: searchVal },
-      })
+    if (selectedEndpointIndex === undefined || selectedEndpointIndex === -1) return;
+
+		stashBoxQuery(searchVal, selectedEndpointIndex)
       .then((queryData) => {
+        const s = selectScenes(queryData.data.queryStashBoxScene);
         setSearchResults({
           ...searchResults,
-          [sceneID]:
-            queryData.data.searchScene.length > 0 ? queryData.data : null,
+          [sceneID]: s
         });
         setLoading(false);
       });
@@ -585,6 +581,8 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
                 </div>
               </div>
               {searchResults[scene.id] === null && <div>No results found.</div>}
+              { /*
+              TODO
               {fingerprintMatch &&
                 credentials.endpoint &&
                 !scene?.stash_ids.length &&
@@ -602,11 +600,12 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes }) => {
                     endpoint={credentials.endpoint}
                   />
                 )}
+                 */}
               {searchResults[scene.id] &&
                 !taggedScenes[scene.id] &&
                 !fingerprintMatch && (
                   <ul className="pl-0 mt-4">
-                    {searchResults[scene.id]?.searchScene
+                    {searchResults[scene.id]
                       .sort((a, b) => {
                         const adur =
                           a?.duration ??

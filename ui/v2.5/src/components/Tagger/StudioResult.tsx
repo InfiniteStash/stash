@@ -5,18 +5,17 @@ import cx from "classnames";
 import { SuccessIcon, Modal, StudioSelect } from "src/components/Shared";
 import * as GQL from "src/core/generated-graphql";
 import { ValidTypes } from "src/components/Shared/Select";
-import { SearchScene_searchScene_studio as StashStudio } from "src/definitions-box/SearchScene";
-import { getImage, getUrlByType } from "./utils";
+import { IStashBoxStudio } from "./utils";
 
 export interface IStudioOperation {
-  create?: StashStudio;
+  create?: IStashBoxStudio;
   update?: GQL.StudioDataFragment | GQL.SlimStudioDataFragment;
   existing?: GQL.StudioDataFragment;
   skip?: boolean;
 }
 
 interface IStudioResultProps {
-  studio: StashStudio | null;
+  studio: IStashBoxStudio | null;
   setStudio: Dispatch<SetStateAction<IStudioOperation | undefined>>;
 }
 
@@ -123,13 +122,13 @@ const StudioResult: React.FC<IStudioResultProps> = ({ studio, setStudio }) => {
         <div className="row">
           <strong className="col-2">URL:</strong>
           <span className="col-10">
-            {getUrlByType(studio?.urls ?? [], "HOME")}
+            {studio?.url ?? ''}
           </span>
         </div>
         <div className="row">
           <strong className="col-2">Logo:</strong>
           <span className="col-10">
-            <img src={getImage(studio?.images ?? [], "landscape")} alt="" />
+            <img src={studio?.image ?? ''} alt="" />
           </span>
         </div>
       </Modal>

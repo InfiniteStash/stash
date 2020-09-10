@@ -3,29 +3,16 @@ import { Button } from "react-bootstrap";
 import cx from "classnames";
 
 import { LoadingIndicator, Icon, Modal } from "src/components/Shared";
-import { BreastTypeEnum, GenderEnum } from "src/definitions-box/globalTypes";
-import { SearchScene_searchScene_performers_performer as StashPerformer } from "src/definitions-box/SearchScene";
-import { getCountryByISO } from "src/utils/country";
-import {
-  formatBodyModification,
-  formatMeasurements,
-  sortImageURLs,
-} from "./utils";
+import * as GQL from "src/core/generated-graphql";
+import { genderToString } from "src/core/StashService";
+import { IStashBoxPerformer } from "./utils";
 
 interface IPerformerModalProps {
-  performer: StashPerformer;
+  performer: IStashBoxPerformer;
   modalVisible: boolean;
   showModal: (show: boolean) => void;
   handlePerformerCreate: (imageIndex: number) => void;
 }
-
-const genderDict = {
-  [GenderEnum.FEMALE]: "Female",
-  [GenderEnum.MALE]: "Male",
-  [GenderEnum.TRANSGENDER_FEMALE]: "Transgender Female",
-  [GenderEnum.TRANSGENDER_MALE]: "Transgender Male",
-  [GenderEnum.INTERSEX]: "Intersex",
-};
 
 const PerformerModal: React.FC<IPerformerModalProps> = ({
   modalVisible,
@@ -39,7 +26,7 @@ const PerformerModal: React.FC<IPerformerModalProps> = ({
   >("empty");
   const [loadDict, setLoadDict] = useState<Record<number, boolean>>({});
 
-  const images = sortImageURLs(performer.images, "portrait");
+  const { images } = performer;
 
   const changeImage = (index: number) => {
     setImageIndex(index);
@@ -82,31 +69,31 @@ const PerformerModal: React.FC<IPerformerModalProps> = ({
           <div className="row no-gutters">
             <strong className="col-6">Gender:</strong>
             <span className="col-6 text-truncate text-capitalize">
-              {performer.gender && genderDict[performer.gender]}
+              {performer.gender && genderToString(performer.gender)}
             </span>
           </div>
           <div className="row no-gutters">
             <strong className="col-6">Birthdate:</strong>
             <span className="col-6 text-truncate">
-              {performer.birthdate?.date ?? "Unknown"}
+              {performer.birthdate ?? "Unknown"}
             </span>
           </div>
           <div className="row no-gutters">
             <strong className="col-6">Ethnicity:</strong>
             <span className="col-6 text-truncate text-capitalize">
-              {performer.ethnicity?.toLowerCase()}
+              {performer.ethnicity}
             </span>
           </div>
           <div className="row no-gutters">
             <strong className="col-6">Country:</strong>
             <span className="col-6 text-truncate">
-              {getCountryByISO(performer.country) ?? ""}
+              {performer.country ?? ""}
             </span>
           </div>
           <div className="row no-gutters">
             <strong className="col-6">Eye Color:</strong>
             <span className="col-6 text-truncate text-capitalize">
-              {performer.eye_color?.toLowerCase()}
+              {performer.eye_color}
             </span>
           </div>
           <div className="row no-gutters">
@@ -116,36 +103,33 @@ const PerformerModal: React.FC<IPerformerModalProps> = ({
           <div className="row no-gutters">
             <strong className="col-6">Measurements:</strong>
             <span className="col-6 text-truncate">
-              {formatMeasurements(performer.measurements)}
+              {performer.measurements}
             </span>
           </div>
-          {performer?.gender !== GenderEnum.MALE && (
+          {performer?.gender !== GQL.GenderEnum.Male && (
             <div className="row no-gutters">
               <strong className="col-6">Fake Tits:</strong>
               <span className="col-6 text-truncate">
-                {performer.breast_type === BreastTypeEnum.FAKE ? "Yes" : "No"}
+                {performer.fake_tits}
               </span>
             </div>
           )}
           <div className="row no-gutters">
             <strong className="col-6">Career Length:</strong>
             <span className="col-6 text-truncate">
-              {performer.career_start_year &&
-                `${performer.career_start_year} - ${
-                  performer.career_end_year ?? ""
-                }`}{" "}
+              {performer.career_length}
             </span>
           </div>
           <div className="row no-gutters">
             <strong className="col-6">Tattoos:</strong>
             <span className="col-6 text-truncate">
-              {formatBodyModification(performer.tattoos)}
+              {performer.tattoos}
             </span>
           </div>
           <div className="row no-gutters ">
             <strong className="col-6">Piercings:</strong>
             <span className="col-6 text-truncate">
-              {formatBodyModification(performer.piercings)}
+              {performer.piercings}
             </span>
           </div>
         </div>
@@ -153,7 +137,7 @@ const PerformerModal: React.FC<IPerformerModalProps> = ({
           <div className="col-6 image-selection">
             <div className="performer-image">
               <img
-                src={images[imageIndex].url}
+                src={images[imageIndex]}
                 className={cx({ "d-none": imageState !== "loaded" })}
                 alt=""
                 onLoad={() => handleLoad(imageIndex)}
