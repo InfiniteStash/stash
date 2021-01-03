@@ -75,6 +75,10 @@ const (
 	PreviewExcludeEnd        = "preview_exclude_end"
 	previewExcludeEndDefault = "0"
 
+	TranscodeHardwareAcceleration = "transcode_hardware_acceleration"
+	MaxTranscodeSize              = "max_transcode_size"
+	MaxStreamingTranscodeSize     = "max_streaming_transcode_size"
+
 	WriteImageThumbnails        = "write_image_thumbnails"
 	writeImageThumbnailsDefault = true
 
@@ -648,6 +652,10 @@ func (i *Instance) GetPreviewPreset() models.PreviewPreset {
 	}
 
 	return models.PreviewPreset(ret)
+}
+
+func GetTranscodeHardwareAcceleration() bool {
+	return viper.GetBool(TranscodeHardwareAcceleration)
 }
 
 func (i *Instance) GetMaxTranscodeSize() models.StreamingResolutionEnum {
