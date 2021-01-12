@@ -271,6 +271,7 @@ export const GallerySelect: React.FC<IGallerySelect> = (props) => {
       selectedOptions={options}
       isMulti
       placeholder="Search for gallery..."
+      noOptionsMessage={query === "" ? null : "No galleries found."}
     />
   );
 };
@@ -321,6 +322,7 @@ export const SceneSelect: React.FC<ISceneSelect> = (props) => {
       selectedOptions={options}
       isMulti
       placeholder="Search for scene..."
+      noOptionsMessage={query === "" ? null : "No scenes found."}
     />
   );
 };
