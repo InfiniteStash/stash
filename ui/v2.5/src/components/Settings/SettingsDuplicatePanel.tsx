@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FormattedNumber } from "react-intl";
+import querystring from "query-string";
 
 import * as GQL from "src/core/generated-graphql";
 import {
@@ -16,7 +17,10 @@ import { DeleteScenesDialog } from "src/components/Scenes/DeleteScenesDialog";
 const CLASSNAME = "DuplicateFinder";
 
 export const SettingsDuplicatePanel: React.FC = () => {
-  const [page, setPage] = useState(1);
+  const history = useHistory();
+  const { page, size } = querystring.parse(history.location.search);
+  const currentPage = Number.parseInt(Array.isArray(page) ? page[0] : page ?? '1', 10);
+  const pageSize = Number.parseInt(Array.isArray(size) ? size[0] : size?? '20', 10);
   const [distance, setDistance] = useState(0);
   const [isMultiDelete, setIsMultiDelete] = useState(false);
   const [checkedScenes, setCheckedScenes] = useState<Record<string, boolean>>(
@@ -32,11 +36,19 @@ export const SettingsDuplicatePanel: React.FC = () => {
 
   if (loading) return <LoadingIndicator />;
   if (!data) return <ErrorMessage error="Error searching for duplicates." />;
+
   const scenes = data?.findDuplicateScenes ?? [];
-  const filteredScenes = scenes.slice((page - 1) * 20, page * 20);
+  const filteredScenes = scenes.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const checkCount = Object.keys(checkedScenes).filter(
     (id) => checkedScenes[id]
   ).length;
+
+  const setQuery = (q: Record<string, string|number|undefined>) => {
+    history.push({ search:  querystring.stringify({
+      ...querystring.parse(history.location.search),
+      ...q,
+    }) });
+  }
 
   function onDeleteDialogClosed(deleted: boolean) {
     setDeletingScene(null);
@@ -100,6 +112,13 @@ export const SettingsDuplicatePanel: React.FC = () => {
               <option value={1}>High</option>
               <option value={2}>Medium</option>
               <option value={3}>Low</option>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+              <option value={7}>7</option>
+              <option value={8}>8</option>
+              <option value={9}>9</option>
+              <option value={10}>10</option>
             </Form.Control>
           </Col>
         </Row>
@@ -109,7 +128,7 @@ export const SettingsDuplicatePanel: React.FC = () => {
         </Form.Text>
       </Form.Group>
       <div className="d-flex mb-2">
-        <h6 className="mr-auto">{scenes.length} sets of duplicates found.</h6>
+        <h6 className="mr-auto align-self-center">{scenes.length} sets of duplicates found.</h6>
         {checkCount > 0 && (
           <Button
             className="edit-button"
@@ -120,11 +139,23 @@ export const SettingsDuplicatePanel: React.FC = () => {
           </Button>
         )}
         <Pagination
-          itemsPerPage={20}
-          currentPage={page}
+          itemsPerPage={pageSize}
+          currentPage={currentPage}
           totalItems={scenes.length}
-          onChangePage={setPage}
+          onChangePage={newPage => setQuery({ page: newPage === 1 ? undefined : newPage })}
         />
+        <Form.Control
+          as="select"
+          className="w-auto ml-2 btn-secondary"
+          defaultValue={pageSize}
+          onChange={e => setQuery({ size: e.currentTarget.value === "20" ? undefined : e.currentTarget.value })}
+        >
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={40}>40</option>
+          <option value={60}>60</option>
+          <option value={80}>80</option>
+        </Form.Control>
       </div>
       <Table striped className={`${CLASSNAME}-table`}>
         <colgroup>

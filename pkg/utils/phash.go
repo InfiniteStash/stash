@@ -18,7 +18,7 @@ func FindDuplicates(hashes []*Phash, distance int) [][]int {
 			if i != j {
 				neighborHash := goimagehash.NewImageHash(uint64(neighbor.Hash), goimagehash.PHash)
 				neighborDistance, _ := sceneHash.Distance(neighborHash)
-				if neighborDistance <= distance {
+				if neighborDistance == distance {
 					scene.Neighbors = append(scene.Neighbors, j)
 				}
 			}
