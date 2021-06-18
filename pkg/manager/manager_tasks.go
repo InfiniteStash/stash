@@ -830,15 +830,16 @@ func (s *singleton) StashBoxBatchSceneTag(input models.StashBoxBatchSceneTagInpu
 						scene, err := sceneQuery.Find(id)
 						if err == nil {
 							tasks = append(tasks, StashBoxSceneTagTask{
-								txnManager:      s.TxnManager,
-								scene:           scene,
-								refresh:         input.Refresh,
-								box:             box,
-								excluded_fields: input.ExcludeFields,
-								phashDistance:   phashDistance,
-								tagStrategy:     input.TagStrategy,
-								createTags:      input.CreateTags,
-								setOrganized:    input.SetOrganized,
+								txnManager:        s.TxnManager,
+								scene:             scene,
+								refresh:           input.Refresh,
+								box:               box,
+								excludedFields:    input.ExcludeFields,
+								phashDistance:     phashDistance,
+								tagStrategy:       input.TagStrategy,
+								createTags:        input.CreateTags,
+								setOrganized:      input.SetOrganized,
+								tagMalePerformers: input.TagMalePerformers,
 							})
 						} else {
 							return err
@@ -865,15 +866,16 @@ func (s *singleton) StashBoxBatchSceneTag(input models.StashBoxBatchSceneTagInpu
 
 				for _, scene := range scenes {
 					tasks = append(tasks, StashBoxSceneTagTask{
-						txnManager:      s.TxnManager,
-						scene:           scene,
-						refresh:         input.Refresh,
-						box:             box,
-						excluded_fields: input.ExcludeFields,
-						phashDistance:   phashDistance,
-						tagStrategy:     input.TagStrategy,
-						createTags:      input.CreateTags,
-						setOrganized:    input.SetOrganized,
+						txnManager:        s.TxnManager,
+						scene:             scene,
+						refresh:           input.Refresh,
+						box:               box,
+						excludedFields:    input.ExcludeFields,
+						phashDistance:     phashDistance,
+						tagStrategy:       input.TagStrategy,
+						createTags:        input.CreateTags,
+						setOrganized:      input.SetOrganized,
+						tagMalePerformers: input.TagMalePerformers,
 					})
 				}
 				return nil
@@ -900,6 +902,8 @@ func (s *singleton) StashBoxBatchSceneTag(input models.StashBoxBatchSceneTagInpu
 
 			progress.Increment()
 		}
+
+		logger.Infof("Finished Stash-Box batch operation for %d scenes", len(tasks))
 	})
 
 	return s.JobManager.Add("Batch stash-box scene tag...", j)

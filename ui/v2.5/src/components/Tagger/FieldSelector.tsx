@@ -11,7 +11,7 @@ interface IProps {
   onSelect: (fields: string[]) => void;
 }
 
-const PerformerFieldSelect: React.FC<IProps> = ({
+const FieldSelect: React.FC<IProps> = ({
   fields,
   show,
   excludedFields,
@@ -60,4 +60,4 @@ const PerformerFieldSelect: React.FC<IProps> = ({
   );
 };
 
-export default PerformerFieldSelect;
+export default FieldSelect;
