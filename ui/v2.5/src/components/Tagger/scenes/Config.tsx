@@ -149,11 +149,17 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
                     className="mr-4"
                     checked={config.createTags}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setConfig({ ...config, createTags: e.currentTarget.checked })
+                      setConfig({
+                        ...config,
+                        createTags: e.currentTarget.checked,
+                      })
                     }
                   />
                 </div>
-                <Form.Text>Sets whether tags that don&apos;t exist in stash should be created or ignored.</Form.Text>
+                <Form.Text>
+                  Sets whether tags that don&apos;t exist in stash should be
+                  created or ignored.
+                </Form.Text>
               </Form.Group>
 
               <Form.Group className="align-items-center">
@@ -164,12 +170,14 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
                     className="mr-4"
                     checked={config.setOrganized}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setConfig({ ...config, setOrganized: e.currentTarget.checked })
+                      setConfig({
+                        ...config,
+                        setOrganized: e.currentTarget.checked,
+                      })
                     }
                   />
                 </div>
               </Form.Group>
-
             </Form>
             <div className="col-md-6">
               <h5>Blacklist</h5>
@@ -181,8 +189,9 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
               </InputGroup>
               <div>
                 Blacklist items are excluded from queries. Note that they are
-                regular expressions and also case-insensitive. Certain characters
-                must be escaped with a backslash: <code>[\^$.|?*+()</code>
+                regular expressions and also case-insensitive. Certain
+                characters must be escaped with a backslash:{" "}
+                <code>[\^$.|?*+()</code>
               </div>
               {config.blacklist.map((item, index) => (
                 <Badge
@@ -239,14 +248,15 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
                   onChange={handleInstanceSelect}
                 >
                   {!stashBoxes.length && <option>No instances found</option>}
-                  {stashConfig.data?.configuration.general.stashBoxes.map((i) => (
-                    <option value={i.endpoint} key={i.endpoint}>
-                      {i.endpoint}
-                    </option>
-                  ))}
+                  {stashConfig.data?.configuration.general.stashBoxes.map(
+                    (i) => (
+                      <option value={i.endpoint} key={i.endpoint}>
+                        {i.endpoint}
+                      </option>
+                    )
+                  )}
                 </Form.Control>
               </Form.Group>
-
             </div>
           </div>
         </Card>
@@ -257,7 +267,7 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
         onSelect={handleFieldSelect}
         excludedFields={excludedFields}
       />
-</>
+    </>
   );
 };
 
