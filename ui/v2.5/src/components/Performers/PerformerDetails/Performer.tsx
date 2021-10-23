@@ -159,18 +159,23 @@ export const Performer: React.FC = () => {
       <Tab eventKey="details" title={intl.formatMessage({ id: "details" })}>
         <PerformerDetailsPanel performer={performer} />
       </Tab>
-      <Tab eventKey="scenes" title={intl.formatMessage({ id: "scenes" })}>
-        <PerformerScenesPanel performer={performer} />
-      </Tab>
-      <Tab eventKey="galleries" title={intl.formatMessage({ id: "galleries" })}>
-        <PerformerGalleriesPanel performer={performer} />
-      </Tab>
-      <Tab eventKey="images" title={intl.formatMessage({ id: "images" })}>
-        <PerformerImagesPanel performer={performer} />
-      </Tab>
-      <Tab eventKey="movies" title={intl.formatMessage({ id: "movies" })}>
-        <PerformerMoviesPanel performer={performer} />
-      </Tab>
+      { /* TODO: Remove */ }
+      { performer.id && performer.name && (
+        <>
+          <Tab eventKey="scenes" title={intl.formatMessage({ id: "scenes" })}>
+            <PerformerScenesPanel performer={performer as GQL.Performer} />
+          </Tab>
+          <Tab eventKey="galleries" title={intl.formatMessage({ id: "galleries" })}>
+            <PerformerGalleriesPanel performer={performer as GQL.Performer} />
+          </Tab>
+          <Tab eventKey="images" title={intl.formatMessage({ id: "images" })}>
+            <PerformerImagesPanel performer={performer as GQL.Performer} />
+          </Tab>
+          <Tab eventKey="movies" title={intl.formatMessage({ id: "movies" })}>
+            <PerformerMoviesPanel performer={performer as GQL.Performer} />
+          </Tab>
+        </>
+      )}
       <Tab eventKey="edit" title={intl.formatMessage({ id: "actions.edit" })}>
         <PerformerEditPanel
           performer={performer}

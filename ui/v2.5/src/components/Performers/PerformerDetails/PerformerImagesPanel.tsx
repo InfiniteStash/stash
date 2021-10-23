@@ -4,7 +4,7 @@ import { ImageList } from "src/components/Images/ImageList";
 import { performerFilterHook } from "src/core/performers";
 
 interface IPerformerImagesPanel {
-  performer: Partial<GQL.PerformerDataFragment>;
+  performer: Pick<GQL.PerformerDataFragment, 'id'|'name'>;
 }
 
 export const PerformerImagesPanel: React.FC<IPerformerImagesPanel> = ({

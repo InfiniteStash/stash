@@ -10,7 +10,7 @@ enum GenderEnum {
 type Performer {
   id: ID!
   checksum: String!
-  name: String
+  name: String!
   url: String
   gender: GenderEnum
   twitter: String

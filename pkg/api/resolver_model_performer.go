@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/stashapp/stash/pkg/api/urlbuilders"
@@ -10,11 +11,11 @@ import (
 	"github.com/stashapp/stash/pkg/models"
 )
 
-func (r *performerResolver) Name(ctx context.Context, obj *models.Performer) (*string, error) {
+func (r *performerResolver) Name(ctx context.Context, obj *models.Performer) (string, error) {
 	if obj.Name.Valid {
-		return &obj.Name.String, nil
+		return obj.Name.String, nil
 	}
-	return nil, nil
+	return fmt.Sprint("Performer %d", obj.ID), nil
 }
 
 func (r *performerResolver) URL(ctx context.Context, obj *models.Performer) (*string, error) {
