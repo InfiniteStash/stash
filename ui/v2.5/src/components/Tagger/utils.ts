@@ -194,19 +194,20 @@ export interface IStashBoxScene {
   details?: string;
   url?: string;
 
-  studio: IStashBoxStudio;
+  studio: IStashBoxStudio | undefined;
   images: string[];
   tags: IStashBoxTag[];
   performers: IStashBoxPerformer[];
   fingerprints: IStashBoxFingerprint[];
 }
 
-const selectStudio = (studio: GQL.ScrapedStudio): IStashBoxStudio => ({
+const selectStudio = (studio: GQL.ScrapedStudio | null | undefined): IStashBoxStudio | undefined => (
+  studio?.remote_site_id ? {
   id: studio?.stored_id ?? undefined,
-  stash_id: studio.remote_site_id!,
+  stash_id: studio.remote_site_id,
   name: studio.name,
   url: studio.url ?? undefined,
-});
+} : undefined);
 
 const selectFingerprints = (
   scene: GQL.ScrapedScene | null
@@ -220,10 +221,12 @@ const selectTags = (tags: GQL.ScrapedTag[]): IStashBoxTag[] =>
 
 export const selectPerformers = (
   performers: GQL.ScrapedPerformer[]
-): IStashBoxPerformer[] =>
-  performers.map((p) => ({
+): IStashBoxPerformer[] => {
+  const stashBoxPerformers: IStashBoxPerformer[] = [];
+
+  performers.forEach(p => p.remote_site_id && stashBoxPerformers.push({
     id: p.stored_id ?? undefined,
-    stash_id: p.remote_site_id!,
+    stash_id: p.remote_site_id,
     name: p.name ?? "",
     gender: (p.gender ?? GQL.GenderEnum.Female) as GQL.GenderEnum,
     url: p.url ?? undefined,
@@ -244,7 +247,10 @@ export const selectPerformers = (
     details: p.details ?? undefined,
     death_date: p.death_date ?? undefined,
     hair_color: p.hair_color ?? undefined,
-  }));
+  }))
+
+  return stashBoxPerformers;
+};
 
 export const selectScenes = (
   scenes?: (GQL.ScrapedScene | null)[]
@@ -254,14 +260,14 @@ export const selectScenes = (
     .map(
       (s) =>
         ({
-          stash_id: s?.remote_site_id!,
+          stash_id: s?.remote_site_id,
           title: s?.title ?? "",
           date: s?.date ?? "",
           duration: s?.duration ?? 0,
           details: s?.details,
           url: s?.url,
           images: s?.image ? [s.image] : [],
-          studio: selectStudio(s?.studio!),
+          studio: selectStudio(s?.studio),
           fingerprints: selectFingerprints(s),
           performers: selectPerformers(s?.performers ?? []),
           tags: selectTags(s?.tags ?? []),

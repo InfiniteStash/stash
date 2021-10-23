@@ -63,9 +63,10 @@ export const useUpdatePerformer = () => {
         input,
       },
       update: (store, updatedPerformer) => {
-        if (!updatedPerformer.data?.performerUpdate) return;
+        const updatedData = updatedPerformer.data?.performerUpdate;
+        if (!updatedData) return;
 
-        updatedPerformer.data.performerUpdate.stash_ids.forEach((id) => {
+        updatedData.stash_ids.forEach((id) => {
           store.writeQuery<
             GQL.FindPerformersQuery,
             GQL.FindPerformersQueryVariables
@@ -82,7 +83,7 @@ export const useUpdatePerformer = () => {
             data: {
               findPerformers: {
                 count: 1,
-                performers: [updatedPerformer.data!.performerUpdate!],
+                performers: [updatedData],
                 __typename: "FindPerformersResultType",
               },
             },

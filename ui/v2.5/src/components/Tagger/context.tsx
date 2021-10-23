@@ -420,7 +420,7 @@ export const TaggerContext: React.FC = ({ children }) => {
         const resolvedScene = result.data.scrapeSingleScene[0];
 
         // set the scene in the results and mark as resolved
-        const newResult = [...searchResults[sceneID].results!];
+        const newResult: IScrapedScene[] = [...(searchResults[sceneID].results ?? [])];
         newResult[index] = { ...resolvedScene, resolved: true };
         setSearchResults({
           ...searchResults,
@@ -430,7 +430,7 @@ export const TaggerContext: React.FC = ({ children }) => {
     } catch (err) {
       Toast.error(err);
 
-      const newResult = [...searchResults[sceneID].results!];
+      const newResult = [...(searchResults[sceneID].results ?? [])];
       newResult[index] = { ...newResult[index], resolved: true };
       setSearchResults({
         ...searchResults,

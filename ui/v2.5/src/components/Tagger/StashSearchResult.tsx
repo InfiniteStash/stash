@@ -150,8 +150,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
 
     const { tagOperation } = config;
 
-    const newTags =
-      scene.tags?.filter((t) => t.stored_id).map((t) => t.stored_id!) ?? [];
+    const newTags = scene.tags?.reduce((acc, t) => t.stored_id ? [...acc, t.stored_id] : acc, [] as string[]) ?? [];
 
     if (tagOperation === "overwrite") {
       return newTags;
@@ -481,17 +480,18 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   };
 
   const maybeRenderStudioField = () => {
-    if (scene.studio) {
+    if (scene.studio && studioID) {
+      const { studio } = scene;
       return (
         <div className="mt-2">
           <StudioResult
             studio={scene.studio}
             selectedID={studioID}
             setSelectedID={(id) => setStudioID(id)}
-            onCreate={() => showStudioModal(scene.studio!)}
+            onCreate={() => showStudioModal(studio)}
             endpoint={currentSource?.stashboxEndpoint}
             onLink={async () => {
-              await linkStudio(scene.studio!, studioID!);
+              await linkStudio(studio, studioID);
             }}
           />
         </div>
@@ -516,7 +516,9 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
               setSelectedID={(id) => setPerformerID(performerIndex, id)}
               onCreate={() => showPerformerModal(performer)}
               onLink={async () => {
-                await linkPerformer(performer, performerIDs[performerIndex]!);
+                const performerID = performerIDs[performerIndex];
+                if (performerID)
+                  await linkPerformer(performer, performerID);
               }}
               endpoint={currentSource?.stashboxEndpoint}
               key={`${performer.name ?? performer.remote_site_id ?? ""}`}
