@@ -92,7 +92,7 @@ export const TagList: React.FC<ITagList> = ({ filterHook }) => {
         singleResult.data.findTags &&
         singleResult.data.findTags.tags.length === 1
       ) {
-        const { id } = singleResult!.data!.findTags!.tags[0];
+        const { id } = singleResult.data.findTags.tags[0];
         // navigate to the tag page
         history.push(`/tags/${id}`);
       }
