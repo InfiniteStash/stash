@@ -5,7 +5,7 @@ import { PerformerList } from "src/components/Performers/PerformerList";
 import { StudiosCriterion } from "src/models/list-filter/criteria/studios";
 
 interface IStudioPerformersPanel {
-  studio: Partial<GQL.StudioDataFragment>;
+  studio: Pick<GQL.StudioDataFragment, 'id'|'name'>;
 }
 
 export const StudioPerformersPanel: React.FC<IStudioPerformersPanel> = ({
@@ -13,7 +13,7 @@ export const StudioPerformersPanel: React.FC<IStudioPerformersPanel> = ({
 }) => {
   const studioCriterion = new StudiosCriterion();
   studioCriterion.value = {
-    items: [{ id: studio.id!, label: studio.name || `Studio ${studio.id}` }],
+    items: [{ id: studio.id, label: studio.name }],
     depth: 0,
   };
 

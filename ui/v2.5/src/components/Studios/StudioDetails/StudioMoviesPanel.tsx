@@ -4,7 +4,7 @@ import { MovieList } from "src/components/Movies/MovieList";
 import { studioFilterHook } from "src/core/studios";
 
 interface IStudioMoviesPanel {
-  studio: Partial<GQL.StudioDataFragment>;
+  studio: Pick<GQL.StudioDataFragment, 'id'|'name'>;
 }
 
 export const StudioMoviesPanel: React.FC<IStudioMoviesPanel> = ({ studio }) => {

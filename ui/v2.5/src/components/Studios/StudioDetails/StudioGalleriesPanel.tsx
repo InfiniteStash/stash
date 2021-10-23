@@ -4,7 +4,7 @@ import { GalleryList } from "src/components/Galleries/GalleryList";
 import { studioFilterHook } from "src/core/studios";
 
 interface IStudioGalleriesPanel {
-  studio: Partial<GQL.StudioDataFragment>;
+  studio: Pick<GQL.StudioDataFragment, 'id'|'name'>;
 }
 
 export const StudioGalleriesPanel: React.FC<IStudioGalleriesPanel> = ({
