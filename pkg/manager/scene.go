@@ -107,15 +107,15 @@ func GetSceneStreamPaths(scene *models.Scene, directStreamURL string, maxStreami
 	}
 	ret = append(ret, &hls)
 
-	if !config.GetTranscodeHardwareAcceleration() {
-		// WEBM quality transcoding options
-		// Note: These have the wrong mime type intentionally to allow jwplayer to selection between mp4/webm
-		webmLabelFourK := "WEBM 4K (2160p)"         // "FOUR_K"
-		webmLabelFullHD := "WEBM Full HD (1080p)"   // "FULL_HD"
-		webmLabelStardardHD := "WEBM HD (720p)"     // "STANDARD_HD"
-		webmLabelStandard := "WEBM Standard (480p)" // "STANDARD"
-		webmLabelLow := "WEBM Low (240p)"           // "LOW"
+	// WEBM quality transcoding options
+	// Note: These have the wrong mime type intentionally to allow jwplayer to selection between mp4/webm
+	webmLabelFourK := "WEBM 4K (2160p)"         // "FOUR_K"
+	webmLabelFullHD := "WEBM Full HD (1080p)"   // "FULL_HD"
+	webmLabelStandardHD := "WEBM HD (720p)"     // "STANDARD_HD"
+	webmLabelStandard := "WEBM Standard (480p)" // "STANDARD"
+	webmLabelLow := "WEBM Low (240p)"           // "LOW"
 
+	if !config.GetInstance().GetTranscodeHardwareAcceleration() {
 		if !scene.Height.Valid || scene.Height.Int64 >= 2160 {
 			new := models.SceneStreamEndpoint{
 				URL:      directStreamURL + ".webm?resolution=FOUR_K",
@@ -138,7 +138,7 @@ func GetSceneStreamPaths(scene *models.Scene, directStreamURL string, maxStreami
 			new := models.SceneStreamEndpoint{
 				URL:      directStreamURL + ".webm?resolution=STANDARD_HD",
 				MimeType: &mimeMp4,
-				Label:    &webmLabelStardardHD,
+				Label:    &webmLabelStandardHD,
 			}
 			ret = append(ret, &new)
 		}

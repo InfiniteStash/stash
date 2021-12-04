@@ -2,6 +2,7 @@ package ffmpeg
 
 import (
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
@@ -352,7 +353,7 @@ func (o TranscodeStreamOptions) getHWStreamOptions() [][]string {
 }
 
 func (e *Encoder) GetTranscodeStream(options TranscodeStreamOptions) (*Stream, error) {
-	if config.GetTranscodeHardwareAcceleration() {
+	if config.GetInstance().GetTranscodeHardwareAcceleration() {
 		return e.hwStream(options.ProbeResult, options)
 	} else {
 		return e.stream(options.ProbeResult, options)
@@ -426,7 +427,7 @@ func (e *Encoder) hwStream(probeResult VideoFile, options TranscodeStreamOptions
 	hwEncoders := options.getHWStreamOptions()
 
 	for _, args := range hwEncoders {
-		cmd := exec.Command(e.Path, args...)
+		cmd := exec.Command(probeResult.Path, args...)
 		logger.Debugf("Streaming via: %s", strings.Join(cmd.Args, " "))
 
 		stdout, err := cmd.StdoutPipe()

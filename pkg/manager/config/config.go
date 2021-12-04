@@ -52,8 +52,9 @@ const (
 	// should be used when generating and using generated files for scenes.
 	VideoFileNamingAlgorithm = "video_file_naming_algorithm"
 
-	MaxTranscodeSize          = "max_transcode_size"
-	MaxStreamingTranscodeSize = "max_streaming_transcode_size"
+	TranscodeHardwareAcceleration = "transcode_hardware_acceleration"
+	MaxTranscodeSize              = "max_transcode_size"
+	MaxStreamingTranscodeSize     = "max_streaming_transcode_size"
 
 	ParallelTasks        = "parallel_tasks"
 	parallelTasksDefault = 1
@@ -74,10 +75,6 @@ const (
 
 	PreviewExcludeEnd        = "preview_exclude_end"
 	previewExcludeEndDefault = "0"
-
-	TranscodeHardwareAcceleration = "transcode_hardware_acceleration"
-	MaxTranscodeSize              = "max_transcode_size"
-	MaxStreamingTranscodeSize     = "max_streaming_transcode_size"
 
 	WriteImageThumbnails        = "write_image_thumbnails"
 	writeImageThumbnailsDefault = true
@@ -654,8 +651,8 @@ func (i *Instance) GetPreviewPreset() models.PreviewPreset {
 	return models.PreviewPreset(ret)
 }
 
-func GetTranscodeHardwareAcceleration() bool {
-	return viper.GetBool(TranscodeHardwareAcceleration)
+func (i *Instance) GetTranscodeHardwareAcceleration() bool {
+	return i.getBool(TranscodeHardwareAcceleration)
 }
 
 func (i *Instance) GetMaxTranscodeSize() models.StreamingResolutionEnum {

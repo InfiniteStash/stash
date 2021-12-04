@@ -148,7 +148,7 @@ func (r *mutationResolver) ConfigureGeneral(ctx context.Context, input models.Co
 	}
 
 	if input.TranscodeHardwareAcceleration != nil {
-		config.Set(config.TranscodeHardwareAcceleration, *input.TranscodeHardwareAcceleration)
+		c.Set(config.TranscodeHardwareAcceleration, *input.TranscodeHardwareAcceleration)
 	}
 
 	if input.MaxTranscodeSize != nil {
