@@ -21,7 +21,7 @@ import { PageNotFound } from "./components/PageNotFound";
 import Performers from "./components/Performers/Performers";
 import Scenes from "./components/Scenes/Scenes";
 import { Settings } from "./components/Settings/Settings";
-import { Stats } from "./components/Stats";
+import Home from "./components/Home";
 import Studios from "./components/Studios/Studios";
 import { SceneFilenameParser } from "./components/SceneFilenameParser/SceneFilenameParser";
 import { SceneDuplicateChecker } from "./components/SceneDuplicateChecker/SceneDuplicateChecker";
@@ -116,7 +116,7 @@ export const App: React.FC = () => {
 
     return (
       <Switch>
-        <Route exact path="/" component={Stats} />
+        <Route exact path="/" component={Home} />
         <Route path="/scenes" component={Scenes} />
         <Route path="/images" component={Images} />
         <Route path="/galleries" component={Galleries} />
