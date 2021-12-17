@@ -6,6 +6,7 @@ import "videojs-seek-buttons";
 import "./landscapeFullscreen";
 import "./live";
 import "./PlaylistButtons";
+import "./SourceManager";
 import cx from "classnames";
 
 import * as GQL from "src/core/generated-graphql";
@@ -69,7 +70,9 @@ export const ScenePlayer: React.FC<IScenePlayerProps> = ({
       skipButtons.setForwardHandler(onNext);
       skipButtons.setBackwardHandler(onPrevious);
     }
+
     player.on("error", () => {
+      player.sourceManager().handleError(true);
       player.error(null);
     });
     (player as any).offset();
@@ -81,6 +84,7 @@ export const ScenePlayer: React.FC<IScenePlayerProps> = ({
         iOS: true
       }
     });
+    player.sourceManager();
 
     playerRef.current = player;
   }, [playerRef]);
@@ -114,15 +118,10 @@ export const ScenePlayer: React.FC<IScenePlayerProps> = ({
       player.poster(scene.paths.screenshot);
     else
       player.poster('');
-    player.src(
-      scene.sceneStreams.map((stream) => ({
-        src: stream.url,
-        type: stream.mime_type ?? undefined,
-      }))
-    );
+
+    const sourceManager = player.sourceManager();
+    sourceManager.setSources(scene.sceneStreams, scene.paths.screenshot);
     player.currentTime(0);
-    if (auto)
-      player.play();
 
     player.loop(!!scene.file.duration && maxLoopDuration !== 0 && scene.file.duration < maxLoopDuration);
 
@@ -147,13 +146,12 @@ export const ScenePlayer: React.FC<IScenePlayerProps> = ({
         player.src(srcUrl.toString());
         /* eslint-enable no-param-reassign */
 
-        player.play();
+        player.sourceManager().play();
       }
     });
-    player.play()?.catch(() => {
-      if (scene.paths.screenshot)
-        player.poster(scene.paths.screenshot);
-    });
+
+    if (auto)
+      sourceManager.play();
 
     if ((player as any).vttThumbnails?.src)
       (player as any).vttThumbnails?.src(scene?.paths.vtt);
