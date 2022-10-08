@@ -147,24 +147,22 @@ export const ParserInput: React.FC<IParserInputProps> = (
             }
             value={pattern}
           />
-          <InputGroup.Append>
-            <DropdownButton
-              id="parser-field-select"
-              title={intl.formatMessage({
-                id: "config.tools.scene_filename_parser.add_field",
-              })}
-            >
-              {validFields.map((item) => (
-                <Dropdown.Item
-                  key={item.field}
-                  onSelect={() => addParserField(item)}
-                >
-                  <span className="mr-2">{item.field || "{}"}</span>
-                  <span className="ml-auto text-muted">{item.helperText}</span>
-                </Dropdown.Item>
-              ))}
-            </DropdownButton>
-          </InputGroup.Append>
+          <DropdownButton
+            id="parser-field-select"
+            title={intl.formatMessage({
+              id: "config.tools.scene_filename_parser.add_field",
+            })}
+          >
+            {validFields.map((item) => (
+              <Dropdown.Item
+                key={item.field}
+                onSelect={() => addParserField(item)}
+              >
+                <span className="mr-2">{item.field || "{}"}</span>
+                <span className="ml-auto text-muted">{item.helperText}</span>
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
         </InputGroup>
         <Form.Text className="text-muted row col-10 offset-2">
           {intl.formatMessage({

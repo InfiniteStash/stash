@@ -117,7 +117,7 @@ export const ScrapeDialogRow = <T, V extends IHasName>(
         {props.newValues!.map((t, i) => (
           <Badge
             className="tag-item"
-            variant="secondary"
+            bg="secondary"
             key={t.name}
             onClick={() => props.onCreateNew!(i)}
           >
@@ -153,27 +153,23 @@ export const ScrapeDialogRow = <T, V extends IHasName>(
         <Row>
           <Col xs="6">
             <InputGroup>
-              <InputGroup.Prepend className="bg-secondary text-white border-secondary">
-                <Button
-                  variant="secondary"
-                  onClick={() => handleSelectClick(false)}
-                >
-                  {renderButtonIcon(!props.result.useNewValue)}
-                </Button>
-              </InputGroup.Prepend>
+              <Button
+                variant="secondary"
+                onClick={() => handleSelectClick(false)}
+              >
+                {renderButtonIcon(!props.result.useNewValue)}
+              </Button>
               {props.renderOriginalField(props.result)}
             </InputGroup>
           </Col>
           <Col xs="6">
             <InputGroup>
-              <InputGroup.Prepend>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleSelectClick(true)}
-                >
-                  {renderButtonIcon(props.result.useNewValue)}
-                </Button>
-              </InputGroup.Prepend>
+              <Button
+                variant="secondary"
+                onClick={() => handleSelectClick(true)}
+              >
+                {renderButtonIcon(props.result.useNewValue)}
+              </Button>
               {props.renderNewField(props.result)}
             </InputGroup>
             {renderNewValues()}

@@ -42,7 +42,7 @@ export const StudioDetailsPanel: React.FC<IStudioDetailsPanel> = ({
         </dt>
         <dd>
           {studio.aliases.map((a) => (
-            <Badge className="tag-item" variant="secondary" key={a}>
+            <Badge className="tag-item" bg="secondary" key={a}>
               {a}
             </Badge>
           ))}

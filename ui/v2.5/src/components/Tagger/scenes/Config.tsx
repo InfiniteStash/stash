@@ -104,7 +104,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
                   className="col-md-2 col-3 input-control"
                   as="select"
                   value={config.tagOperation}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  onChange={(e) =>
                     setConfig({
                       ...config,
                       tagOperation: e.currentTarget.value as TagOperation,
@@ -135,7 +135,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
                   as="select"
                   className="col-md-2 col-3 input-control"
                   value={config.mode}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  onChange={(e) =>
                     setConfig({
                       ...config,
                       mode: e.currentTarget.value as ParseMode,
@@ -183,11 +183,9 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
             </h5>
             <InputGroup>
               <Form.Control className="text-input" ref={blacklistRef} />
-              <InputGroup.Append>
-                <Button onClick={handleBlacklistAddition}>
-                  <FormattedMessage id="actions.add" />
-                </Button>
-              </InputGroup.Append>
+              <Button onClick={handleBlacklistAddition}>
+                <FormattedMessage id="actions.add" />
+              </Button>
             </InputGroup>
             <div>
               {intl.formatMessage(
@@ -198,7 +196,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
             {config.blacklist.map((item, index) => (
               <Badge
                 className="tag-item d-inline-block"
-                variant="secondary"
+                bg="secondary"
                 key={item}
               >
                 {item.toString()}

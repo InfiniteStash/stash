@@ -51,7 +51,7 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes, queue }) => {
       : `/scenes/${scene.id}`;
   }
 
-  function handleSourceSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSourceSelect(e: React.ChangeEvent<HTMLInputElement>) {
     setCurrentSource(sources!.find((s) => s.id === e.currentTarget.value));
   }
 

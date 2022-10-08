@@ -23,7 +23,8 @@ export const Settings: React.FC = () => {
   const intl = useIntl();
   const location = useLocation();
   const history = useHistory();
-  const defaultTab = queryString.parse(location.search).tab ?? "tasks";
+  const { tab } = queryString.parse(location.search);
+  const defaultTab = (Array.isArray(tab) ? tab[0] : tab) ?? "tasks";
 
   const onSelect = (val: string) => history.push(`?tab=${val}`);
 
@@ -34,7 +35,7 @@ export const Settings: React.FC = () => {
     <Tab.Container
       activeKey={defaultTab}
       id="configuration-tabs"
-      onSelect={(tab) => tab && onSelect(tab)}
+      onSelect={(selectedTab) => selectedTab && onSelect(selectedTab)}
     >
       <Helmet
         defaultTitle={title_template}

@@ -122,10 +122,8 @@ export const DurationInput: React.FC<IProps> = (props: IProps) => {
               : undefined
           }
         />
-        <InputGroup.Append>
-          {maybeRenderReset()}
-          {renderButtons()}
-        </InputGroup.Append>
+        {maybeRenderReset()}
+        {renderButtons()}
       </InputGroup>
     </div>
   );

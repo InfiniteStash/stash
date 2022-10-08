@@ -327,28 +327,26 @@ export const SavedFilterList: React.FC<ISavedFilterListProps> = ({
           value={filterName}
           onChange={(e) => setFilterName(e.target.value)}
         />
-        <InputGroup.Append>
-          <OverlayTrigger
-            placement="top"
-            overlay={
-              <Tooltip id="filter-tooltip">
-                <FormattedMessage id="actions.save_filter" />
-              </Tooltip>
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip id="filter-tooltip">
+              <FormattedMessage id="actions.save_filter" />
+            </Tooltip>
+          }
+        >
+          <Button
+            disabled={
+              !filterName || !!savedFilters.find((f) => f.name === filterName)
             }
+            variant="secondary"
+            onClick={() => {
+              onSaveFilter(filterName);
+            }}
           >
-            <Button
-              disabled={
-                !filterName || !!savedFilters.find((f) => f.name === filterName)
-              }
-              variant="secondary"
-              onClick={() => {
-                onSaveFilter(filterName);
-              }}
-            >
-              <Icon icon={faSave} />
-            </Button>
-          </OverlayTrigger>
-        </InputGroup.Append>
+            <Icon icon={faSave} />
+          </Button>
+        </OverlayTrigger>
       </InputGroup>
       {renderSavedFilters()}
       {maybeRenderSetDefaultButton()}

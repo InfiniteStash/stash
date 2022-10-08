@@ -30,7 +30,7 @@ export const PrimaryTags: React.FC<IPrimaryTags> = ({
   const primaryCards = Object.keys(primaryTags).map((id) => {
     const markers = primaryTags[id].map((marker) => {
       const tags = marker.tags.map((tag) => (
-        <Badge key={tag.id} variant="secondary" className="tag-item">
+        <Badge key={tag.id} bg="secondary" className="tag-item">
           {tag.name}
         </Badge>
       ));

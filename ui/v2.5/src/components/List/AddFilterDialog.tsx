@@ -71,14 +71,14 @@ export const AddFilterDialog: React.FC<IAddFilterProps> = ({
     valueStage.current = criterion.value;
   }, [criterion]);
 
-  function onChangedCriteriaType(event: React.ChangeEvent<HTMLSelectElement>) {
+  function onChangedCriteriaType(event: React.ChangeEvent<HTMLInputElement>) {
     const newCriterionType = event.target.value as CriterionType;
     const newCriterion = makeCriteria(newCriterionType);
     setCriterion(newCriterion);
   }
 
   function onChangedModifierSelect(
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) {
     const newCriterion = cloneDeep(criterion);
     newCriterion.modifier = event.target.value as CriterionModifier;

@@ -29,17 +29,15 @@ export const URLField: React.FC<IProps> = (props: IProps) => {
         onBlur={props.onBlur}
         isInvalid={props.isInvalid}
       />
-      <InputGroup.Append>
-        <Button
-          className="scrape-url-button text-input"
-          variant="secondary"
-          onClick={props.onScrapeClick}
-          disabled={!props.value || !props.urlScrapable(props.value)}
-          title={intl.formatMessage({ id: "actions.scrape" })}
-        >
-          <Icon icon={faFileDownload} />
-        </Button>
-      </InputGroup.Append>
+      <Button
+        className="scrape-url-button text-input"
+        variant="secondary"
+        onClick={props.onScrapeClick}
+        disabled={!props.value || !props.urlScrapable(props.value)}
+        title={intl.formatMessage({ id: "actions.scrape" })}
+      >
+        <Icon icon={faFileDownload} />
+      </Button>
     </InputGroup>
   );
 };

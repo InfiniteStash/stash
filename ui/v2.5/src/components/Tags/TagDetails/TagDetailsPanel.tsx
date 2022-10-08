@@ -21,7 +21,7 @@ export const TagDetailsPanel: React.FC<ITagDetails> = ({ tag }) => {
         </dt>
         <dd className="col-9 col-xl-10">
           {tag.aliases.map((a) => (
-            <Badge className="tag-item" variant="secondary" key={a}>
+            <Badge className="tag-item" bg="secondary" key={a}>
               {a}
             </Badge>
           ))}
@@ -42,7 +42,7 @@ export const TagDetailsPanel: React.FC<ITagDetails> = ({ tag }) => {
         </dt>
         <dd className="col-9 col-xl-10">
           {tag.parents.map((p) => (
-            <Badge key={p.id} className="tag-item" variant="secondary">
+            <Badge key={p.id} className="tag-item" bg="secondary">
               <Link to={`/tags/${p.id}`}>{p.name}</Link>
             </Badge>
           ))}
@@ -63,7 +63,7 @@ export const TagDetailsPanel: React.FC<ITagDetails> = ({ tag }) => {
         </dt>
         <dd className="col-9 col-xl-10">
           {tag.children.map((c) => (
-            <Badge key={c.id} className="tag-item" variant="secondary">
+            <Badge key={c.id} className="tag-item" bg="secondary">
               <Link to={`/tags/${c.id}`}>{c.name}</Link>
             </Badge>
           ))}

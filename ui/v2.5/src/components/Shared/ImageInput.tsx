@@ -96,7 +96,7 @@ export const ImageInput: React.FC<IImageInput> = ({
 
   const popover = (
     <Popover id="set-image-popover">
-      <Popover.Content>
+      <Popover.Body>
         <>
           <div>
             <Form.Label className="image-input">
@@ -118,7 +118,7 @@ export const ImageInput: React.FC<IImageInput> = ({
             </Button>
           </div>
         </>
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
   );
 

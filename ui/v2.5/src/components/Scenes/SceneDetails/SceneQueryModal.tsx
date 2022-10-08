@@ -28,7 +28,7 @@ const SceneSearchResultDetails: React.FC<ISceneSearchResultDetailsProps> = ({
             {scene.performers?.map((performer) => (
               <Badge
                 className="tag-item"
-                variant="secondary"
+                bg="secondary"
                 key={performer.name}
               >
                 {performer.name}
@@ -48,7 +48,7 @@ const SceneSearchResultDetails: React.FC<ISceneSearchResultDetailsProps> = ({
             {scene.tags?.map((tag) => (
               <Badge
                 className="tag-item"
-                variant="secondary"
+                bg="secondary"
                 key={tag.stored_id}
               >
                 {tag.name}
@@ -212,17 +212,15 @@ export const SceneQueryModal: React.FC<IProps> = ({
               e.key === "Enter" && doQuery(inputRef.current?.value ?? "")
             }
           />
-          <InputGroup.Append>
-            <Button
-              onClick={() => {
-                doQuery(inputRef.current?.value ?? "");
-              }}
-              variant="primary"
-              title={intl.formatMessage({ id: "actions.search" })}
-            >
-              <Icon icon={faSearch} />
-            </Button>
-          </InputGroup.Append>
+          <Button
+            onClick={() => {
+              doQuery(inputRef.current?.value ?? "");
+            }}
+            variant="primary"
+            title={intl.formatMessage({ id: "actions.search" })}
+          >
+            <Icon icon={faSearch} />
+          </Button>
         </InputGroup>
 
         {loading ? (

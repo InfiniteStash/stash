@@ -175,7 +175,7 @@ function SceneParserRatingField(
             className={cx("input-control", props.className)}
             disabled={!props.parserResult.isSet}
             value={props.parserResult.value?.toString()}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+            onChange={(event) =>
               maybeValueChanged(
                 event.currentTarget.value === ""
                   ? undefined

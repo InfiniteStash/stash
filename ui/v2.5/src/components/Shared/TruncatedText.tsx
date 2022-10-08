@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Overlay, Tooltip } from "react-bootstrap";
-import { Placement } from "react-bootstrap/Overlay";
+import { Overlay, Tooltip, OverlayProps } from "react-bootstrap";
 import debounce from "lodash-es/debounce";
 import cx from "classnames";
 
@@ -10,7 +9,7 @@ const CLASSNAME_TOOLTIP = `${CLASSNAME}-tooltip`;
 interface ITruncatedTextProps {
   text?: string | null;
   lineCount?: number;
-  placement?: Placement;
+  placement?: OverlayProps["placement"];
   delay?: number;
   className?: string;
 }

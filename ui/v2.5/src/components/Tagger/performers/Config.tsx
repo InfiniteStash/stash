@@ -19,7 +19,7 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
 
   const excludedFields = config.excludedPerformerFields ?? [];
 
-  const handleInstanceSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleInstanceSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedEndpoint = e.currentTarget.value;
     setConfig({
       ...config,
@@ -51,7 +51,7 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
                 <span>
                   {excludedFields.length > 0 ? (
                     excludedFields.map((f) => (
-                      <Badge variant="secondary" className="tag-item" key={f}>
+                      <Badge bg="secondary" className="tag-item" key={f}>
                         {TextUtils.capitalize(f)}
                       </Badge>
                     ))

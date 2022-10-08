@@ -78,7 +78,7 @@ export const TagLink: React.FC<IProps> = (props: IProps) => {
     title = objectTitle(props.scene);
   }
   return (
-    <Badge className={cx("tag-item", props.className)} variant="secondary">
+    <Badge className={cx("tag-item", props.className)} bg="secondary">
       <TagPopover id={id}>
         <Link to={link}>{title}</Link>
       </TagPopover>

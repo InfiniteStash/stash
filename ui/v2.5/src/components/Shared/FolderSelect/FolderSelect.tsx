@@ -81,18 +81,14 @@ export const FolderSelect: React.FC<IProps> = ({
           value={currentDirectory}
           spellCheck={false}
         />
-        {appendButton ? (
-          <InputGroup.Append>{appendButton}</InputGroup.Append>
-        ) : undefined}
-        {!data || !data.directory || loading ? (
-          <InputGroup.Append className="align-self-center">
-            {loading ? (
-              <LoadingIndicator inline small message="" />
-            ) : (
-              <Icon icon={faTimes} color="red" className="ml-3" />
-            )}
-          </InputGroup.Append>
-        ) : undefined}
+        {appendButton}
+        {(!data || !data.directory || loading) && (
+          loading ? (
+            <LoadingIndicator inline small message="" />
+          ) : (
+            <Icon icon={faTimes} color="red" className="ml-3" />
+          )
+        )}
       </InputGroup>
       {error !== undefined && (
         <h5 className="mt-4 text-break">Error: {error.message}</h5>

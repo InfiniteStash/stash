@@ -639,7 +639,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
         .map((t) => (
           <Badge
             className="tag-item"
-            variant="secondary"
+            bg="secondary"
             key={t.name}
             onClick={() => {
               onCreateTag(t);

@@ -191,7 +191,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
         {newTags.map((t) => (
           <Badge
             className="tag-item"
-            variant="secondary"
+            bg="secondary"
             key={t.name}
             onClick={() => createNewTag(t)}
           >

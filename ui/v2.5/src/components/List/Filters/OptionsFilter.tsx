@@ -14,9 +14,6 @@ export const OptionsFilter: React.FC<IOptionsFilterProps> = ({
   criterion,
   onValueChanged,
 }) => {
-  function onChanged(event: React.ChangeEvent<HTMLSelectElement>) {
-    onValueChanged(event.target.value);
-  }
 
   const options = criterion.criterionOption.options ?? [];
 
@@ -33,7 +30,7 @@ export const OptionsFilter: React.FC<IOptionsFilterProps> = ({
     <Form.Group>
       <Form.Control
         as="select"
-        onChange={onChanged}
+        onChange={e => onValueChanged(e.target.value)}
         value={criterion.value.toString()}
         className="btn-secondary"
       >

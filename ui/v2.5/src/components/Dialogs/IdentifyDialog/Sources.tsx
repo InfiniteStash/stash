@@ -37,7 +37,7 @@ export const SourcesEditor: React.FC<ISourceEditor> = ({
   const headerMsgId = isNew ? "actions.add" : "dialogs.edit_entity_title";
   const acceptMsgId = isNew ? "actions.add" : "actions.confirm";
 
-  function handleSourceSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleSourceSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const selectedSource = availableSources.find(
       (s) => s.id === e.currentTarget.value
     );

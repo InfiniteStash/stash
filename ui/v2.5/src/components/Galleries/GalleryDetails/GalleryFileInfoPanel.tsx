@@ -114,9 +114,9 @@ export const GalleryFileInfoPanel: React.FC<IGalleryFileInfoPanelProps> = (
         )}
         {props.gallery.files.map((file, index) => (
           <Card key={file.id} className="gallery-file-card">
-            <Accordion.Toggle as={Card.Header} eventKey={file.id}>
+            <Accordion.Button as={Card.Header} eventKey={file.id}>
               <TruncatedText text={TextUtils.fileNameFromPath(file.path)} />
-            </Accordion.Toggle>
+            </Accordion.Button>
             <Accordion.Collapse eventKey={file.id}>
               <Card.Body>
                 <FileInfoPanel

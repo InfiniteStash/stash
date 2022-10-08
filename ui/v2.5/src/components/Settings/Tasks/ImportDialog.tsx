@@ -136,7 +136,7 @@ export const ImportDialog: React.FC<IImportDialogProps> = (
         <Form>
           <Form.Group id="import-file">
             <h6>Import zip file</h6>
-            <Form.File onChange={onFileChange} accept=".zip" />
+            <Form.Control type="file" onChange={onFileChange} accept=".zip" />
           </Form.Group>
           <Form.Group id="duplicate-handling">
             <h6>Duplicate object handling</h6>
@@ -144,7 +144,7 @@ export const ImportDialog: React.FC<IImportDialogProps> = (
               className="w-auto input-control"
               as="select"
               value={duplicateBehaviour}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onChange={(e) =>
                 setDuplicateBehaviour(e.currentTarget.value)
               }
             >
@@ -160,7 +160,7 @@ export const ImportDialog: React.FC<IImportDialogProps> = (
               className="w-auto input-control"
               as="select"
               value={missingRefBehaviour}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onChange={(e) =>
                 setMissingRefBehaviour(e.currentTarget.value)
               }
             >

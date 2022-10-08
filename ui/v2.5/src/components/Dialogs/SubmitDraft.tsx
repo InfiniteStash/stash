@@ -65,7 +65,7 @@ export const SubmitStashBoxDraft: React.FC<IProps> = ({
   const selectedBox =
     boxes.length > selectedBoxIndex ? boxes[selectedBoxIndex] : undefined;
 
-  const handleSelectBox = (e: React.ChangeEvent<HTMLSelectElement>) =>
+  const handleSelectBox = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSelectedBoxIndex(Number.parseInt(e.currentTarget.value) ?? 0);
 
   if (!selectedBox) {

@@ -660,12 +660,12 @@ export const LightboxComponent: React.FC<IProps> = ({
                     {...props}
                     style={{ ...props.style }}
                   >
-                    <Popover.Title>
+                    <Popover.Header>
                       {intl.formatMessage({
                         id: "dialogs.lightbox.options",
                       })}
-                    </Popover.Title>
-                    <Popover.Content>{renderOptionsForm()}</Popover.Content>
+                    </Popover.Header>
+                    <Popover.Body>{renderOptionsForm()}</Popover.Body>
                   </div>
                 )}
               </Overlay>

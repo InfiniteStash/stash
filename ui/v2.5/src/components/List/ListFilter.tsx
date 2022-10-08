@@ -165,7 +165,6 @@ export const ListFilter: React.FC<IListFilterProps> = ({
       .sort((a, b) => a.message.localeCompare(b.message))
       .map((option) => (
         <Dropdown.Item
-          onSelect={onChangeSortBy}
           key={option.value}
           className="bg-secondary text-white"
           eventKey={option.value}
@@ -277,14 +276,12 @@ export const ListFilter: React.FC<IListFilterProps> = ({
           </OverlayTrigger>
         </ButtonGroup>
 
-        <Dropdown as={ButtonGroup} className="mr-2 mb-2">
-          <InputGroup.Prepend>
-            <Dropdown.Toggle variant="secondary">
-              {currentSortBy
-                ? intl.formatMessage({ id: currentSortBy.messageID })
-                : ""}
-            </Dropdown.Toggle>
-          </InputGroup.Prepend>
+        <Dropdown as={ButtonGroup} className="mr-2 mb-2" onSelect={onChangeSortBy}>
+          <Dropdown.Toggle variant="secondary">
+            {currentSortBy
+              ? intl.formatMessage({ id: currentSortBy.messageID })
+              : ""}
+          </Dropdown.Toggle>
           <Dropdown.Menu className="bg-secondary text-white">
             {renderSortByOptions()}
           </Dropdown.Menu>
@@ -344,7 +341,7 @@ export const ListFilter: React.FC<IListFilterProps> = ({
             onHide={() => setCustomPageSizeShowing(false)}
           >
             <Popover id="custom_pagesize_popover">
-              <Form inline>
+              <Form>
                 <InputGroup>
                   <Form.Control
                     type="number"
@@ -362,19 +359,17 @@ export const ListFilter: React.FC<IListFilterProps> = ({
                       }
                     }}
                   />
-                  <InputGroup.Append>
-                    <Button
-                      variant="primary"
-                      onClick={() =>
-                        onChangePageSize(
-                          (perPageInput.current as HTMLInputElement)?.value ??
-                            ""
-                        )
-                      }
-                    >
-                      <Icon icon={faCheck} />
-                    </Button>
-                  </InputGroup.Append>
+                  <Button
+                    variant="primary"
+                    onClick={() =>
+                      onChangePageSize(
+                        (perPageInput.current as HTMLInputElement)?.value ??
+                          ""
+                      )
+                    }
+                  >
+                    <Icon icon={faCheck} />
+                  </Button>
                 </InputGroup>
               </Form>
             </Popover>

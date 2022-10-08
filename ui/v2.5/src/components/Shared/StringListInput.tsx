@@ -48,11 +48,9 @@ export const StringListInput: React.FC<IStringListInputProps> = (props) => {
                       valueChanged(i, e.currentTarget.value)
                     }
                   />
-                  <InputGroup.Append>
-                    <Button variant="danger" onClick={() => removeValue(i)}>
-                      <Icon icon={faMinus} />
-                    </Button>
-                  </InputGroup.Append>
+                  <Button variant="danger" onClick={() => removeValue(i)}>
+                    <Icon icon={faMinus} />
+                  </Button>
                 </InputGroup>
               ))}
           </Form.Group>

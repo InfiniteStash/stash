@@ -268,15 +268,13 @@ export const Setup: React.FC = () => {
                 setGeneratedLocation(e.currentTarget.value)
               }
             />
-            <InputGroup.Append>
-              <Button
-                variant="secondary"
-                className="text-input"
-                onClick={() => setShowGeneratedDialog(true)}
-              >
-                <Icon icon={faEllipsisH} />
-              </Button>
-            </InputGroup.Append>
+            <Button
+              variant="secondary"
+              className="text-input"
+              onClick={() => setShowGeneratedDialog(true)}
+            >
+              <Icon icon={faEllipsisH} />
+            </Button>
           </InputGroup>
         </Form.Group>
       );

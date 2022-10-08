@@ -40,7 +40,7 @@ export const FilterTags: React.FC<IFilterTagsProps> = ({
     return criteria.map((criterion) => (
       <Badge
         className="tag-item"
-        variant="secondary"
+        bg="secondary"
         key={criterion.getId()}
         onClick={() => onClickCriterionTag(criterion)}
       >

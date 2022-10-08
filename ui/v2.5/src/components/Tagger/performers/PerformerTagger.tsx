@@ -231,19 +231,17 @@ const PerformerTaggerList: React.FC<IPerformerTaggerListProps> = ({
                 )
               }
             />
-            <InputGroup.Append>
-              <Button
-                disabled={loading}
-                onClick={() =>
-                  doBoxSearch(
-                    performer.id,
-                    queries[performer.id] ?? performer.name ?? ""
-                  )
-                }
-              >
-                <FormattedMessage id="actions.search" />
-              </Button>
-            </InputGroup.Append>
+            <Button
+              disabled={loading}
+              onClick={() =>
+                doBoxSearch(
+                  performer.id,
+                  queries[performer.id] ?? performer.name ?? ""
+                )
+              }
+            >
+              <FormattedMessage id="actions.search" />
+            </Button>
           </InputGroup>
         );
       } else if (isTagged) {
@@ -286,22 +284,20 @@ const PerformerTaggerList: React.FC<IPerformerTaggerListProps> = ({
             <div key={performer.id}>
               <InputGroup className="PerformerTagger-box-link">
                 <InputGroup.Text>{link}</InputGroup.Text>
-                <InputGroup.Append>
-                  {endpoint !== -1 && (
-                    <Button
-                      onClick={() =>
-                        doBoxUpdate(performer.id, stashID.stash_id, endpoint)
-                      }
-                      disabled={!!loadingUpdate}
-                    >
-                      {loadingUpdate === stashID.stash_id ? (
-                        <LoadingIndicator inline small message="" />
-                      ) : (
-                        <FormattedMessage id="actions.refresh" />
-                      )}
-                    </Button>
-                  )}
-                </InputGroup.Append>
+                {endpoint !== -1 && (
+                  <Button
+                    onClick={() =>
+                      doBoxUpdate(performer.id, stashID.stash_id, endpoint)
+                    }
+                    disabled={!!loadingUpdate}
+                  >
+                    {loadingUpdate === stashID.stash_id ? (
+                      <LoadingIndicator inline small message="" />
+                    ) : (
+                      <FormattedMessage id="actions.refresh" />
+                    )}
+                  </Button>
+                )}
               </InputGroup>
               {error[performer.id] && (
                 <div className="text-danger mt-1">

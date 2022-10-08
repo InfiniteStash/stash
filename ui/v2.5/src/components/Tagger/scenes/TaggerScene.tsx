@@ -124,7 +124,7 @@ export const TaggerScene: React.FC<PropsWithChildren<ITaggerScene>> = ({
 
     try {
       setQueryLoading(true);
-      await doSceneQuery(queryString || defaultQueryString);
+      doSceneQuery(queryString || defaultQueryString);
     } finally {
       setQueryLoading(false);
     }
@@ -135,11 +135,9 @@ export const TaggerScene: React.FC<PropsWithChildren<ITaggerScene>> = ({
 
     return (
       <InputGroup>
-        <InputGroup.Prepend>
-          <InputGroup.Text>
-            <FormattedMessage id="component_tagger.noun_query" />
-          </InputGroup.Text>
-        </InputGroup.Prepend>
+        <InputGroup.Text>
+          <FormattedMessage id="component_tagger.noun_query" />
+        </InputGroup.Text>
         <Form.Control
           className="text-input"
           value={queryString || defaultQueryString}
@@ -150,16 +148,14 @@ export const TaggerScene: React.FC<PropsWithChildren<ITaggerScene>> = ({
             e.key === "Enter" && query()
           }
         />
-        <InputGroup.Append>
-          <OperationButton
-            disabled={loading}
-            operation={query}
-            loading={queryLoading}
-            setLoading={setQueryLoading}
-          >
-            <FormattedMessage id="actions.search" />
-          </OperationButton>
-        </InputGroup.Append>
+        <OperationButton
+          disabled={loading}
+          operation={query}
+          loading={queryLoading}
+          setLoading={setQueryLoading}
+        >
+          <FormattedMessage id="actions.search" />
+        </OperationButton>
       </InputGroup>
     );
   }
@@ -213,9 +209,7 @@ export const TaggerScene: React.FC<PropsWithChildren<ITaggerScene>> = ({
               <div className="mt-2 text-right">
                 <OperationButton
                   disabled={loading}
-                  operation={async () => {
-                    await scrapeSceneFragment(scene);
-                  }}
+                  operation={async () => scrapeSceneFragment(scene)}
                 >
                   <FormattedMessage id="actions.scrape_scene_fragment" />
                 </OperationButton>

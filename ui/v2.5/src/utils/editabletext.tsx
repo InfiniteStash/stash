@@ -152,7 +152,7 @@ const renderHtmlSelect = (options: {
       disabled={!options.isEditing}
       plaintext={!options.isEditing}
       value={options.value?.toString()}
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+      onChange={(event) =>
         options.onChange(event.currentTarget.value)
       }
     >
