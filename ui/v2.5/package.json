@@ -76,9 +76,6 @@
     "videojs-landscape-fullscreen": "^11.33.0",
     "videojs-seek-buttons": "^2.2.0",
     "videojs-vtt-thumbnails-freetube": "^0.0.15",
-    "vite": "^2.9.13",
-    "vite-plugin-compression": "^0.3.5",
-    "vite-tsconfig-paths": "^3.3.17",
     "ws": "^7.4.6",
     "yup": "^0.32.9"
   },
@@ -106,6 +103,7 @@
     "@types/videojs-seek-buttons": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
@@ -120,6 +118,9 @@
     "stylelint": "^13.9.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-order": "^4.1.0",
-    "typescript": "~4.4.4"
+    "typescript": "~4.4.4",
+    "vite": "^3.1.6",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-tsconfig-paths": "^3.5.1"
   }
 }

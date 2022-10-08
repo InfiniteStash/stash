@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import tsconfigPaths from "vite-tsconfig-paths";
 import viteCompression from 'vite-plugin-compression';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,12 +17,14 @@ export default defineConfig({
   },
   publicDir: 'public',
   assetsInclude: ['**/*.md'],
-  plugins: [tsconfigPaths(),
+  plugins: [
+    react(),
+    tsconfigPaths(),
     viteCompression({
-    algorithm: 'gzip',
-    disable: false,
-    deleteOriginFile: true,
-    filter: /\.(js|json|css|svg|md)$/i
-  })
-],
+      algorithm: 'gzip',
+      disable: false,
+      deleteOriginFile: true,
+      filter: /\.(js|json|css|svg|md)$/i
+    }),
+  ],
 })
