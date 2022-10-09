@@ -57,7 +57,7 @@ export const Tagger: React.FC<ITaggerProps> = ({ scenes, queue }) => {
 
   function renderSourceSelector() {
     return (
-      <Form.Group controlId="scraper">
+      <Form.Group controlId="scraper" className="mb-3">
         <Form.Label>
           <FormattedMessage id="component_tagger.config.source" />
         </Form.Label>

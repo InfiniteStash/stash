@@ -145,7 +145,7 @@
 }
 
 #stash-table {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     padding-top: 0;
   }
 
@@ -373,7 +373,7 @@
   right: 30px;
   z-index: 1051;
 
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(sm) {
     top: 30px;
   }
   @include media-breakpoint-up(sm) {

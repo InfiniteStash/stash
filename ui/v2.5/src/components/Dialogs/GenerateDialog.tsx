@@ -87,7 +87,7 @@ export const GenerateDialog: React.FC<ISceneGenerateDialog> = ({
   const selectionStatus = useMemo(() => {
     if (selectedIds) {
       return (
-        <Form.Group id="selected-generate-ids">
+        <Form.Group id="selected-generate-ids" className="mb-3">
           <FormattedMessage
             id="config.tasks.generate.generating_scenes"
             values={{
@@ -127,7 +127,7 @@ export const GenerateDialog: React.FC<ISceneGenerateDialog> = ({
     );
 
     return (
-      <Form.Group className="dialog-selected-folders">
+      <Form.Group className="dialog-selected-folders mb-3">
         <div>{message}</div>
       </Form.Group>
     );

@@ -37,7 +37,7 @@ export const StashBoxModal: React.FC<IStashBoxModal> = ({ value, close }) => {
       value={value}
       renderField={(v, setValue) => (
         <>
-          <Form.Group id="stashbox-name">
+          <Form.Group id="stashbox-name" className="mb-3">
             <h6>
               {intl.formatMessage({
                 id: "config.stashbox.name",
@@ -54,7 +54,7 @@ export const StashBoxModal: React.FC<IStashBoxModal> = ({ value, close }) => {
             />
           </Form.Group>
 
-          <Form.Group id="stashbox-name">
+          <Form.Group id="stashbox-name" className="mb-3">
             <h6>
               {intl.formatMessage({
                 id: "config.stashbox.graphql_endpoint",
@@ -74,7 +74,7 @@ export const StashBoxModal: React.FC<IStashBoxModal> = ({ value, close }) => {
             />
           </Form.Group>
 
-          <Form.Group id="stashbox-name">
+          <Form.Group id="stashbox-name" className="mb-3">
             <h6>
               {intl.formatMessage({
                 id: "config.stashbox.api_key",
@@ -94,7 +94,7 @@ export const StashBoxModal: React.FC<IStashBoxModal> = ({ value, close }) => {
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Button
               disabled={loading}
               onClick={handleValidate}

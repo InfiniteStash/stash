@@ -398,7 +398,7 @@ export const GalleryEditPanel: React.FC<
 
   function renderTextField(field: string, title: string, placeholder?: string) {
     return (
-      <Form.Group controlId={title} as={Row}>
+      <Form.Group controlId={title} as={Row} className="mb-3">
         {FormUtils.renderLabel({
           title,
         })}
@@ -453,7 +453,7 @@ export const GalleryEditPanel: React.FC<
         <div className="form-container row px-3">
           <div className="col-12 col-lg-6 col-xl-12">
             {renderTextField("title", intl.formatMessage({ id: "title" }))}
-            <Form.Group controlId="url" as={Row}>
+            <Form.Group controlId="url" as={Row} className="mb-3">
               <Col xs={3} className="pr-0 url-label">
                 <Form.Label className="col-form-label">
                   <FormattedMessage id="url" />
@@ -473,7 +473,7 @@ export const GalleryEditPanel: React.FC<
               intl.formatMessage({ id: "date" }),
               "YYYY-MM-DD"
             )}
-            <Form.Group controlId="rating" as={Row}>
+            <Form.Group controlId="rating" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "rating" }),
               })}
@@ -487,7 +487,7 @@ export const GalleryEditPanel: React.FC<
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="studio" as={Row}>
+            <Form.Group controlId="studio" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "studio" }),
               })}
@@ -504,7 +504,7 @@ export const GalleryEditPanel: React.FC<
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="performers" as={Row}>
+            <Form.Group controlId="performers" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "performers" }),
                 labelProps: {
@@ -527,7 +527,7 @@ export const GalleryEditPanel: React.FC<
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="tags" as={Row}>
+            <Form.Group controlId="tags" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "tags" }),
                 labelProps: {
@@ -550,7 +550,7 @@ export const GalleryEditPanel: React.FC<
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="scenes" as={Row}>
+            <Form.Group controlId="scenes" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "scenes" }),
                 labelProps: {
@@ -568,7 +568,7 @@ export const GalleryEditPanel: React.FC<
             </Form.Group>
           </div>
           <div className="col-12 col-lg-6 col-xl-12">
-            <Form.Group controlId="details">
+            <Form.Group controlId="details" className="mb-3">
               <Form.Label>
                 <FormattedMessage id="details" />
               </Form.Label>

@@ -440,7 +440,7 @@ export const LightboxComponent: React.FC<IProps> = ({
     return (
       <>
         {slideshowEnabled ? (
-          <Form.Group controlId="delay" as={Row} className="form-container">
+          <Form.Group controlId="delay" as={Row} className="form-container mb-3">
             <Col xs={4}>
               <Form.Label className="col-form-label">
                 <FormattedMessage id="dialogs.lightbox.delay" />
@@ -459,7 +459,7 @@ export const LightboxComponent: React.FC<IProps> = ({
           </Form.Group>
         ) : undefined}
 
-        <Form.Group controlId="displayMode" as={Row}>
+        <Form.Group controlId="displayMode" as={Row} className="mb-3">
           <Col xs={4}>
             <Form.Label className="col-form-label">
               <FormattedMessage id="dialogs.lightbox.display_mode.label" />
@@ -486,7 +486,7 @@ export const LightboxComponent: React.FC<IProps> = ({
             </Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Group controlId="scaleUp" as={Row} className="mb-1">
             <Col>
               <Form.Check
@@ -506,7 +506,7 @@ export const LightboxComponent: React.FC<IProps> = ({
             })}
           </Form.Text>
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Group controlId="resetZoomOnNav" as={Row} className="mb-1">
             <Col>
               <Form.Check
@@ -520,7 +520,7 @@ export const LightboxComponent: React.FC<IProps> = ({
             </Col>
           </Form.Group>
         </Form.Group>
-        <Form.Group controlId="scrollMode">
+        <Form.Group controlId="scrollMode" className="mb-3">
           <Form.Group as={Row} className="mb-1">
             <Col xs={4}>
               <Form.Label className="col-form-label">

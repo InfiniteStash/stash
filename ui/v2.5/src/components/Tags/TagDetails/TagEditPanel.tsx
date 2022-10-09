@@ -139,7 +139,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
       />
 
       <Form noValidate onSubmit={formik.handleSubmit} id="tag-edit">
-        <Form.Group controlId="name" as={Row}>
+        <Form.Group controlId="name" as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="name" />
           </Form.Label>
@@ -156,7 +156,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="aliases" as={Row}>
+        <Form.Group controlId="aliases" as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="aliases" />
           </Form.Label>
@@ -169,7 +169,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="description" as={Row}>
+        <Form.Group controlId="description" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "description" }),
           })}
@@ -183,7 +183,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="parent_tags" as={Row}>
+        <Form.Group controlId="parent_tags" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "parent_tags" }),
             labelProps: {
@@ -210,7 +210,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="sub_tags" as={Row}>
+        <Form.Group controlId="sub_tags" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "sub_tags" }),
             labelProps: {
@@ -239,7 +239,7 @@ export const TagEditPanel: React.FC<ITagEditPanel> = ({
 
         <hr />
 
-        <Form.Group controlId="ignore-auto-tag" as={Row}>
+        <Form.Group controlId="ignore-auto-tag" as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="ignore_auto_tag" />
           </Form.Label>

@@ -36,7 +36,7 @@ const AuthenticationInput: React.FC<IAuthenticationInput> = ({
 
   return (
     <div>
-      <Form.Group id="username">
+      <Form.Group id="username" className="mb-3">
         <h6>{intl.formatMessage({ id: "config.general.auth.username" })}</h6>
         <Form.Control
           className="text-input"
@@ -49,7 +49,7 @@ const AuthenticationInput: React.FC<IAuthenticationInput> = ({
           {intl.formatMessage({ id: "config.general.auth.username_desc" })}
         </Form.Text>
       </Form.Group>
-      <Form.Group id="password">
+      <Form.Group id="password" className="mb-3">
         <h6>{intl.formatMessage({ id: "config.general.auth.password" })}</h6>
         <Form.Control
           className="text-input"

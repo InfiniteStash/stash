@@ -134,11 +134,11 @@ export const ImportDialog: React.FC<IImportDialogProps> = (
     >
       <div className="dialog-container">
         <Form>
-          <Form.Group id="import-file">
+          <Form.Group id="import-file" className="mb-3">
             <h6>Import zip file</h6>
             <Form.Control type="file" onChange={onFileChange} accept=".zip" />
           </Form.Group>
-          <Form.Group id="duplicate-handling">
+          <Form.Group id="duplicate-handling" className="mb-3">
             <h6>Duplicate object handling</h6>
             <Form.Control
               className="w-auto input-control"
@@ -154,7 +154,7 @@ export const ImportDialog: React.FC<IImportDialogProps> = (
             </Form.Control>
           </Form.Group>
 
-          <Form.Group id="missing-ref-handling">
+          <Form.Group id="missing-ref-handling" className="mb-3">
             <h6>Missing reference handling</h6>
             <Form.Control
               className="w-auto input-control"

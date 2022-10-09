@@ -44,7 +44,7 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
             </h4>
             <hr className="w-100" />
             <div className="col-md-6">
-              <Form.Group controlId="excluded-performer-fields">
+              <Form.Group controlId="excluded-performer-fields" className="mb-3">
                 <h6>
                   <FormattedMessage id="performer_tagger.config.excluded_fields" />
                 </h6>
@@ -71,7 +71,7 @@ const Config: React.FC<IConfigProps> = ({ show, config, setConfig }) => {
               </Form.Group>
               <Form.Group
                 controlId="stash-box-endpoint"
-                className="align-items-center row no-gutters mt-4"
+                className="align-items-center row no-gutters mt-4 mb-3"
               >
                 <Form.Label className="mr-4">
                   <FormattedMessage id="performer_tagger.config.active_stash-box_instance" />

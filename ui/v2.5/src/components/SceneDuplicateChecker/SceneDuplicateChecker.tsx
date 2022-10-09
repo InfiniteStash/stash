@@ -403,7 +403,7 @@ export const SceneDuplicateChecker: React.FC = () => {
         <h4>
           <FormattedMessage id="dupe_check.title" />
         </h4>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Row noGutters>
             <Form.Label>
               <FormattedMessage id="dupe_check.search_accuracy_label" />

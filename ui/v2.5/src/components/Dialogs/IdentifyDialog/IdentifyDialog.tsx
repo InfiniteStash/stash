@@ -110,7 +110,7 @@ export const IdentifyDialog: React.FC<IIdentifyDialogProps> = ({
   const selectionStatus = useMemo(() => {
     if (selectedIds) {
       return (
-        <Form.Group id="selected-identify-ids">
+        <Form.Group id="selected-identify-ids" className="mb-3">
           <FormattedMessage
             id="config.tasks.identify.identifying_scenes"
             values={{
@@ -164,7 +164,7 @@ export const IdentifyDialog: React.FC<IIdentifyDialogProps> = ({
     }
 
     return (
-      <Form.Group className="dialog-selected-folders">
+      <Form.Group className="dialog-selected-folders" className="mb-3">
         <div>
           {message}
           <div>

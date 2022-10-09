@@ -78,5 +78,5 @@ export const PluginTasks: React.FC = () => {
     });
   }
 
-  return <Form.Group>{renderPlugins()}</Form.Group>;
+  return <Form.Group className="mb-3">{renderPlugins()}</Form.Group>;
 };

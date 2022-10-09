@@ -71,3 +71,28 @@
     }
   }
 }
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .float#{$infix}-left  { float: left !important; }
+    .float#{$infix}-right { float: right !important; }
+    .float#{$infix}-none  { float: none !important; }
+  }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .text#{$infix}-left   { text-align: left !important; }
+    .text#{$infix}-right  { text-align: right !important; }
+    .text#{$infix}-center { text-align: center !important; }
+  }
+}
+
+.border-right   { border-right: $border-width solid $border-color !important; }
+.border-left    { border-left: $border-width solid $border-color !important; }
+.border-right-0  { border-right: 0 !important; }
+.border-left-0   { border-left: 0 !important; }

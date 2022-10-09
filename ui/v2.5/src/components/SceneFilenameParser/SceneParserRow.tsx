@@ -121,7 +121,7 @@ function SceneParserStringField(props: ISceneParserFieldProps<string>) {
         />
       </td>
       <td>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Control
             disabled
             className={props.className}
@@ -164,7 +164,7 @@ function SceneParserRatingField(
         />
       </td>
       <td>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Control
             disabled
             className={cx("input-control text-input", props.className)}
@@ -217,7 +217,7 @@ function SceneParserPerformerField(props: ISceneParserFieldProps<string[]>) {
         />
       </td>
       <td>
-        <Form.Group className={props.className}>
+        <Form.Group className={`${props.className} mb-3`}>
           <PerformerSelect
             isDisabled
             isMulti
@@ -260,7 +260,7 @@ function SceneParserTagField(props: ISceneParserFieldProps<string[]>) {
         />
       </td>
       <td>
-        <Form.Group className={props.className}>
+        <Form.Group className={`${props.className} mb-3`}>
           <TagSelect
             isDisabled
             isMulti
@@ -305,7 +305,7 @@ function SceneParserStudioField(props: ISceneParserFieldProps<string>) {
         />
       </td>
       <td>
-        <Form.Group className={props.className}>
+        <Form.Group className={`${props.className} mb-3`}>
           <StudioSelect
             isDisabled
             ids={originalStudio}

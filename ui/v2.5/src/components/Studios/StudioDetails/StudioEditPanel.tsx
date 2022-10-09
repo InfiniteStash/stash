@@ -223,7 +223,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
       />
 
       <Form noValidate onSubmit={formik.handleSubmit} id="studio-edit">
-        <Form.Group controlId="name" as={Row}>
+        <Form.Group controlId="name" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "name" }),
           })}
@@ -239,7 +239,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="url" as={Row}>
+        <Form.Group controlId="url" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "url" }),
           })}
@@ -255,7 +255,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="details" as={Row}>
+        <Form.Group controlId="details" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "details" }),
           })}
@@ -272,7 +272,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="parent_studio" as={Row}>
+        <Form.Group controlId="parent_studio" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "parent_studios" }),
           })}
@@ -290,7 +290,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="rating" as={Row}>
+        <Form.Group controlId="rating" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "rating" }),
           })}
@@ -306,7 +306,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
 
         {renderStashIDs()}
 
-        <Form.Group controlId="aliases" as={Row}>
+        <Form.Group controlId="aliases" as={Row} className="mb-3">
           <Form.Label column xs={3}>
             <FormattedMessage id="aliases" />
           </Form.Label>
@@ -322,7 +322,7 @@ export const StudioEditPanel: React.FC<IStudioEditPanel> = ({
 
       <hr />
 
-      <Form.Group controlId="ignore-auto-tag" as={Row}>
+      <Form.Group controlId="ignore-auto-tag" as={Row} className="mb-3">
         <Form.Label column xs={3}>
           <FormattedMessage id="ignore_auto_tag" />
         </Form.Label>

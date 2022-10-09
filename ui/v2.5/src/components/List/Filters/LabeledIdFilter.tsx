@@ -36,7 +36,7 @@ export const LabeledIdFilter: React.FC<ILabeledIdFilterProps> = ({
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="mb-3">
       <FilterSelect
         type={criterion.criterionOption.type}
         isMulti

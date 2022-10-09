@@ -29,7 +29,7 @@ export const DurationFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotEquals
   ) {
     equalsControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <DurationInput
           numericValue={criterion.value?.value}
           onValueChange={(v: number) => onChanged(v, "value")}
@@ -46,7 +46,7 @@ export const DurationFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotBetween
   ) {
     lowerControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <DurationInput
           numericValue={criterion.value?.value}
           onValueChange={(v: number) => onChanged(v, "value")}
@@ -63,7 +63,7 @@ export const DurationFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotBetween
   ) {
     upperControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <DurationInput
           numericValue={
             criterion.modifier === CriterionModifier.LessThan

@@ -334,7 +334,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
 
   function renderTextField(field: string, title: string) {
     return (
-      <Form.Group controlId={field} as={Row}>
+      <Form.Group controlId={field} as={Row} className="mb-3">
         {FormUtils.renderLabel({
           title,
         })}
@@ -373,7 +373,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
       />
 
       <Form noValidate onSubmit={formik.handleSubmit} id="movie-edit">
-        <Form.Group controlId="name" as={Row}>
+        <Form.Group controlId="name" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "name" }),
           })}
@@ -392,7 +392,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
 
         {renderTextField("aliases", intl.formatMessage({ id: "aliases" }))}
 
-        <Form.Group controlId="duration" as={Row}>
+        <Form.Group controlId="duration" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "duration" }),
           })}
@@ -408,7 +408,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
 
         {renderTextField("date", intl.formatMessage({ id: "date" }))}
 
-        <Form.Group controlId="studio" as={Row}>
+        <Form.Group controlId="studio" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "studio" }),
           })}
@@ -427,7 +427,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
 
         {renderTextField("director", intl.formatMessage({ id: "director" }))}
 
-        <Form.Group controlId="rating" as={Row}>
+        <Form.Group controlId="rating" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "rating" }),
           })}
@@ -441,7 +441,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="url" as={Row}>
+        <Form.Group controlId="url" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "url" }),
           })}
@@ -454,7 +454,7 @@ export const MovieEditPanel: React.FC<IMovieEditPanel> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="synopsis" as={Row}>
+        <Form.Group controlId="synopsis" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "synopsis" }),
           })}

@@ -721,7 +721,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
 
   function renderTagsField() {
     return (
-      <Form.Group controlId="tags" as={Row}>
+      <Form.Group controlId="tags" as={Row} className="mb-3">
         <Form.Label column sm={labelXS} xl={labelXL}>
           <FormattedMessage id="tags" defaultMessage="Tags" />
         </Form.Label>
@@ -800,7 +800,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
 
   function renderTextField(field: string, title: string, placeholder?: string) {
     return (
-      <Form.Group controlId={field} as={Row}>
+      <Form.Group controlId={field} as={Row} className="mb-3">
         <Form.Label column xs={labelXS} xl={labelXL}>
           <FormattedMessage id={field} defaultMessage={title} />
         </Form.Label>
@@ -828,7 +828,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
       {renderButtons("mb-3")}
 
       <Form noValidate onSubmit={formik.handleSubmit} id="performer-edit">
-        <Form.Group controlId="name" as={Row}>
+        <Form.Group controlId="name" as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="name" />
           </Form.Label>
@@ -845,7 +845,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="aliases" as={Row}>
+        <Form.Group controlId="aliases" as={Row} className="mb-3">
           <Form.Label column sm={labelXS} xl={labelXL}>
             <FormattedMessage id="aliases" />
           </Form.Label>
@@ -859,7 +859,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group as={Row}>
+        <Form.Group as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="gender" />
           </Form.Label>
@@ -889,7 +889,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
         {renderTextField("measurements", "Measurements")}
         {renderTextField("fake_tits", "Fake Tits")}
 
-        <Form.Group controlId="tattoos" as={Row}>
+        <Form.Group controlId="tattoos" as={Row} className="mb-3">
           <Form.Label column sm={labelXS} xl={labelXL}>
             <FormattedMessage id="tattoos" />
           </Form.Label>
@@ -903,7 +903,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="piercings" as={Row}>
+        <Form.Group controlId="piercings" as={Row} className="mb-3">
           <Form.Label column sm={labelXS} xl={labelXL}>
             <FormattedMessage id="piercings" />
           </Form.Label>
@@ -919,7 +919,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
 
         {renderTextField("career_length", "Career Length")}
 
-        <Form.Group controlId="url" as={Row}>
+        <Form.Group controlId="url" as={Row} className="mb-3">
           <Form.Label column xs={labelXS} xl={labelXL}>
             <FormattedMessage id="url" />
           </Form.Label>
@@ -934,7 +934,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
 
         {renderTextField("twitter", "Twitter")}
         {renderTextField("instagram", "Instagram")}
-        <Form.Group controlId="details" as={Row}>
+        <Form.Group controlId="details" as={Row} className="mb-3">
           <Form.Label column sm={labelXS} xl={labelXL}>
             <FormattedMessage id="details" />
           </Form.Label>
@@ -953,7 +953,7 @@ export const PerformerEditPanel: React.FC<IPerformerDetails> = ({
 
         <hr />
 
-        <Form.Group controlId="ignore-auto-tag" as={Row}>
+        <Form.Group controlId="ignore-auto-tag" as={Row} className="mb-3">
           <Form.Label column sm={labelXS} xl={labelXL}>
             <FormattedMessage id="ignore_auto_tag" />
           </Form.Label>

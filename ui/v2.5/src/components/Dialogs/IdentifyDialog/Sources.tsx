@@ -81,7 +81,7 @@ export const SourcesEditor: React.FC<ISourceEditor> = ({
     >
       <Form>
         {isNew && (
-          <Form.Group>
+          <Form.Group className="mb-3">
             <h5>
               <FormattedMessage id="config.tasks.identify.source" />
             </h5>
@@ -170,7 +170,7 @@ export const SourcesList: React.FC<ISourcesList> = ({
   }
 
   return (
-    <Form.Group className="scraper-sources" onDragOver={onDragOverDefault}>
+    <Form.Group className="scraper-sources mb-3" onDragOver={onDragOverDefault}>
       <h5>
         <FormattedMessage id="config.tasks.identify.sources" />
       </h5>

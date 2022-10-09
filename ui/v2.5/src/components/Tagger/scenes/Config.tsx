@@ -55,7 +55,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
           </h4>
           <hr className="w-100" />
           <Form className="col-md-6">
-            <Form.Group controlId="tag-males" className="align-items-center">
+            <Form.Group controlId="tag-males" className="align-items-center mb-3">
               <Form.Check
                 label={
                   <FormattedMessage id="component_tagger.config.show_male_label" />
@@ -69,7 +69,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
                 <FormattedMessage id="component_tagger.config.show_male_desc" />
               </Form.Text>
             </Form.Group>
-            <Form.Group controlId="set-cover" className="align-items-center">
+            <Form.Group controlId="set-cover" className="align-items-center mb-3">
               <Form.Check
                 label={
                   <FormattedMessage id="component_tagger.config.set_cover_label" />
@@ -86,7 +86,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
                 <FormattedMessage id="component_tagger.config.set_cover_desc" />
               </Form.Text>
             </Form.Group>
-            <Form.Group className="align-items-center">
+            <Form.Group className="align-items-center mb-3">
               <div className="d-flex align-items-center">
                 <Form.Check
                   id="tag-mode"
@@ -125,7 +125,7 @@ const Config: React.FC<IConfigProps> = ({ show }) => {
               </Form.Text>
             </Form.Group>
 
-            <Form.Group controlId="mode-select">
+            <Form.Group controlId="mode-select" className="mb-3">
               <div className="row no-gutters">
                 <Form.Label className="mr-4 mt-1">
                   <FormattedMessage id="component_tagger.config.query_mode_label" />

@@ -62,7 +62,7 @@ export const ExportDialog: React.FC<IExportDialogProps> = (
       isRunning={isRunning}
     >
       <Form>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Check
             id="include-dependencies"
             checked={includeDependencies}

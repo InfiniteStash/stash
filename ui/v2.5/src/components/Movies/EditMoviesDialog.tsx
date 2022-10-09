@@ -119,7 +119,7 @@ export const EditMoviesDialog: React.FC<IListOperationProps> = (
         isRunning={isUpdating}
       >
         <Form>
-          <Form.Group controlId="rating" as={Row}>
+          <Form.Group controlId="rating" as={Row} className="mb-3">
             {FormUtils.renderLabel({
               title: intl.formatMessage({ id: "rating" }),
             })}
@@ -131,7 +131,7 @@ export const EditMoviesDialog: React.FC<IListOperationProps> = (
               />
             </Col>
           </Form.Group>
-          <Form.Group controlId="studio" as={Row}>
+          <Form.Group controlId="studio" as={Row} className="mb-3">
             {FormUtils.renderLabel({
               title: intl.formatMessage({ id: "studio" }),
             })}
@@ -145,7 +145,7 @@ export const EditMoviesDialog: React.FC<IListOperationProps> = (
               />
             </Col>
           </Form.Group>
-          <Form.Group controlId="director">
+          <Form.Group controlId="director" className="mb-3">
             <Form.Label>
               <FormattedMessage id="director" />
             </Form.Label>

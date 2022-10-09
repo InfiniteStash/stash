@@ -90,7 +90,7 @@ export const TagMergeModal: React.FC<ITagMergeModalProps> = ({
       <div className="form-container row px-3">
         <div className="col-12 col-lg-6 col-xl-12">
           {mergeType === "from" && (
-            <Form.Group controlId="source" as={Row}>
+            <Form.Group controlId="source" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "dialogs.merge_tags.source" }),
                 labelProps: {
@@ -111,7 +111,7 @@ export const TagMergeModal: React.FC<ITagMergeModalProps> = ({
             </Form.Group>
           )}
           {mergeType === "into" && (
-            <Form.Group controlId="destination" as={Row}>
+            <Form.Group controlId="destination" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({
                   id: "dialogs.merge_tags.destination",

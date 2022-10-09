@@ -96,7 +96,7 @@ const FieldOptionsEditor: React.FC<IFieldOptionsEditor> = ({
     }
 
     return (
-      <Form.Group>
+      <Form.Group className="mb-3">
         {allowSetDefault ? (
           <Form.Check
             type="radio"
@@ -309,7 +309,7 @@ export const FieldOptionsList: React.FC<IFieldOptionsList> = ({
   }
 
   return (
-    <Form.Group className="scraper-sources">
+    <Form.Group className="scraper-sources mb-3">
       <h5>
         <FormattedMessage id="config.tasks.identify.field_options" />
       </h5>

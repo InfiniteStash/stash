@@ -75,7 +75,7 @@ export const HierarchicalLabelValueFilter: React.FC<IHierarchicalLabelValueFilte
 
   return (
     <>
-      <Form.Group>
+      <Form.Group className="mb-3">
         <FilterSelect
           type={criterion.criterionOption.type}
           isMulti
@@ -84,7 +84,7 @@ export const HierarchicalLabelValueFilter: React.FC<IHierarchicalLabelValueFilte
         />
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Check
           id={criterionOptionTypeToIncludeID()}
           checked={criterion.value.depth !== 0}
@@ -94,7 +94,7 @@ export const HierarchicalLabelValueFilter: React.FC<IHierarchicalLabelValueFilte
       </Form.Group>
 
       {criterion.value.depth !== 0 && (
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Control
             className="btn-secondary"
             type="number"

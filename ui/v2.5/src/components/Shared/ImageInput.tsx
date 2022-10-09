@@ -74,7 +74,7 @@ export const ImageInput: React.FC<IImageInput> = ({
         }}
       >
         <div className="dialog-content">
-          <Form.Group controlId="url" as={Row}>
+          <Form.Group controlId="url" as={Row} className="mb-3">
             <Form.Label column xs={3}>
               {intl.formatMessage({ id: "url" })}
             </Form.Label>

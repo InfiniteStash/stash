@@ -241,7 +241,7 @@ export const EditImagesDialog: React.FC<IListOperationProps> = (
         isRunning={isUpdating}
       >
         <Form>
-          <Form.Group controlId="rating" as={Row}>
+          <Form.Group controlId="rating" as={Row} className="mb-3">
             {FormUtils.renderLabel({
               title: intl.formatMessage({ id: "rating" }),
             })}
@@ -254,7 +254,7 @@ export const EditImagesDialog: React.FC<IListOperationProps> = (
             </Col>
           </Form.Group>
 
-          <Form.Group controlId="studio" as={Row}>
+          <Form.Group controlId="studio" as={Row} className="mb-3">
             {FormUtils.renderLabel({
               title: intl.formatMessage({ id: "studio" }),
             })}
@@ -269,21 +269,21 @@ export const EditImagesDialog: React.FC<IListOperationProps> = (
             </Col>
           </Form.Group>
 
-          <Form.Group controlId="performers">
+          <Form.Group controlId="performers" className="mb-3">
             <Form.Label>
               <FormattedMessage id="performers" />
             </Form.Label>
             {renderMultiSelect("performers", performerIds)}
           </Form.Group>
 
-          <Form.Group controlId="tags">
+          <Form.Group controlId="tags" className="mb-3">
             <Form.Label>
               <FormattedMessage id="tags" />
             </Form.Label>
             {renderMultiSelect("tags", tagIds)}
           </Form.Group>
 
-          <Form.Group controlId="organized">
+          <Form.Group controlId="organized" className="mb-3">
             <Form.Check
               type="checkbox"
               label={intl.formatMessage({ id: "organized" })}

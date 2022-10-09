@@ -122,7 +122,7 @@ const AddContentModal: React.FC<IAddSavedFilterModalProps> = ({
       "front_page.types.saved_filter",
     ];
     return (
-      <Form.Group controlId="filter">
+      <Form.Group controlId="filter" className="mb-3">
         <Form.Label>
           <FormattedMessage id="type" />
         </Form.Label>
@@ -146,7 +146,7 @@ const AddContentModal: React.FC<IAddSavedFilterModalProps> = ({
     if (contentType !== "front_page.types.premade_filter") return;
 
     return (
-      <Form.Group controlId="premade-filter">
+      <Form.Group controlId="premade-filter" className="mb-3">
         <Form.Label>
           <FormattedMessage id="front_page.types.premade_filter" />
         </Form.Label>
@@ -169,7 +169,7 @@ const AddContentModal: React.FC<IAddSavedFilterModalProps> = ({
   function maybeRenderSavedFiltersSelect() {
     if (contentType !== "front_page.types.saved_filter") return;
     return (
-      <Form.Group controlId="filter">
+      <Form.Group controlId="filter" className="mb-3">
         <Form.Label>
           <FormattedMessage id="search_filter.name" />
         </Form.Label>

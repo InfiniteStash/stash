@@ -285,7 +285,7 @@ export const LibraryTasks: React.FC = () => {
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="mb-3">
       {renderScanDialog()}
       {renderAutoTagDialog()}
       {maybeRenderIdentifyDialog()}

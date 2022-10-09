@@ -640,7 +640,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
 
   function renderTextField(field: string, title: string, placeholder?: string) {
     return (
-      <Form.Group controlId={title} as={Row}>
+      <Form.Group controlId={title} as={Row} className="mb-3">
         {FormUtils.renderLabel({
           title,
         })}
@@ -696,7 +696,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
         <div className="form-container row px-3">
           <div className="col-12 col-lg-7 col-xl-12">
             {renderTextField("title", intl.formatMessage({ id: "title" }))}
-            <Form.Group controlId="url" as={Row}>
+            <Form.Group controlId="url" as={Row} className="mb-3">
               <Col xs={3} className="pr-0 url-label">
                 <Form.Label className="col-form-label">
                   <FormattedMessage id="url" />
@@ -716,7 +716,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               intl.formatMessage({ id: "date" }),
               "YYYY-MM-DD"
             )}
-            <Form.Group controlId="rating" as={Row}>
+            <Form.Group controlId="rating" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "rating" }),
               })}
@@ -729,7 +729,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
                 />
               </Col>
             </Form.Group>
-            <Form.Group controlId="galleries" as={Row}>
+            <Form.Group controlId="galleries" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "galleries" }),
                 labelProps: {
@@ -745,7 +745,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="studio" as={Row}>
+            <Form.Group controlId="studio" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "studio" }),
                 labelProps: {
@@ -766,7 +766,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="performers" as={Row}>
+            <Form.Group controlId="performers" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "performers" }),
                 labelProps: {
@@ -789,7 +789,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="moviesScenes" as={Row}>
+            <Form.Group controlId="moviesScenes" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: `${intl.formatMessage({
                   id: "movies",
@@ -812,7 +812,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="tags" as={Row}>
+            <Form.Group controlId="tags" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "tags" }),
                 labelProps: {
@@ -835,7 +835,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
             {formik.values.stash_ids.length ? (
-              <Form.Group controlId="stashIDs">
+              <Form.Group controlId="stashIDs" className="mb-3">
                 <Form.Label>
                   <FormattedMessage id="stash_ids" />
                 </Form.Label>
@@ -881,7 +881,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
             ) : undefined}
           </div>
           <div className="col-12 col-lg-5 col-xl-12">
-            <Form.Group controlId="details">
+            <Form.Group controlId="details" className="mb-3">
               <Form.Label>
                 <FormattedMessage id="details" />
               </Form.Label>
@@ -895,7 +895,7 @@ export const SceneEditPanel: React.FC<IProps> = ({
               />
             </Form.Group>
             <div>
-              <Form.Group controlId="cover">
+              <Form.Group controlId="cover" className="mb-3">
                 <Form.Label>
                   <FormattedMessage id="cover_image" />
                 </Form.Label>

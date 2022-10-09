@@ -27,7 +27,7 @@ export const OptionsFilter: React.FC<IOptionsFilterProps> = ({
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="mb-3">
       <Form.Control
         as="select"
         onChange={e => onValueChanged(e.target.value)}

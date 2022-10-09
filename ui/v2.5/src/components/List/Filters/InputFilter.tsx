@@ -14,7 +14,7 @@ export const InputFilter: React.FC<IInputFilterProps> = ({
   criterion,
   onValueChanged,
 }) => (
-  <Form.Group>
+  <Form.Group className="mb-3">
     <Form.Control
       className="btn-secondary"
       type={criterion.criterionOption.inputType}

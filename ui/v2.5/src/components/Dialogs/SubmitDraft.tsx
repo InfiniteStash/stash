@@ -89,7 +89,7 @@ export const SubmitStashBoxDraft: React.FC<IProps> = ({
     >
       {data === undefined ? (
         <>
-          <Form.Group className="form-row align-items-end">
+          <Form.Group className="form-row align-items-end mb-3">
             <Form.Label className="col-6">
               <FormattedMessage id="stashbox.selected_stash_box" />:
             </Form.Label>

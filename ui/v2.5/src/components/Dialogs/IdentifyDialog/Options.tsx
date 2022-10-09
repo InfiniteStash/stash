@@ -36,8 +36,8 @@ export const OptionsEditor: React.FC<IOptionsEditor> = ({
   };
 
   return (
-    <Form.Group>
-      <Form.Group>
+    <Form.Group className="mb-3">
+      <Form.Group className="mb-3">
         <h5>
           <FormattedMessage
             id={headingID}
@@ -52,7 +52,7 @@ export const OptionsEditor: React.FC<IOptionsEditor> = ({
           </Form.Text>
         )}
       </Form.Group>
-      <Form.Group>
+      <Form.Group className="mb-3">
         <ThreeStateBoolean
           id="include-male-performers"
           value={

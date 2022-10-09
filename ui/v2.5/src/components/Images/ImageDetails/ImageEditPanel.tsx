@@ -138,7 +138,7 @@ export const ImageEditPanel: React.FC<IProps> = ({
 
   function renderTextField(field: string, title: string, placeholder?: string) {
     return (
-      <Form.Group controlId={title} as={Row}>
+      <Form.Group controlId={title} as={Row} className="mb-3">
         {FormUtils.renderLabel({
           title,
         })}
@@ -189,7 +189,7 @@ export const ImageEditPanel: React.FC<IProps> = ({
         <div className="form-container row px-3">
           <div className="col-12 col-lg-6 col-xl-12">
             {renderTextField("title", intl.formatMessage({ id: "title" }))}
-            <Form.Group controlId="rating" as={Row}>
+            <Form.Group controlId="rating" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "rating" }),
               })}
@@ -203,7 +203,7 @@ export const ImageEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="studio" as={Row}>
+            <Form.Group controlId="studio" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "studio" }),
               })}
@@ -220,7 +220,7 @@ export const ImageEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="performers" as={Row}>
+            <Form.Group controlId="performers" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "performers" }),
                 labelProps: {
@@ -243,7 +243,7 @@ export const ImageEditPanel: React.FC<IProps> = ({
               </Col>
             </Form.Group>
 
-            <Form.Group controlId="tags" as={Row}>
+            <Form.Group controlId="tags" as={Row} className="mb-3">
               {FormUtils.renderLabel({
                 title: intl.formatMessage({ id: "tags" }),
                 labelProps: {

@@ -245,7 +245,7 @@ export const Setup: React.FC = () => {
   function maybeRenderGenerated() {
     if (!configuration?.general.generatedPath) {
       return (
-        <Form.Group id="generated">
+        <Form.Group id="generated" className="mb-3">
           <h3>
             <FormattedMessage id="setup.paths.where_can_stash_store_its_generated_content" />
           </h3>
@@ -294,7 +294,7 @@ export const Setup: React.FC = () => {
           </p>
         </section>
         <section>
-          <Form.Group id="stashes">
+          <Form.Group id="stashes" className="mb-3">
             <h3>
               <FormattedMessage id="setup.paths.where_is_your_porn_located" />
             </h3>
@@ -308,7 +308,7 @@ export const Setup: React.FC = () => {
               />
             </Card>
           </Form.Group>
-          <Form.Group id="database">
+          <Form.Group id="database" className="mb-3">
             <h3>
               <FormattedMessage id="setup.paths.where_can_stash_store_its_database" />
             </h3>

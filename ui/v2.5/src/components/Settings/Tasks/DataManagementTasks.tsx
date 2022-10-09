@@ -287,7 +287,7 @@ export const DataManagementTasks: React.FC<IDataManagementTasks> = ({
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="mb-3">
       {renderImportAlert()}
       {renderImportDialog()}
       {dialogOpen.cleanAlert || dialogOpen.clean ? (

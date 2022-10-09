@@ -36,7 +36,7 @@ export const NumberFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotEquals
   ) {
     equalsControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Control
           className="btn-secondary"
           type="number"
@@ -58,7 +58,7 @@ export const NumberFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotBetween
   ) {
     lowerControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Control
           className="btn-secondary"
           type="number"
@@ -80,7 +80,7 @@ export const NumberFilter: React.FC<IDurationFilterProps> = ({
     criterion.modifier === CriterionModifier.NotBetween
   ) {
     upperControl = (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Control
           className="btn-secondary"
           type="number"

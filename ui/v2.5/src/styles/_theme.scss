@@ -1,19 +1,12 @@
 /* Blueprint dark theme */
 
+$primary: #137cbd;
 $secondary: #394b59;
 $muted-gray: #bfccd6;
 $success: #0f9960;
 $warning: #d9822b;
 $danger: #db3737;
-
-$theme-colors: (
-  primary: #137cbd,
-  secondary: $secondary,
-  success: $success,
-  warning: $warning,
-  danger: $danger,
-  dark: #394b59,
-);
+$dark: #394b59;
 
 $body-bg: #202b33;
 $text-muted: $muted-gray;
@@ -26,6 +19,8 @@ $popover-bg: $secondary;
 $dark-text: #182026;
 $textfield-bg: rgba(16, 22, 26, 0.3);
 $card-bg: #30404d;
+
+$nav-pills-link-active-bg: #137cbd;
 
 @import "node_modules/bootstrap/scss/bootstrap";
 
@@ -66,6 +61,8 @@ button.minimal {
 
 hr {
   margin: 5px 0;
+  border-color: rgba(0 0 0 / 10%);
+  opacity: 100%;
 }
 
 :not(.show-carat) > .dropdown-toggle::after {
@@ -194,4 +191,20 @@ hr {
   &-content {
     background-color: transparent;
   }
+}
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.form-check-input {
+  background-color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
 }

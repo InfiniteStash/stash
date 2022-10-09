@@ -179,7 +179,7 @@ export const AddFilterDialog: React.FC<IAddFilterProps> = ({
     }
     return (
       <>
-        <Form.Group>{renderModifier()}</Form.Group>
+        <Form.Group className="mb-3">{renderModifier()}</Form.Group>
         {renderSelect()}
       </>
     );
@@ -191,7 +191,7 @@ export const AddFilterDialog: React.FC<IAddFilterProps> = ({
     }
 
     return (
-      <Form.Group>
+      <Form.Group className="mb-3">
         <strong>
           {intl.formatMessage({
             id: editingCriterion.criterionOption.messageID,
@@ -225,7 +225,7 @@ export const AddFilterDialog: React.FC<IAddFilterProps> = ({
       });
 
     return (
-      <Form.Group controlId="filter">
+      <Form.Group controlId="filter" className="mb-3">
         <Form.Label>
           <FormattedMessage id="search_filter.name" />
         </Form.Label>

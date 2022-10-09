@@ -78,9 +78,9 @@ export const ThreeStateBoolean: React.FC<IThreeStateBoolean> = ({
   }
 
   return (
-    <Form.Group>
+    <Form.Group className="mb-3">
       <h6>{label}</h6>
-      <Form.Group>
+      <Form.Group className="mb-3">
         {renderModeButton(undefined)}
         {renderModeButton(false)}
         {renderModeButton(true)}

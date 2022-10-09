@@ -248,7 +248,7 @@ export const SettingsServicesPanel: React.FC = () => {
         }}
       >
         <h4>{capitalised} temporarily</h4>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Check
             checked={enableUntilRestart}
             label={intl.formatMessage({ id: "config.dlna.until_restart" })}
@@ -256,7 +256,7 @@ export const SettingsServicesPanel: React.FC = () => {
           />
         </Form.Group>
 
-        <Form.Group id="temp-enable-duration">
+        <Form.Group id="temp-enable-duration" className="mb-3">
           <DurationInput
             numericValue={enableDuration ?? 0}
             onValueChange={(v) => setEnableDuration(v ?? 0)}
@@ -290,7 +290,7 @@ export const SettingsServicesPanel: React.FC = () => {
         }}
       >
         <h4>{`Allow ${tempIP} temporarily`}</h4>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Check
             checked={enableUntilRestart}
             label={intl.formatMessage({ id: "config.dlna.until_restart" })}
@@ -298,7 +298,7 @@ export const SettingsServicesPanel: React.FC = () => {
           />
         </Form.Group>
 
-        <Form.Group id="temp-enable-duration">
+        <Form.Group id="temp-enable-duration" className="mb-3">
           <DurationInput
             numericValue={enableDuration ?? 0}
             onValueChange={(v) => setEnableDuration(v ?? 0)}
@@ -319,7 +319,7 @@ export const SettingsServicesPanel: React.FC = () => {
 
     const { allowedIPAddresses } = statusData.dlnaStatus;
     return (
-      <Form.Group className="content">
+      <Form.Group className="content mb-3">
         <h6>
           {intl.formatMessage({ id: "config.dlna.allowed_ip_addresses" })}
         </h6>
@@ -451,26 +451,26 @@ export const SettingsServicesPanel: React.FC = () => {
 
       <h4>DLNA</h4>
 
-      <Form.Group>
+      <Form.Group className="mb-3">
         <h5>
           {intl.formatMessage({ id: "status" }, { statusText: renderStatus() })}
         </h5>
       </Form.Group>
 
       <SettingSection headingID="actions_name">
-        <Form.Group className="content">
+        <Form.Group className="content mb-3">
           {renderEnableButton()}
           {renderTempCancelButton()}
         </Form.Group>
 
         {renderAllowedIPs()}
 
-        <Form.Group className="content">
+        <Form.Group className="content mb-3">
           <h6>
             {intl.formatMessage({ id: "config.dlna.recent_ip_addresses" })}
           </h6>
-          <Form.Group>{renderRecentIPs()}</Form.Group>
-          <Form.Group>
+          <Form.Group className="mb-3">{renderRecentIPs()}</Form.Group>
+          <Form.Group className="mb-3">
             <Button onClick={() => statusRefetch()}>
               <FormattedMessage id="actions.refresh" />
             </Button>

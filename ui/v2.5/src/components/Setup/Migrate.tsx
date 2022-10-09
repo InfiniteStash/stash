@@ -189,7 +189,7 @@ export const Migrate: React.FC = () => {
         {maybeMigrationNotes}
 
         <section>
-          <Form.Group id="migrate">
+          <Form.Group id="migrate" className="mb-3">
             <Form.Label>
               <FormattedMessage id="setup.migrate.backup_database_path_leave_empty_to_disable_backup" />
             </Form.Label>

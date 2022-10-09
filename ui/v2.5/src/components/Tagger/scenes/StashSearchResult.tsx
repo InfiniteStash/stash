@@ -590,7 +590,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   const renderPerformerField = () => (
     <div className="mt-2">
       <div>
-        <Form.Group controlId="performers">
+        <Form.Group controlId="performers" className="mb-3">
           {performers.map((performer, performerIndex) => (
             <PerformerResult
               performer={performer}
@@ -619,7 +619,7 @@ const StashSearchResult: React.FC<IStashSearchResultProps> = ({
   const renderTagsField = () => (
     <div className="mt-2">
       <div>
-        <Form.Group controlId="tags" as={Row}>
+        <Form.Group controlId="tags" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: `${intl.formatMessage({ id: "tags" })}:`,
           })}

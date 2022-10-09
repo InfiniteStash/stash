@@ -38,7 +38,7 @@ export const VideoPreviewInput: React.FC<IVideoPreviewInput> = ({
 
   return (
     <div>
-      <Form.Group id="preview-segments">
+      <Form.Group id="preview-segments" className="mb-3">
         <h6>
           {intl.formatMessage({
             id: "dialogs.scene_gen.preview_seg_count_head",
@@ -65,7 +65,7 @@ export const VideoPreviewInput: React.FC<IVideoPreviewInput> = ({
         </Form.Text>
       </Form.Group>
 
-      <Form.Group id="preview-segment-duration">
+      <Form.Group id="preview-segment-duration" className="mb-3">
         <h6>
           {intl.formatMessage({
             id: "dialogs.scene_gen.preview_seg_duration_head",
@@ -90,7 +90,7 @@ export const VideoPreviewInput: React.FC<IVideoPreviewInput> = ({
         </Form.Text>
       </Form.Group>
 
-      <Form.Group id="preview-exclude-start">
+      <Form.Group id="preview-exclude-start" className="mb-3">
         <h6>
           {intl.formatMessage({
             id: "dialogs.scene_gen.preview_exclude_start_time_head",
@@ -110,7 +110,7 @@ export const VideoPreviewInput: React.FC<IVideoPreviewInput> = ({
         </Form.Text>
       </Form.Group>
 
-      <Form.Group id="preview-exclude-start">
+      <Form.Group id="preview-exclude-start" className="mb-3">
         <h6>
           {intl.formatMessage({
             id: "dialogs.scene_gen.preview_exclude_end_time_head",

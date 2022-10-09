@@ -395,7 +395,7 @@ const PerformerTaggerList: React.FC<IPerformerTaggerListProps> = ({
         }}
         disabled={!isIdle}
       >
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>
             <h6>
               <FormattedMessage id="performer_tagger.performer_selection" />
@@ -420,7 +420,7 @@ const PerformerTaggerList: React.FC<IPerformerTaggerListProps> = ({
             onChange={() => setQueryAll(true)}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mb-3">
           <Form.Label>
             <h6>
               <FormattedMessage id="performer_tagger.tag_status" />
@@ -607,7 +607,7 @@ export const PerformerTagger: React.FC<ITaggerProps> = ({ performers }) => {
           ? batchJob.progress * 100
           : undefined;
       return (
-        <Form.Group className="px-4">
+        <Form.Group className="px-4 mb-3">
           <h5>
             <FormattedMessage id="performer_tagger.status_tagging_performers" />
           </h5>
@@ -624,7 +624,7 @@ export const PerformerTagger: React.FC<ITaggerProps> = ({ performers }) => {
 
     if (batchJobID !== undefined) {
       return (
-        <Form.Group className="px-4">
+        <Form.Group className="px-4 mb-3">
           <h5>
             <FormattedMessage id="performer_tagger.status_tagging_job_queued" />
           </h5>

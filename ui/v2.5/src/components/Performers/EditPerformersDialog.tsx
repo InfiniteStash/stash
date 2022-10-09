@@ -167,7 +167,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
     setter: (newValue: string | undefined) => void
   ) {
     return (
-      <Form.Group controlId={name}>
+      <Form.Group controlId={name} className="mb-3">
         <Form.Label>
           <FormattedMessage id={name} />
         </Form.Label>
@@ -200,7 +200,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
         }}
         isRunning={isUpdating}
       >
-        <Form.Group controlId="rating" as={Row}>
+        <Form.Group controlId="rating" as={Row} className="mb-3">
           {FormUtils.renderLabel({
             title: intl.formatMessage({ id: "rating" }),
           })}
@@ -213,7 +213,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
           </Col>
         </Form.Group>
         <Form>
-          <Form.Group controlId="favorite">
+          <Form.Group controlId="favorite" className="mb-3">
             <IndeterminateCheckbox
               setChecked={(checked) => setUpdateField({ favorite: checked })}
               checked={updateInput.favorite ?? undefined}
@@ -221,7 +221,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>
               <FormattedMessage id="gender" />
             </Form.Label>
@@ -290,7 +290,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
             setUpdateField({ instagram: v })
           )}
 
-          <Form.Group controlId="tags">
+          <Form.Group controlId="tags" className="mb-3">
             <Form.Label>
               <FormattedMessage id="tags" />
             </Form.Label>
@@ -305,7 +305,7 @@ export const EditPerformersDialog: React.FC<IListOperationProps> = (
             />
           </Form.Group>
 
-          <Form.Group controlId="ignore-auto-tags">
+          <Form.Group controlId="ignore-auto-tags" className="mb-3">
             <IndeterminateCheckbox
               label={intl.formatMessage({ id: "ignore_auto_tag" })}
               setChecked={(checked) =>

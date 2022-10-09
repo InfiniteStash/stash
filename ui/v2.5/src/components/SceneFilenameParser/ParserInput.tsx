@@ -131,8 +131,8 @@ export const ParserInput: React.FC<IParserInputProps> = (
   const PAGE_SIZE_OPTIONS = ["20", "40", "60", "120", "250", "500", "1000"];
 
   return (
-    <Form.Group>
-      <Form.Group className="row">
+    <Form.Group className="mb-3">
+      <Form.Group className="row mb-3">
         <Form.Label htmlFor="filename-pattern" className="col-2">
           {intl.formatMessage({
             id: "config.tools.scene_filename_parser.filename_pattern",
@@ -171,7 +171,7 @@ export const ParserInput: React.FC<IParserInputProps> = (
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className="row" controlId="ignored-words">
+      <Form.Group className="row mb-3" controlId="ignored-words">
         <Form.Label className="col-2">
           {intl.formatMessage({
             id: "config.tools.scene_filename_parser.ignored_words",
@@ -194,7 +194,7 @@ export const ParserInput: React.FC<IParserInputProps> = (
       </Form.Group>
 
       <h5>{intl.formatMessage({ id: "title" })}</h5>
-      <Form.Group className="row">
+      <Form.Group className="row mb-3">
         <Form.Label htmlFor="whitespace-characters" className="col-2">
           {intl.formatMessage({
             id: "config.tools.scene_filename_parser.whitespace_chars",
@@ -215,7 +215,7 @@ export const ParserInput: React.FC<IParserInputProps> = (
           })}
         </Form.Text>
       </Form.Group>
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Check
           inline
           className="m-0"
@@ -229,7 +229,7 @@ export const ParserInput: React.FC<IParserInputProps> = (
           })}
         </Form.Label>
       </Form.Group>
-      <Form.Group>
+      <Form.Group className="mb-3">
         <Form.Check
           inline
           className="m-0"
@@ -246,7 +246,7 @@ export const ParserInput: React.FC<IParserInputProps> = (
 
       {/* TODO - mapping stuff will go here */}
 
-      <Form.Group>
+      <Form.Group className="mb-3">
         <DropdownButton
           variant="secondary"
           id="recipe-select"
@@ -267,14 +267,14 @@ export const ParserInput: React.FC<IParserInputProps> = (
         </DropdownButton>
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className="mb-3">
         <ShowFields
           fields={props.showFields}
           onShowFieldsChanged={(fields) => props.setShowFields(fields)}
         />
       </Form.Group>
 
-      <Form.Group className="row">
+      <Form.Group className="row mb-3">
         <Button variant="secondary" className="ml-3 col-1" onClick={onFind}>
           {intl.formatMessage({ id: "actions.find" })}
         </Button>

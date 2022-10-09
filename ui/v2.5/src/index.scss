@@ -46,7 +46,7 @@ body {
   margin: 0;
   padding: 4rem 0 0 0;
 
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     @media (orientation: portrait) {
       padding: 1rem 0 5rem;
     }
@@ -541,7 +541,7 @@ div.dropdown-menu {
   justify-content: start;
   padding: 0.25rem 1rem;
 
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     padding: 0.25rem 2rem;
 
     @media (orientation: portrait) {
@@ -564,7 +564,7 @@ div.dropdown-menu {
     justify-content: space-between;
     max-height: calc(100vh - 4rem);
 
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(md) {
       @media (orientation: landscape) {
         overflow-y: scroll;
       }
@@ -585,7 +585,7 @@ div.dropdown-menu {
         display: none;
       }
 
-      @include media-breakpoint-down(xs) {
+      @include media-breakpoint-down(md) {
         &:last-child {
           display: flex;
           min-height: 3rem;
@@ -599,7 +599,7 @@ div.dropdown-menu {
     display: flex;
   }
 
-  @include media-breakpoint-down(xs) {
+  @include media-breakpoint-down(md) {
     .navbar-buttons .nav-utility {
       display: none;
     }
@@ -610,12 +610,12 @@ div.dropdown-menu {
   }
 
   .fa-icon {
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(md) {
       margin: 0;
     }
 
     &.nav-menu-icon {
-      @include media-breakpoint-down(lg) {
+      @include media-breakpoint-down(xxl) {
         height: 100%;
         max-height: min(10vw, 55px);
         width: 100%;
@@ -627,7 +627,7 @@ div.dropdown-menu {
     white-space: nowrap;
   }
 
-  @include media-breakpoint-down(lg) {
+  @include media-breakpoint-down(xxl) {
     .navbar-brand {
       margin-left: -8px;
     }
@@ -650,7 +650,7 @@ div.dropdown-menu {
   svg {
     color: #ff7373;
 
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(md) {
       margin: 0;
     }
   }

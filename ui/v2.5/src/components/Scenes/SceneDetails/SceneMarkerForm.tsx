@@ -127,7 +127,7 @@ export const SceneMarkerForm: React.FC<ISceneMarkerForm> = ({
     <Formik initialValues={values} onSubmit={onSubmit}>
       <FormikForm>
         <div>
-          <Form.Group className="row">
+          <Form.Group className="row mb-3">
             <Form.Label
               htmlFor="title"
               className="col-sm-3 col-md-2 col-xl-12 col-form-label"
@@ -138,7 +138,7 @@ export const SceneMarkerForm: React.FC<ISceneMarkerForm> = ({
               <Field name="title">{renderTitleField}</Field>
             </div>
           </Form.Group>
-          <Form.Group className="row">
+          <Form.Group className="row mb-3">
             <Form.Label
               htmlFor="primaryTagId"
               className="col-sm-3 col-md-2 col-xl-12 col-form-label"
@@ -162,7 +162,7 @@ export const SceneMarkerForm: React.FC<ISceneMarkerForm> = ({
               </div>
             </div>
           </Form.Group>
-          <Form.Group className="row">
+          <Form.Group className="row mb-3">
             <Form.Label
               htmlFor="tagIds"
               className="col-sm-3 col-md-2 col-xl-12 col-form-label"

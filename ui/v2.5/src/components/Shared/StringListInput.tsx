@@ -36,7 +36,7 @@ export const StringListInput: React.FC<IStringListInputProps> = (props) => {
     <>
       <div className={`string-list-input ${props.errors ? "is-invalid" : ""}`}>
         {props.value && props.value.length > 0 && (
-          <Form.Group>
+          <Form.Group className="mb-3">
             {props.value &&
               props.value.map((v, i) => (
                 // eslint-disable-next-line react/no-array-index-key

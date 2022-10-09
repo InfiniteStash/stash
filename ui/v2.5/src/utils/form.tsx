@@ -42,7 +42,7 @@ const renderEditableText = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderEditableText(options)}
@@ -58,7 +58,7 @@ const renderTextArea = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderTextArea(options)}
@@ -76,7 +76,7 @@ const renderInputGroup = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderInputGroup(options)}
@@ -95,7 +95,7 @@ const renderDurationInput = (options: {
   inputProps?: ColProps;
 }) => {
   return (
-    <Form.Group controlId={options.title} as={Row}>
+    <Form.Group controlId={options.title} as={Row} className="mb-3">
       {renderLabel(options)}
       <Col {...getInputProps(options.inputProps)}>
         {EditableTextUtils.renderDurationInput(options)}
@@ -113,7 +113,7 @@ const renderHtmlSelect = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderHtmlSelect(options)}
@@ -130,7 +130,7 @@ const renderFilterSelect = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderFilterSelect(options)}
@@ -147,7 +147,7 @@ const renderMultiSelect = (options: {
   labelProps?: FormLabelProps;
   inputProps?: ColProps;
 }) => (
-  <Form.Group controlId={options.title} as={Row}>
+  <Form.Group controlId={options.title} as={Row} className="mb-3">
     {renderLabel(options)}
     <Col {...getInputProps(options.inputProps)}>
       {EditableTextUtils.renderMultiSelect(options)}
