@@ -15,7 +15,7 @@ import (
 
 	"github.com/Yamashou/gqlgenc/clientv2"
 	"github.com/Yamashou/gqlgenc/graphqljson"
-	"github.com/gofrs/uuid/v5"
+	"github.com/google/uuid"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
@@ -648,9 +648,12 @@ func performerFragmentToScrapedPerformer(p graphql.PerformerFragment) *models.Sc
 		sp.Height = &hs
 	}
 
-	if p.Birthdate != nil {
-		b := p.Birthdate.Date
-		sp.Birthdate = &b
+	if p.BirthDate != nil {
+		sp.Birthdate = padFuzzyDate(p.BirthDate)
+	}
+
+	if p.DeathDate != nil {
+		sp.DeathDate = padFuzzyDate(p.DeathDate)
 	}
 
 	if p.Gender != nil {
@@ -891,7 +894,7 @@ func (c Client) FindStashBoxPerformerByName(ctx context.Context, name string) (*
 func (c Client) FindStashBoxStudio(ctx context.Context, query string) (*models.ScrapedStudio, error) {
 	var studio *graphql.FindStudio
 
-	_, err := uuid.FromString(query)
+	_, err := uuid.Parse(query)
 	if err == nil {
 		// Confirmed the user passed in a Stash ID
 		studio, err = c.client.FindStudio(ctx, &query, nil)
@@ -1355,4 +1358,21 @@ func (c *Client) submitDraft(ctx context.Context, query string, input interface{
 	}
 
 	return err
+}
+
+func padFuzzyDate(date *string) *string {
+	if date == nil {
+		return nil
+	}
+
+	var paddedDate string
+	switch len(*date) {
+	case 10:
+		paddedDate = *date
+	case 7:
+		paddedDate = fmt.Sprintf("%s-01", *date)
+	case 4:
+		paddedDate = fmt.Sprintf("%s-01-01", *date)
+	}
+	return &paddedDate
 }
